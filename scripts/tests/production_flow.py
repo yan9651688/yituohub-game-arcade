@@ -18,6 +18,16 @@ def first_visible(page,selector):
     raise RuntimeError("No visible link: "+selector)
 
 
+def visible_path_link(page,path):
+    page.wait_for_load_state("load")
+    choices=page.locator("a[href]")
+    for i in range(choices.count()):
+        candidate=choices.nth(i)
+        if candidate.is_visible() and candidate.evaluate("(a,path)=>new URL(a.href,location.href).pathname===path",path):
+            return candidate
+    raise RuntimeError("No visible path link: "+path)
+
+
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--base-url",default="https://game.yituohub.com")
@@ -52,8 +62,8 @@ def main():
             page.screenshot(path=str(output/"film-playing-mobile.png"))
             page.locator("#arcade-home-link").tap();page.wait_for_url(base+"/",timeout=20000)
             result["film_returned_url"]=page.url
-            first_visible(page,'a[href="/games.html"]').tap();page.wait_for_url(base+"/games.html",timeout=20000)
-            first_visible(page,'a[href="/games/fallen-frontier.html"]').tap();page.wait_for_url(base+"/games/fallen-frontier.html",timeout=30000)
+            visible_path_link(page,"/games.html").tap();page.wait_for_url(base+"/games.html",timeout=20000)
+            visible_path_link(page,"/games/fallen-frontier.html").tap();page.wait_for_url(base+"/games/fallen-frontier.html",timeout=30000)
             page.locator("#start").tap(timeout=20000);page.wait_for_timeout(800)
             result["game_started"]=page.evaluate("window.Frontier.snapshot().state")
             page.locator(".hud-tools .settings-open").tap();page.locator("#arcade-home-pause").wait_for(state="visible",timeout=10000)
@@ -93,6 +103,8 @@ def main():
             context.close();browser.close()
     (output/"results.json").write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding="utf-8")
     print(json.dumps({k:result.get(k) for k in ["passed","audio_advanced","game_started","game_paused","film_returned_url","game_returned_url","protocols","audio_range","exception","page_errors","console_errors"]},ensure_ascii=True),flush=True)
+    if not result["passed"]:
+        raise SystemExit(1)
 
 
 if __name__=="__main__":main()
