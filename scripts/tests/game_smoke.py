@@ -1,3 +1,4 @@
+# Historical v1.0.0 tooling; paths and selectors predate the current portal.
 """Read-only desktop and touch browser smoke checks for the five HTML games."""
 from __future__ import annotations
 

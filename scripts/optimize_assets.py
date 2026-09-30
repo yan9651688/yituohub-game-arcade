@@ -1,3 +1,4 @@
+# Historical v1.0.0 tooling; paths and selectors predate the current portal.
 """Losslessly externalize bundled media from explicit, untouched HTML sources.
 
 No image/audio transcode occurs. The supplied HTML sources remain unchanged.

@@ -3,10 +3,11 @@
 | 内容 | 来源与许可范围 |
 | --- | --- |
 | 第一方游戏、首页整合及工具脚本 | 项目提供者提供的源码与本项目集成代码，适用仓库 MIT 许可 |
-| Three.js 0.160.0 及其 addons | Three.js authors，MIT；原许可保留在 `public/vendor/three/LICENSE` |
+| Three.js 0.160.0 及其 addons | Three.js authors，MIT；原许可保留在 `public/game-arcade/vendor/three/LICENSE` |
 | 设计师原首页 | 项目提供者交付的设计稿，原稿保存在 `design/designer-home.html`，六套形态及几何保留 |
 | 影片配乐、游戏纹理与其他非代码素材 | 由项目提供者随作品提供，权利由各自作者保留；代码 MIT 许可不额外授予这些素材的独立转载或商业使用权 |
 | 颜与蓝梦的微信二维码 | 复用 [yituo-hub-studio](https://github.com/yan9651688/yituo-hub-studio) 已公开的联系素材，用于本项目联系与交流 |
-| 产品预览图 | 通过浏览器拍摄本项目实际页面与游戏画面 |
+| README 产品预览图 | 通过浏览器拍摄本项目实际页面 |
+| 游戏库封面与放映厅海报 | 随本次页面改版提供，属于非代码视觉素材，其使用范围同上 |
 
 本项目没有复制参考仓库的上游代码或继承其 AGPL 说明，README 仅借鉴产品介绍与联系区的表达方式。

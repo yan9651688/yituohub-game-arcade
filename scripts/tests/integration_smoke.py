@@ -1,3 +1,4 @@
+# Historical v1.0.0 tooling; paths and selectors predate the current portal.
 """Compiled asset links, five game starts, and film exits with real media time."""
 from __future__ import annotations
 

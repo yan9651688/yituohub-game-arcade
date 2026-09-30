@@ -4,13 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>NEON ARCADE · AI 小游戏站</title>
-<meta name="description" content="NEON ARCADE，AI 参与创造的免费小游戏宇宙。无需登录，点开就玩；也可以观看原创 3D 音乐短片《千禧凝思》。" />
-<meta name="theme-color" content="#03040a" />
-<link rel="canonical" href="https://game.yituohub.com/" />
-<meta property="og:type" content="website" /><meta property="og:url" content="https://game.yituohub.com/" />
-<meta property="og:title" content="NEON ARCADE · AI 小游戏站" /><meta property="og:description" content="免费小游戏，点开就玩。保留六种交互形态与原创音乐影片《千禧凝思》。" />
-<meta property="og:image" content="https://game.yituohub.com/assets/film-preview.jpg" />
-<link rel="stylesheet" href="/assets/site/site.css" />
+<meta name="description" content="由 AI 创造的小游戏宇宙。" />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <style>
   :root {
     --bg: #03040a;
@@ -122,14 +117,6 @@
     .caption .name { font-size: 15px; }
     .readout, .hint { display: none; }
   }
-
-header .film-nav{color:#ff84e7}.home-film-reason{display:block;font-size:10px;line-height:1.5;color:#bdc8df;margin-top:4px}.form-item:focus-visible,.btn:focus-visible,nav a:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}.actions{margin-top:22px}
-@media(max-width:900px){header nav{display:flex;gap:16px;font-size:11px;letter-spacing:.04em}header nav .nav-more,header nav .film-full{display:none}header nav a::before{display:none}.logo{font-size:12px;letter-spacing:.15em}.btn{padding:13px 22px;font-size:12px;letter-spacing:.08em}.actions{gap:12px;margin-top:18px}}
-@media(max-width:900px) and (min-height:501px){html,body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto}.copy{position:relative;left:auto;right:auto;bottom:auto;max-width:none;margin-top:max(300px,44svh);padding:0 24px 30px}.forms{position:absolute;top:max(272px,calc(44svh - 28px));height:24px}.form-item{height:24px;padding-top:10px}.sub{margin-top:18px}.tag{margin-bottom:18px}.hint{display:none}}
-@media(max-height:500px) and (min-width:601px){.copy{left:24px;right:auto;top:76px;bottom:auto;width:43%;max-width:390px}.tag{display:none}h1{font-size:28px;line-height:1}.sub{margin-top:9px;font-size:10px;line-height:1.6}.actions{margin-top:12px;gap:9px}.btn{font-size:11px;padding:10px 15px;letter-spacing:.05em}.caption{left:70%;top:11%}.caption .name{font-size:12px}.forms{left:70%;top:auto;bottom:32px}.home-film-teaser{grid-template-columns:60px minmax(0,1fr) auto;gap:9px;padding:8px;margin-top:10px}.home-film-preview{width:60px;height:65px}.home-film-title{font-size:17px}.home-film-kicker{font-size:8px;letter-spacing:0}.home-film-reason{font-size:9px;margin-top:3px}.home-film-meta{font-size:9px;margin-top:4px}.home-film-watch{font-size:10px}.hint{display:none}}
-@media(prefers-reduced-motion:reduce){.logo-mark,.tag .dot,.l1::before,.l1::after{animation:none!important}.btn{transition:none}}
-@media(max-width:900px){header nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}}
-@media(max-width:360px) and (min-height:501px){.tag{display:none}.actions{margin-top:14px}}
 </style>
 </head>
 <body>
@@ -143,9 +130,8 @@ header .film-nav{color:#ff84e7}.home-film-reason{display:block;font-size:10px;li
   <a href="./" class="logo"><span class="logo-mark"></span>NEON ARCADE</a>
   <nav>
     <a href="games.html">游戏库</a>
-    <a href="/film.html" class="film-nav">影片<span class="film-full"> · 千禧凝思</span></a>
-    <a href="changelog.html" class="nav-more">更新日志</a>
-    <a href="about.html" class="nav-more">关于</a>
+    <a href="mv.html">AI放映厅</a>
+    <a href="games.html">作品更新</a>
   </nav>
 </header>
 
@@ -157,12 +143,7 @@ header .film-nav{color:#ff84e7}.home-film-reason{display:block;font-size:10px;li
 <section class="ui copy">
   <div class="tag"><span class="dot"></span>AI-GENERATED GAME UNIVERSE</div>
   <h1><span class="l1" data-text="AI 造梦">AI 造梦</span><span class="l2">游戏宇宙</span></h1>
-  <p class="sub">每一款游戏都由 <b>AI 参与创造</b>。<br />无需登录，免费开玩，不用下载。</p>
-  <a id="film-feature" class="home-film-teaser" href="/film.html" aria-label="观看千禧凝思，原创 3D 音乐短片，约 3 分 10 秒，请打开声音">
-    <img class="home-film-preview" src="/assets/film-preview.jpg" alt="千禧凝思中的红砖院落与灯笼" width="80" height="75" decoding="async" />
-    <span class="home-film-copy"><span class="home-film-kicker">原创 3D 音乐短片 · 推荐观看</span><strong class="home-film-title">千禧凝思</strong><span class="home-film-reason">一首歌，走回千禧年代的旧院子。</span><span class="home-film-meta">约 3 分 10 秒 · 请打开声音</span></span>
-    <span class="home-film-watch"><b aria-hidden="true">▶</b>观看影片</span>
-  </a>
+  <p class="sub">每一款游戏都由 <b>AI 参与创造</b>。<br />不用下载，点开就玩。</p>
   <div class="actions">
     <a href="games.html" class="btn btn-primary">进入游戏库 <span class="arrow">→</span></a>
     <button class="btn btn-ghost" id="nextBtn">切换形态 ⟳</button>
@@ -183,18 +164,6 @@ header .film-nav{color:#ff84e7}.home-film-reason{display:block;font-size:10px;li
  *  工具
  * ================================================================ */
 const TAU = Math.PI * 2;
-const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
-const touchDevice = matchMedia('(pointer: coarse)').matches;
-const lowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
-const frameInterval = 1000 / (touchDevice || lowMemory ? 30 : 60);
-let animationId = 0, lastPaint = 0, forcePaint = false, pausedAt = 0, pausedDuration = 0;
-function requestFrame(force = false) { if (document.hidden) return; forcePaint = forcePaint || force; if (!animationId) animationId = requestAnimationFrame(frame); }
-function pauseRendering() {
-  if (document.hidden) { pausedAt = performance.now(); cancelAnimationFrame(animationId); animationId = 0; }
-  else { if (pausedAt) pausedDuration += performance.now() - pausedAt; pausedAt = 0; lastPaint = 0; lastFrame = performance.now(); fpsAcc = 0; fpsN = 0; requestFrame(true); }
-}
-document.addEventListener('visibilitychange', pauseRendering);
-motionQuery.addEventListener('change', () => requestFrame(true));
 const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const mix = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
 const ease = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
@@ -709,7 +678,7 @@ for (let i = 0; i < B; i++) {
   burst.set(scl(b, m), i * 3); bspin[i] = (R0() - .5) * 6;
 }
 
-const NP = touchDevice || innerWidth < 700 ? 800 : 1600;
+const NP = innerWidth < 700 ? 1000 : 2000;
 const px = new Float32Array(NP), py = new Float32Array(NP), pz = new Float32Array(NP);
 const pbox = new Int32Array(NP), pu = new Float32Array(NP * 3), po = new Float32Array(NP), pk = new Float32Array(NP);
 for (let i = 0; i < NP; i++) {
@@ -728,7 +697,7 @@ const dust = Array.from({ length: 260 }, () => [(R0() - .5) * 5, (R0() - .5) * 3
 let cur = 0, tStart = 0, DUR = 2.6, HOLD = 8, holdStart = 0, needDelays = true;
 let accent = [...C.teal], spread = 0.08;
 const t0 = performance.now();
-const now = () => ((pausedAt || performance.now()) - t0 - pausedDuration) / 1000;
+const now = () => (performance.now() - t0) / 1000;
 
 function goTo(i) {
   cur = (i + FORMS.length) % FORMS.length;
@@ -740,7 +709,6 @@ function goTo(i) {
     if (f.ghost[pbox[p]] || R0() < 0.35) { let k; do { k = Math.floor(R0() * B); } while (f.ghost[k]); pbox[p] = k; }
   }
   updateUI();
-  requestFrame(true);
 }
 
 /* ================================================================
@@ -753,15 +721,14 @@ const bloomB = document.createElement("canvas"), bb = bloomB.getContext("2d");
 const refl = document.createElement("canvas"), rc = refl.getContext("2d");
 let W, H, DPR, CX, CY, FOC, DIST = 4, mobile;
 function resize() {
-  DPR = Math.min(devicePixelRatio || 1, lowMemory ? 1 : touchDevice ? 1.25 : 1.5); W = innerWidth; H = innerHeight; mobile = W < 900;
+  DPR = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; mobile = W < 900;
   for (const c of [stage, scene]) { c.width = W * DPR; c.height = H * DPR; }
   bloomA.width = refl.width = Math.ceil(W / 4); bloomA.height = refl.height = Math.ceil(H / 4);
   bloomB.width = Math.ceil(W / 8); bloomB.height = Math.ceil(H / 8);
-  const landscape = mobile && W > 600 && H <= 500;
-  CX = landscape ? W * 0.70 : mobile ? W / 2 : W * 0.56; CY = landscape ? H * 0.38 : mobile ? H * 0.36 : H * 0.5;
+  CX = mobile ? W / 2 : W * 0.56; CY = mobile ? H * 0.36 : H * 0.5;
   FOC = Math.min(W, H) * (mobile ? 0.9 : 0.94);
 }
-resize(); addEventListener("resize", () => { resize(); requestFrame(true); });
+resize(); addEventListener("resize", resize);
 
 // 交互
 let yaw = 0, pitch = 0, vyaw = 0, vpitch = 0, mx = 0, my = 0, smx = 0, smy = 0;
@@ -773,7 +740,6 @@ addEventListener("pointermove", e => {
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
     drag.moved += Math.abs(dx) + Math.abs(dy); drag.x = e.clientX; drag.y = e.clientY;
     vyaw = dx * 0.006; vpitch = dy * 0.004;
-    if (motionQuery.matches) requestFrame(true);
   }
 });
 addEventListener("pointerup", () => {
@@ -795,8 +761,6 @@ const formsEl = document.getElementById("forms");
 FORMS.forEach((f, i) => {
   const el = document.createElement("div");
   el.className = "form-item";
-  el.tabIndex = 0; el.setAttribute('role', 'button'); el.setAttribute('aria-label', '切换到' + f.cn);
-  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); goTo(i); } });
   el.innerHTML = `<span class="idx">0${i + 1}</span><span class="cn">${f.cn}</span><span class="en">${f.en}</span><span class="bar"><i></i></span>`;
   el.onclick = () => goTo(i);
   formsEl.appendChild(el);
@@ -808,10 +772,9 @@ function updateUI() {
   [...formsEl.children].forEach((el, i) => el.classList.toggle("on", i === cur));
   bars.forEach((b, i) => { if (i !== cur) b.style.width = "0"; });
   capNo.textContent = `FORM 0${cur + 1} / 0${FORMS.length}`;
-  if (motionQuery.matches) { capName.textContent = FORMS[cur].en; return; }
   const target = FORMS[cur].en, glyphs = "!<>-_\\/[]{}—=+*^?#01ΔΣΩ", id = ++scrambleId, st = performance.now();
   (function tick() {
-    if (id !== scrambleId || document.hidden) return;
+    if (id !== scrambleId) return;
     const k = (performance.now() - st) / 700;
     capName.textContent = [...target].map((ch, i) => ch === " " ? " " : i / target.length < k ? ch : glyphs[Math.floor(Math.random() * glyphs.length)]).join("");
     if (k < 1) requestAnimationFrame(tick);
@@ -1109,17 +1072,13 @@ function drawWorld(t, ay) {
 }
 
 let fpsAcc = 0, fpsN = 0, lastFrame = performance.now();
-function frame(nowMs = performance.now()) {
-  animationId = 0; if (document.hidden) return;
-  const elapsedPaint = nowMs - lastPaint;
-  if (!forcePaint && !motionQuery.matches && elapsedPaint + 0.5 < frameInterval) { requestFrame(); return; }
-  forcePaint = false; lastPaint = nowMs - (elapsedPaint % frameInterval);
-  const dt = Math.max(0, nowMs - lastFrame); lastFrame = nowMs;
+function frame() {
+  const nowMs = performance.now(), dt = Math.min(50, nowMs - lastFrame); lastFrame = nowMs;
   fpsAcc += dt; fpsN++;
   if (fpsAcc > 500) { document.getElementById("rFps").textContent = Math.round(1000 / (fpsAcc / fpsN)); fpsAcc = fpsN = 0; }
 
-  const t = motionQuery.matches ? tStart + DUR : now(), f = FORMS[cur];
-  if (!motionQuery.matches && t - holdStart > HOLD) goTo(cur + 1);
+  const t = now(), f = FORMS[cur];
+  if (t - holdStart > HOLD) goTo(cur + 1);
   const P = (t - tStart) / DUR;
   bars[cur].style.width = clamp((t - holdStart) / HOLD) * 100 + "%";
 
@@ -1270,7 +1229,7 @@ function frame(nowMs = performance.now()) {
   ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
   ctx.drawImage(scene, 0, 0);
 
-  if (!motionQuery.matches) requestFrame(); else document.getElementById("rFps").textContent = "—";
+  requestAnimationFrame(frame);
 }
 
 // 环绕的 HUD 圆环（淡）
@@ -1297,7 +1256,8 @@ function drawHUD(t, R) {
 
 // 支持 ?form=1~5 直接定位到某个形态
 goTo(clamp((+new URLSearchParams(location.search).get("form") || 1) - 1, 0, FORMS.length - 1));
-requestFrame(true);
+requestAnimationFrame(frame);
+
 
 </script>
 </body>

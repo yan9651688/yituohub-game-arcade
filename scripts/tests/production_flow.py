@@ -1,3 +1,4 @@
+# Historical v1.0.0 tooling; paths and selectors predate the current portal.
 """One strict HTTPS mobile integration flow, plus cheap media HEAD/Range checks."""
 from __future__ import annotations
 

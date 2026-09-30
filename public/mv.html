@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI放映厅 · NEON ARCADE</title>
+  <meta name="description" content="NEON ARCADE AI 放映厅，收录千禧凝思等音乐视觉演出。">
+  <meta name="theme-color" content="#08070f">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/mv-hub.css">
+  <script src="assets/mv-hub.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#mv-archive">跳到 MV 展映</a>
+  <header class="site-header page-width">
+    <a class="brand" href="index.html" aria-label="NEON ARCADE 首页"><span class="brand-mark" aria-hidden="true"></span><span>NEON ARCADE<small>AI 造梦 · 游戏宇宙</small></span></a>
+    <nav aria-label="主导航">
+      <a href="index.html">首页</a>
+      <a href="games.html">游戏库</a>
+      <a href="mv.html" aria-current="page">AI放映厅</a>
+    </nav>
+  </header>
+
+  <main class="page-width">
+    <section class="mv-hero" aria-labelledby="mv-title">
+      <div>
+        <p class="eyebrow"><span aria-hidden="true"></span>AI SCREENING ROOM</p>
+        <h1 id="mv-title">AI<em>放映厅。</em></h1>
+        <p class="hero-description">这里放映由 AI 参与创作的音乐视觉作品。每一支 MV 都是一场独立的光影演出，未来会继续加入新的声音和世界。</p>
+      </div>
+      <div class="hero-stat" aria-label="MV 统计">
+        <strong data-mv-count>01</strong>
+        <span>支演出<br><b>正在展映</b></span>
+        <span class="stat-meta">ARCHIVE / 2026</span>
+      </div>
+    </section>
+
+    <section id="mv-archive" aria-labelledby="archive-title">
+        <div class="section-bar"><h2 id="archive-title">当前展映</h2><p><span>01</span> · AI MUSIC VIDEO</p></div>
+      <div class="mv-layout">
+        <div class="mv-grid" data-mv-grid></div>
+        <aside class="archive-note" aria-label="后续作品计划">
+      <div>
+        <p class="note-top">NEXT FRAME / LOADING</p>
+        <h3>下一支作品，<br>正在生成中。</h3>
+        <p>这里会继续收录新的 AI MV、歌词电影和互动式音乐视觉。作品完成后，会以同样的方式加入展映档案。</p>
+        <div class="note-mark" aria-hidden="true">＋</div>
+      </div>
+      <p class="note-bottom"><b>制作提示</b><br>将新作品添加到 <code>assets/mv-hub.js</code>，即可扩展档案卡片。</p>
+        </aside>
+      </div>
+  </main>
+
+  <footer class="site-footer page-width">
+    <a href="index.html">NEON ARCADE</a>
+    <p>声音、画面与游戏，在同一片霓虹里相遇。</p>
+    <a href="#mv-title">回到顶部 <span aria-hidden="true">↑</span></a>
+  </footer>
+</body>
+</html>

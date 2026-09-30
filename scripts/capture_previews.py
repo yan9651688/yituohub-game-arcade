@@ -1,3 +1,4 @@
+# Historical v1.0.0 tooling; paths and selectors predate the current portal.
 from pathlib import Path
 from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler

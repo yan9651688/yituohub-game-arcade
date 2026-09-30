@@ -1,3 +1,4 @@
+# Historical v1.0.0 tooling; paths and selectors predate the current portal.
 """Local gzip/cache/range fixture for application QA, never a production server."""
 from __future__ import annotations
 

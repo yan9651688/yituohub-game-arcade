@@ -1,20 +1,19 @@
 # 静态发布与缓存
 
-开发时可以直接用 Python 服务 `public/`。生产先运行 `python scripts/build_release.py --version 1.0.0`，发布生成的 `dist/`，配置示例在 [deploy/nginx.conf](../deploy/nginx.conf)。
+开发时可以直接用 Python 服务 `public/`。生产先运行 `python scripts/build_release.py --version 1.1.0`，发布生成的 `dist/`，版本号按实际发布调整。配置示例在 [deploy/nginx.conf](../deploy/nginx.conf)。
 
-构建会给站点 JS、CSS 和预览图增加内容指纹，将目录 JSON 与 HTML 的引用一同改写。48 个图片和音乐资源已经使用完整 SHA-256 名称。Three.js 使用 `three-0.160.0` 版本目录，旧 `/vendor/three/` 请求保留兼容映射。
+当前构建保持 `public/` 的目录与源文件内容，额外生成文本的压缩副本和 `version.json`。它不重写链接、不拆分游戏里的内嵌媒体，也不为资源添加内容指纹。游戏库和加载页共用 `assets/games.js`，原游戏、影片及 Three.js 位于 `game-arcade/` 下；发布时需要保留整个目录。
 
 | 资源 | 策略 |
 | --- | --- |
-| HTML、游戏目录与版本 JSON | `no-cache`，每次需要时重验证，发布后能及时看到变更 |
-| 内容指纹图片、JS、CSS、媒体 | `public, max-age=31536000, immutable`，相同字节保持相同地址 |
-| 完整版本目录下的 Three.js | 长期缓存；升级库时升级目录名 |
-| 没有指纹的兼容资源地址 | 重验证，不把可变地址当成一年不变 |
-| MP3 | `audio/mpeg`、字节 Range，保留流式加载与跳转 |
+| HTML、JS、CSS、封面、第三方库与版本 JSON | `no-cache`，浏览器可保存副本，使用前重验证 |
+| 以后另行加入的内容指纹资源 | 只有文件地址随内容变化时，再配置长期缓存与 `immutable` |
 
-文本在构建时生成 gzip 与 Brotli，访问时直接发送压缩文件。Brotli 使用 Node.js 内置模块生成，Nginx 使用 `ngx_brotli_static`。Debian 的 `libnginx-mod-http-brotli-static` 可提供该模块；没有模块时不要启用示例中的 `brotli_static` 指令。HTTP/2 配置需要 Nginx 1.25.1 及以上的 HTTP/2 模块。
+游戏加载页会流式读取 HTML，压缩响应的 `Content-Length` 不能用作解压后字节的进度分母，因此压缩下载期间显示已读取量与不确定进度，下载完成后继续等待游戏画面准备。
 
-配置中的指纹正则带引号，避免 Nginx 将 `{12}` 当成配置块。正式环境须先运行 `nginx -t`，通过后再 reload。[Nginx HTTP/2 文档](https://nginx.org/en/docs/http/ngx_http_v2_module.html)、[Brotli 模块说明](https://github.com/google/ngx_brotli)。
+文本在构建时生成 gzip 和可选 Brotli。示例的 `gzip_static` 需要 Nginx 包含对应模块；`brotli_static` 默认注释，安装并加载模块后再启用。`http2 on` 需要 Nginx 1.25.1 及以上并包含 HTTP/2 模块。参考 [Nginx gzip_static 文档](https://nginx.org/en/docs/http/ngx_http_gzip_static_module.html)、[HTTP/2 文档](https://nginx.org/en/docs/http/ngx_http_v2_module.html) 和 [Brotli 模块说明](https://github.com/google/ngx_brotli)。
+
+配置是部署模板，并非服务器配置快照。按环境修改域名、证书与发布路径，确认主配置已加载 `mime.types`，再运行 `nginx -t`，通过后 reload。检查首页、游戏库、统一加载页、放映厅、游戏返回和影片返回路径，以及实际的 HTTPS 与压缩响应。
 
 ## 更新与回滚
 

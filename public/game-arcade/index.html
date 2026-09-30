@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="千禧游戏厅，5 款原创小游戏。无需登录，免费开玩。星陨前线、智械前线、霓潮、公路狂徒、雷霆战翼，打开就能玩。">
+<meta name="theme-color" content="#0d0618">
+<title>千禧游戏厅 · 无需登录，免费开玩</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{color-scheme:dark;--ink:#0d0618;--paper:#FFD6F5;--pink:#FF4FD8;--cyan:#4FE8FF;--vio:#8B5CFF;--muted:#c9b3e6}
+html{min-height:100%;background:var(--ink)}
+body{min-height:100svh;background:var(--ink);color:var(--paper);font-family:"Noto Sans SC","Microsoft YaHei",sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+#start{position:relative;min-height:100svh;isolation:isolate;overflow:hidden}
+#neon{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;pointer-events:none}
+#start::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(13,6,24,.96) 0%,rgba(13,6,24,.88) 30%,rgba(13,6,24,.56) 48%,rgba(13,6,24,0) 74%),repeating-linear-gradient(0deg,rgba(0,0,0,.13) 0 1px,transparent 1px 3px)}
+#start::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;box-shadow:inset 0 0 16vh rgba(0,0,0,.6)}
+.css-scenery{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 70% 56%,rgba(255,79,216,.16),transparent 46%),linear-gradient(#0d0618 44%,#210b35 76%,#0d0618)}
+.css-scenery::before{content:"";position:absolute;width:38vw;height:38vw;max-width:490px;max-height:490px;right:8vw;top:13vh;border-radius:50%;background:repeating-linear-gradient(to bottom,transparent 0 24px,rgba(13,6,24,.9) 25px 31px),linear-gradient(#FFD6F5,#FF4FD8 48%,#8B5CFF);opacity:.36;box-shadow:0 0 100px rgba(255,79,216,.25)}
+.horizon{position:absolute;inset:62% -50% -42%;transform:perspective(300px) rotateX(58deg);transform-origin:center top;background:linear-gradient(transparent 0,rgba(255,79,216,.28) 1px,transparent 2px),linear-gradient(90deg,transparent 0,rgba(139,92,255,.4) 1px,transparent 2px);background-size:48px 48px;mask-image:linear-gradient(transparent,#000 20%)}
+.layout{position:relative;z-index:2;min-height:100svh;width:min(590px,calc(100% - 16vw));margin-left:8vw;padding:clamp(30px,5vh,62px) 0 30px}
+.hud{font:11px "IBM Plex Mono",Consolas,monospace;letter-spacing:.16em;color:var(--pink);text-shadow:0 0 6px rgba(255,79,216,.65);display:flex;align-items:center;gap:14px;margin-bottom:clamp(24px,4vh,44px)}
+.rec{color:#FF2E88;animation:blink 1.2s steps(1) infinite}
+.hud .line{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,79,216,.5),transparent)}
+.kicker{font:11px "IBM Plex Mono",Consolas,monospace;letter-spacing:.18em;color:var(--muted);margin-bottom:13px}
+h1{font:900 clamp(47px,6.1vw,84px)/1.14 "Noto Sans SC","Microsoft YaHei",sans-serif;letter-spacing:.015em;color:transparent;background:linear-gradient(100deg,#FFE3FA 0%,#FF4FD8 48%,#8B5CFF 100%);background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 0 2px rgba(255,120,230,.5)) drop-shadow(0 0 10px rgba(255,79,216,.3));white-space:nowrap}
+.subtitle{font:900 clamp(22px,2.6vw,34px)/1.1 Archivo,"Arial Black",Impact,sans-serif;font-stretch:118%;color:transparent;-webkit-text-stroke:1px var(--cyan);letter-spacing:.06em;filter:drop-shadow(0 0 6px rgba(79,232,255,.6));margin-top:10px}
+.welcome{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin:23px 0 24px;font-size:13px;line-height:1.6;color:#e5d5f0}
+.free{color:var(--cyan)}
+.free::before{content:"●";font-size:8px;vertical-align:2px;margin-right:8px;text-shadow:0 0 8px var(--cyan)}
+.games{list-style:none;border-top:1px solid rgba(255,79,216,.55)}
+.game{position:relative;display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:14px;min-height:77px;padding:13px 17px 13px 2px;border-bottom:1px solid rgba(255,79,216,.26);transition:background .18s,border-color .18s,transform .18s}
+.game::before{content:"";position:absolute;inset:9px auto 9px -8px;width:2px;background:var(--cyan);opacity:0;box-shadow:0 0 12px var(--cyan);transition:opacity .18s}
+.game:hover{background:linear-gradient(90deg,rgba(255,79,216,.13),rgba(139,92,255,.04));border-color:rgba(79,232,255,.55);transform:translateX(4px)}
+.game:hover::before,.game:focus-visible::before{opacity:1}
+.game:focus-visible,.film:focus-visible{outline:2px solid var(--cyan);outline-offset:5px}
+.num{font:12px "IBM Plex Mono",Consolas,monospace;color:#d78bc9;letter-spacing:.08em}
+.name{display:block;font-size:22px;line-height:1.3;font-weight:900;letter-spacing:.03em}
+.en{display:block;font:10px "IBM Plex Mono",Consolas,monospace;letter-spacing:.14em;color:var(--muted);margin-top:5px}
+.play{font-size:12px;color:var(--cyan);white-space:nowrap}
+.play .arrow{display:inline-block;margin-left:8px;font-size:20px;vertical-align:-2px;transition:transform .18s}
+.game:hover .arrow{transform:translate(2px,-2px);text-shadow:0 0 8px var(--cyan)}
+.footer{margin-top:23px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.film{font-size:12px;line-height:1.7;color:#dcc8ef;border-bottom:1px dashed rgba(79,232,255,.4);padding-bottom:2px;transition:color .18s}
+.film:hover{color:var(--cyan)}
+.note{font:10px "IBM Plex Mono",Consolas,monospace;letter-spacing:.13em;color:#aa95be}
+.corner{position:fixed;right:3vw;bottom:3vh;z-index:2;font:10px "IBM Plex Mono",Consolas,monospace;letter-spacing:.16em;color:var(--cyan);text-shadow:0 0 6px rgba(79,232,255,.6);pointer-events:none}
+@keyframes blink{50%{opacity:.35}}
+@media(min-width:1600px){.layout{width:650px}.game{min-height:86px}.name{font-size:25px}}
+@media(max-width:900px){.layout{width:min(560px,calc(100% - 12vw));margin-left:6vw}.corner{display:none}#start::before{background:linear-gradient(90deg,rgba(13,6,24,.96),rgba(13,6,24,.78) 60%,rgba(13,6,24,.35)),repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0 1px,transparent 1px 3px)}}
+@media(max-width:600px){.layout{width:calc(100% - 44px);margin-left:22px;padding-top:max(25px,env(safe-area-inset-top));padding-bottom:max(30px,env(safe-area-inset-bottom))}.hud{font-size:9px;letter-spacing:.12em;margin-bottom:28px;gap:10px}.kicker{font-size:9px;letter-spacing:.12em}h1{font-size:clamp(40px,11.4vw,68px)}.subtitle{font-size:clamp(20px,5.7vw,30px)}.welcome{margin:20px 0 23px;gap:6px 16px;font-size:12px}.game{grid-template-columns:26px minmax(0,1fr) auto;gap:10px;min-height:81px;padding-right:8px}.name{font-size:22px}.en{font-size:9px;letter-spacing:.09em}.play{font-size:11px}.play .arrow{font-size:18px;margin-left:3px}.footer{margin-top:23px;gap:12px}.css-scenery::before{width:78vw;height:78vw;right:-20vw;top:17vh}#start::before{background:linear-gradient(180deg,rgba(13,6,24,.72),rgba(13,6,24,.89) 48%,rgba(13,6,24,.94)),repeating-linear-gradient(0deg,rgba(0,0,0,.1) 0 1px,transparent 1px 3px)}}
+@media(prefers-reduced-motion:reduce){.rec{animation:none}.game,.game::before,.play .arrow,.film{transition:none}.game:hover{transform:none}}
+</style>
+</head>
+<body>
+<div id="start">
+  <div class="css-scenery" aria-hidden="true"><div class="horizon"></div></div>
+  <div class="layout">
+    <header class="hud"><span class="rec" aria-hidden="true">●</span><span>ONLINE · 游戏厅已开门</span><span class="line" aria-hidden="true"></span><span>EST. 2026</span></header>
+    <main>
+      <p class="kicker">A SMALL ARCADE · FIVE ORIGINAL GAMES</p>
+      <h1>千禧游戏厅</h1>
+      <p class="subtitle" lang="en">PRESS START. PLAY FREE.</p>
+      <p class="welcome"><span>5 款原创小游戏</span><span class="free">无需登录 · 免费开玩</span></p>
+      <nav aria-label="选择游戏">
+        <ol class="games">
+          <li><a class="game" href="/games/fallen-frontier.html" aria-label="免费开玩星陨前线"><span class="num" aria-hidden="true">01</span><span><span class="name">星陨前线</span><span class="en" lang="en">FALLEN FRONTIER</span></span><span class="play">开玩<span class="arrow" aria-hidden="true">↗</span></span></a></li>
+          <li><a class="game" href="/games/iron-front.html" aria-label="免费开玩智械前线"><span class="num" aria-hidden="true">02</span><span><span class="name">智械前线</span><span class="en" lang="en">IRON FRONT</span></span><span class="play">开玩<span class="arrow" aria-hidden="true">↗</span></span></a></li>
+          <li><a class="game" href="/games/neon-swarm.html" aria-label="免费开玩霓潮"><span class="num" aria-hidden="true">03</span><span><span class="name">霓潮</span><span class="en" lang="en">NEON SWARM</span></span><span class="play">开玩<span class="arrow" aria-hidden="true">↗</span></span></a></li>
+          <li><a class="game" href="/games/road-fury.html" aria-label="免费开玩公路狂徒"><span class="num" aria-hidden="true">04</span><span><span class="name">公路狂徒</span><span class="en" lang="en">ROAD FURY</span></span><span class="play">开玩<span class="arrow" aria-hidden="true">↗</span></span></a></li>
+          <li><a class="game" href="/games/thunderwing.html" aria-label="免费开玩雷霆战翼"><span class="num" aria-hidden="true">05</span><span><span class="name">雷霆战翼</span><span class="en" lang="en">THUNDERWING</span></span><span class="play">开玩<span class="arrow" aria-hidden="true">↗</span></span></a></li>
+        </ol>
+      </nav>
+      <footer class="footer"><a class="film" href="/film.html">♫ 千禧凝思 · 影片</a><p class="note">选一款，开始玩。</p></footer>
+    </main>
+  </div>
+  <div class="corner" aria-hidden="true">小霸王 · 其乐无穷 &nbsp;▸ SELECT YOUR GAME</div>
+</div>
+<script type="importmap">
+{"imports":{"three":"/vendor/three/build/three.module.js","three/addons/":"/vendor/three/examples/jsm/"}}
+</script>
+<script type="module">
+// Navigation is plain HTML. This module only enhances the original neon backdrop.
+async function initBackdrop() {
+  const probe = document.createElement('canvas');
+  let context;
+  try { context = probe.getContext('webgl2') || probe.getContext('webgl'); } catch { return; }
+  if (!context) return;
+  context.getExtension('WEBGL_lose_context')?.loseContext();
+  try {
+    const [THREE, lineSegments, lineGeometry, lineMaterial, composer, renderPass, bloomPass, outputPass] = await Promise.all([
+      import('three'),
+      import('three/addons/lines/LineSegments2.js'),
+      import('three/addons/lines/LineSegmentsGeometry.js'),
+      import('three/addons/lines/LineMaterial.js'),
+      import('three/addons/postprocessing/EffectComposer.js'),
+      import('three/addons/postprocessing/RenderPass.js'),
+      import('three/addons/postprocessing/UnrealBloomPass.js'),
+      import('three/addons/postprocessing/OutputPass.js')
+    ]);
+    const { LineSegments2 } = lineSegments;
+    const { LineSegmentsGeometry } = lineGeometry;
+    const { LineMaterial } = lineMaterial;
+    const { EffectComposer } = composer;
+    const { RenderPass } = renderPass;
+    const { UnrealBloomPass } = bloomPass;
+    const { OutputPass } = outputPass;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $ = id => document.getElementById(id);
+    const cl = x => Math.max(0, Math.min(1, x));
+    const eio = k => (k = cl(k), k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2);
+    const lerp = (a, b, k) => a + (b - a) * k;
+    const hash = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+// ================= 首页：霓虹线框（只管 #start，演出部分不碰） =================
+{
+  const host = $('start'), cv = document.createElement('canvas'); cv.id = 'neon'; host.prepend(cv);
+  const NR = new THREE.WebGLRenderer({ canvas: cv, antialias: true });
+  NR.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+  const NS = new THREE.Scene(), BG = '#0d0618';
+  NS.background = new THREE.Color(BG); NS.fog = new THREE.Fog(BG, 18, 50);
+  const NC = new THREE.PerspectiveCamera(38, 1, .1, 200);
+  const comp = new EffectComposer(NR);
+  comp.addPass(new RenderPass(NS, NC));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), .7, .4, .22);
+  comp.addPass(bloom); comp.addPass(new OutputPass());
+
+  // 粉紫渐变为主，青色点缀；传 [a, b] 就是沿物体从下到上的渐变
+  const N = { pink: '#FF4FD8', vio: '#8B5CFF', cyan: '#4FE8FF', pale: '#FFD6F5', hot: '#FF2E88' };
+  const PV = [N.vio, N.pink], VP = [N.pink, N.vio], PC = [N.vio, N.cyan];
+  const mats = [];
+  const LM = (hex, w = 2.2, o = {}) => { const gr = Array.isArray(hex); const m = new LineMaterial({ color: gr ? '#fff' : hex, vertexColors: gr, linewidth: w, transparent: true, fog: o.fog ?? true, opacity: o.op ?? 1 }); if (gr) m.userData.grad = hex.map(h => new THREE.Color(h)); mats.push(m); return m; };
+
+  // 线段收集器：往里塞线段，最后生成一个粗线 mesh
+  class W {
+    constructor() { this.p = []; }
+    seg(a, b) { this.p.push(...a, ...b); return this; }
+    poly(pts, close) { for (let i = 0; i < pts.length - (close ? 0 : 1); i++) this.seg(pts[i], pts[(i + 1) % pts.length]); return this; }
+    box(w, h, d, x = 0, y = 0, z = 0) {
+      const a = new THREE.EdgesGeometry(new THREE.BoxGeometry(w, h, d)).attributes.position.array;
+      for (let i = 0; i < a.length; i += 3) this.p.push(a[i] + x, a[i + 1] + y, a[i + 2] + z); return this;
+    }
+    rrect(w, h, r, x = 0, y = 0, z = 0) {   // XY 平面圆角矩形
+      const pts = [], c = [[w / 2 - r, h / 2 - r, 0], [-w / 2 + r, h / 2 - r, 1], [-w / 2 + r, -h / 2 + r, 2], [w / 2 - r, -h / 2 + r, 3]];
+      c.forEach(([cx, cy, q]) => { for (let k = 0; k <= 4; k++) { const a = (q + k / 4) * Math.PI / 2; pts.push([x + cx + Math.cos(a) * r, y + cy + Math.sin(a) * r, z]); } });
+      return this.poly(pts, true);
+    }
+    circ(r, x = 0, y = 0, z = 0, ax = 'z', n = 32) {
+      const pts = [];
+      for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, u = Math.cos(a) * r, v = Math.sin(a) * r; pts.push(ax === 'z' ? [x + u, y + v, z] : ax === 'y' ? [x + u, y, z + v] : [x, y + u, z + v]); }
+      return this.poly(pts, true);
+    }
+    mesh(mat) { const g = new LineSegmentsGeometry(); g.setPositions(this.p);
+      if (mat.userData.grad) {   // 按高度（略带斜向）给每个顶点插值颜色
+        const [a, b] = mat.userData.grad, p = this.p, col = [], f = i => p[i + 1] + p[i] * .25; let lo = 1e9, hi = -1e9;
+        for (let i = 0; i < p.length; i += 3) { lo = Math.min(lo, f(i)); hi = Math.max(hi, f(i)); }
+        for (let i = 0; i < p.length; i += 3) { const k = (f(i) - lo) / (hi - lo || 1); col.push(lerp(a.r, b.r, k), lerp(a.g, b.g, k), lerp(a.b, b.b, k)); }
+        g.setColors(col); } const m = new LineSegments2(g, mat); m.userData.n = this.p.length / 6; reveal.push(m); return m; }
+  }
+  const reveal = [];
+  const grp = (x, y, z) => { const g = new THREE.Group(); g.position.set(x, y, z); g.userData.base = [x, y, z]; NS.add(g); return g; };
+
+  // ---- 电脑：CRT 显示器 + 键盘 ----
+  const pc = grp(.6, -.5, 0);
+  { const body = new W().box(2.6, 2.1, .3, 0, 1.25, 0);
+    const f = [[-1.3, .2], [1.3, .2], [1.3, 2.3], [-1.3, 2.3]], b = [[-.85, .45], [.85, .45], [.85, 2.05], [-.85, 2.05]];
+    b.forEach((p, i) => { body.seg([f[i][0], f[i][1], -.15], [p[0], p[1], -1.5]); });
+    body.poly(b.map(p => [p[0], p[1], -1.5]), true);
+    body.box(.7, .2, .6, 0, .1, -.6).box(1.5, .08, 1.1, 0, -.04, -.6);
+    pc.add(body.mesh(LM(PV, 2.4)));
+    const scr = new W().rrect(2.1, 1.6, .14, 0, 1.3, .16);
+    pc.add(scr.mesh(LM(N.cyan, 2)));
+    // 屏幕里的 DOS 字行
+    const txt = new W(); [[.55, 1.9], [1.3, 1.7], [.9, 1.5], [1.5, 1.3], [.4, 1.1]].forEach(([l, y]) => {
+      let x = -.85; while (x < -.85 + l) { const s = Math.min(.08 + ((x * 37) % .1 + .1) % .14, -.85 + l - x); txt.seg([x, y, .17], [x + s, y, .17]); x += s + .05; } });
+    pc.add(txt.mesh(LM(N.pale, 1.3, { op: .85 })));
+    const cur = new W().seg([-.85, .9, .17], [-.72, .9, .17]).seg([-.85, .94, .17], [-.72, .94, .17]).mesh(LM(N.cyan, 2.2));
+    pc.add(cur); pc.userData.cur = cur;
+    pc.add(new W().circ(.05, 1.05, .33, .16, 'z', 12).mesh(LM(N.hot, 2)));
+    // 键盘
+    const kb = new W().box(2.7, .14, .95, 0, -.02, 1.35);
+    for (let r = 0; r <= 4; r++) kb.seg([-1.25, .06, .98 + r * .18], [1.25, .06, .98 + r * .18]);
+    for (let c = 0; c <= 13; c++) kb.seg([-1.25 + c * 2.5 / 13, .06, .98], [-1.25 + c * 2.5 / 13, .06, 1.7]);
+    pc.add(kb.mesh(LM(VP, 1.4, { op: .75 })));
+    pc.userData.ry = -.32; }
+
+  // ---- 磁带 ----
+  const tape = grp(3.5, 2.3, -1.4);
+  { const b = new W().box(2.4, 1.5, .24).rrect(2.0, .42, .06, 0, .38, .13)
+      .rrect(1.3, .44, .1, 0, -.08, .13)
+      .poly([[-.8, -.75, .13], [-.62, -.46, .13], [.62, -.46, .13], [.8, -.75, .13]])
+      .circ(.05, -.35, -.62, .13, 'z', 10).circ(.05, .35, -.62, .13, 'z', 10);
+    tape.add(b.mesh(LM(VP, 2.4)));
+    tape.add(new W().seg([-.85, .44, .14], [.3, .44, .14]).seg([-.85, .32, .14], [-.1, .32, .14]).mesh(LM(N.pale, 1.4, { op: .8 })));
+    tape.userData.reels = [-.55, .55].map(x => {
+      const r = new W().circ(.3, 0, 0, 0, 'z', 28).circ(.1, 0, 0, 0, 'z', 14);
+      for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2; r.seg([Math.cos(a) * .1, Math.sin(a) * .1, 0], [Math.cos(a) * .16, Math.sin(a) * .16, 0]); }
+      const m = r.mesh(LM(N.cyan, 2)); m.position.set(x, -.08, .14); tape.add(m); return m; });
+    tape.userData.ry = -.45; tape.rotation.z = .12; }
+
+  // ---- 小霸王：主机 + 卡带 + 手柄 ----
+  const nes = grp(3.6, -1.9, .9);
+  { const b = new W().box(2.2, .45, 1.3).box(1.1, .02, .5, 0, .23, -.15)
+      .seg([-.95, .05, .66], [-.45, .05, .66]).circ(.07, .7, .05, .66, 'z', 12).circ(.07, .95, .05, .66, 'z', 12);
+    nes.add(b.mesh(LM(PV, 2.4)));
+    const cart = new W().box(1.0, .7, .16, 0, .56, -.15).rrect(.75, .38, .05, 0, .6, -.06);
+    nes.add(cart.mesh(LM(N.cyan, 2)));
+    const pad = new W().rrect(1.3, .55, .22, 0, 0, 0)
+      .seg([-.48, 0, 0], [-.22, 0, 0]).seg([-.35, -.13, 0], [-.35, .13, 0])
+      .circ(.07, .3, -.05, 0, 'z', 12).circ(.07, .48, .05, 0, 'z', 12)
+      .seg([-.08, -.05, 0], [0, -.05, 0]).seg([.06, -.05, 0], [.14, -.05, 0]);
+    const pm = pad.mesh(LM(PC, 2.2)); pm.position.set(-1.9, -.45, 1.2); pm.rotation.set(-1.1, .25, 0); nes.add(pm);
+    const cord = new W(), cp = []; for (let i = 0; i <= 16; i++) { const k = i / 16; cp.push([lerp(-1.25, -1.0, k) - Math.sin(k * Math.PI) * .5, -.35 + Math.sin(k * Math.PI) * .15 - k * .05, lerp(1.0, .65, k)]); }
+    nes.add(cord.poly(cp).mesh(LM(N.vio, 1.2, { op: .6 })));
+    nes.userData.ry = -.5; }
+
+  // ---- 玩具：魔方、陀螺、积木、弹珠 ----
+  const cube = grp(-1.6, 2.9, -2.2);
+  { const s = .45, g = new W().box(.9, .9, .9), q = new W();
+    for (const u of [-.15, .15]) for (const f of [-s, s]) {
+      q.seg([f, u, -s], [f, u, s]).seg([f, -s, u], [f, s, u]);
+      q.seg([u, f, -s], [u, f, s]).seg([-s, f, u], [s, f, u]);
+      q.seg([u, -s, f], [u, s, f]).seg([-s, u, f], [s, u, f]); }
+    cube.add(g.mesh(LM(N.pale, 2.2))); cube.add(q.mesh(LM(PC, 1.5))); }
+  const top = grp(-1.4, -2.2, 1.6);
+  { const prof = [[0, -.7], [.14, -.45], [.52, -.05], [.58, .05], [.44, .16], [.08, .22], [.08, .56]], w = new W();
+    prof.forEach(([r, y]) => { if (r > .01) w.circ(r, 0, y, 0, 'y', 28); });
+    for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2; w.poly(prof.map(([r, y]) => [Math.cos(a) * r, y, Math.sin(a) * r])); }
+    const m = w.mesh(LM(PV, 1.8)); top.add(m); top.userData.spin = m;
+    top.add(new W().circ(.56, 0, 0, 0, 'y', 28).mesh(LM(N.cyan, 2.2))); top.userData.spin2 = top.children[1]; }
+  const lego = grp(2.6, 3.7, -3);
+  { const w = new W().box(1.3, .5, .65);
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 2; j++) { const x = -.48 + i * .32, z = -.16 + j * .32; w.circ(.1, x, .25, z, 'y', 16).circ(.1, x, .36, z, 'y', 16).seg([x - .1, .25, z], [x - .1, .36, z]).seg([x + .1, .25, z], [x + .1, .36, z]); }
+    lego.add(w.mesh(LM(VP, 2))); lego.userData.ry = .5; }
+  const marbles = [[1.9, -1.3, 2.6, N.cyan], [2.3, -1.35, 3.0, N.pink], [1.5, -1.36, 3.1, N.vio]].map(([x, y, z, c]) => {
+    const g = grp(x, y, z); g.add(new W().circ(.14, 0, 0, 0, 'z', 20).circ(.14, 0, 0, 0, 'y', 20).circ(.14, 0, 0, 0, 'x', 20).mesh(LM(c, 1.6))); return g; });
+
+  // ---- 四驱车：在地面网格上绕圈跑 ----
+  const FLOOR = -3.4, car = new THREE.Group(); NS.add(car);
+  { const b = new W().box(1.5, .22, .58, 0, .2, 0).poly([[-.35, .31, -.2], [-.15, .48, -.15], [.35, .48, -.15], [.5, .31, -.2]]).poly([[-.35, .31, .2], [-.15, .48, .15], [.35, .48, .15], [.5, .31, .2]])
+      .seg([-.15, .48, -.15], [-.15, .48, .15]).seg([.35, .48, -.15], [.35, .48, .15]).box(.12, .3, .1, -.68, .4, 0).box(.3, .03, .8, -.72, .56, 0);
+    car.add(b.mesh(LM(PV, 2.2)));
+    car.userData.wh = [[-.5, -.36], [.5, -.36], [-.5, .36], [.5, .36]].map(([x, z]) => {
+      const w = new W().circ(.16, 0, 0, 0, 'z', 16); for (let i = 0; i < 3; i++) { const a = i / 3 * Math.PI; w.seg([Math.cos(a) * .16, Math.sin(a) * .16, 0], [-Math.cos(a) * .16, -Math.sin(a) * .16, 0]); }
+      const m = w.mesh(LM(N.cyan, 1.8)); m.position.set(x, .16, z); car.add(m); return m; }); }
+
+  // ---- 山峦：线框地形往镜头方向流动，中间是平的山谷（车在里面跑），两侧和远处起伏成山 ----
+  const TU = { uT: { value: 0 }, uBg: { value: new THREE.Color(BG) } };
+  const TV = `
+    uniform float uT; varying float vH; varying float vD;
+    float hs(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+    float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f * f * (3. - 2. * f);
+      return mix(mix(hs(i), hs(i + vec2(1, 0)), f.x), mix(hs(i + vec2(0, 1)), hs(i + vec2(1, 1)), f.x), f.y); }
+    float fbm(vec2 p){ float a = .5, s = 0.; for (int i = 0; i < 4; i++) { s += a * vn(p); p *= 2.03; a *= .5; } return s; }
+    void main(){
+      vec3 p = position; float sc = uT * 1.4, fr = mod(sc, 1.);
+      p.z += fr;                                          // 网格只平移不到一格，采样坐标按整格走 → 山在往前流
+      vec2 sp = vec2(p.x, position.z - (sc - fr));
+      float ax = abs(p.x - 1.), side = smoothstep(9., 24., ax), back = smoothstep(-34., -58., p.z);
+      float env = max(side * (.4 + ax * .02), back * .8);
+      float wave = .85 + .15 * sin(uT * .7 + p.x * .18 + sp.y * .12);   // 山脊缓缓“呼吸”
+      float h = env * fbm(sp * .15) * 4.2 * wave + back * 1.2 * smoothstep(.2, .8, vn(vec2(p.x * .08, 3.)));
+      p.y = -3.4 + h; vH = h;
+      vec4 mv = modelViewMatrix * vec4(p, 1.); vD = -mv.z; gl_Position = projectionMatrix * mv;
+    }`;
+  const tLines = new THREE.ShaderMaterial({ uniforms: TU, vertexShader: TV, transparent: true, depthWrite: false, fragmentShader: `
+    varying float vH; varying float vD;
+    void main(){
+      vec3 lo = vec3(.42, .16, .95), mid = vec3(1., .31, .85), hi = vec3(1., .55, .9);
+      vec3 c = mix(lo, mid, smoothstep(.2, 2.2, vH)); c = mix(c, hi, smoothstep(3., 5.5, vH));
+      float a = mix(.24, .55, smoothstep(0., 2., vH)) * (1. - smoothstep(30., 88., vD) * .6);
+      gl_FragColor = vec4(c, a);
+    }` });
+  const tFill = new THREE.ShaderMaterial({ uniforms: TU, vertexShader: TV, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
+    fragmentShader: `uniform vec3 uBg; void main(){ gl_FragColor = vec4(uBg, 1.); }` });
+  { const p = [], X0 = -44, X1 = 46, Z0 = -66, Z1 = 12;
+    for (let x = X0; x <= X1; x++) for (let z = Z0; z < Z1; z++) p.push(x, 0, z, x, 0, z + 1);
+    for (let z = Z0; z <= Z1; z++) for (let x = X0; x < X1; x++) p.push(x, 0, z, x + 1, 0, z);
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(p, 3));
+    const L = new THREE.LineSegments(g, tLines); L.frustumCulled = false; L.renderOrder = 2; NS.add(L);
+    const pg = new THREE.PlaneGeometry(X1 - X0, Z1 - Z0, X1 - X0, Z1 - Z0); pg.rotateX(-Math.PI / 2); pg.translate((X0 + X1) / 2, 0, (Z0 + Z1) / 2);
+    const M = new THREE.Mesh(pg, tFill); M.frustumCulled = false; M.renderOrder = 1; NS.add(M); }
+
+  // ---- 夕阳：中偏左的远处，半沉在山后；上浅粉→玫红→紫的渐变，下半截是往下流的横切缝 ----
+  const sunU = { uT: { value: 0 } };
+  const sun = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 2.6), new THREE.ShaderMaterial({ uniforms: sunU, transparent: true, depthWrite: false,
+    vertexShader: `varying vec2 vU; void main(){ vU = position.xy / 1.; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }`,
+    fragmentShader: `
+      uniform float uT; varying vec2 vU;
+      void main(){
+        float d = length(vU), y = vU.y;
+        vec3 top = vec3(1., .82, .96), mid = vec3(1., .22, .66), bot = vec3(.5, .15, .95);
+        vec3 c = y > 0. ? mix(mid, top, smoothstep(0., .95, y)) : mix(mid, bot, smoothstep(0., -.9, y));
+        float body = 1. - smoothstep(.985, 1., d);
+        float cut = 1.;
+        if (y < .5) { float w = mix(.05, .6, clamp((.5 - y) / 1.2, 0., 1.)); float s = fract(y * 7. + uT * .25); cut = smoothstep(w - .02, w + .02, s); }
+        float halo = exp(-max(d - 1., 0.) * 3.2) * .55 * step(1., d);
+        vec3 col = c * body * cut * .62 + vec3(.8, .2, .65) * halo * .6;
+        gl_FragColor = vec4(col, max(body * cut, halo));
+      }` }));
+  sun.scale.set(10.5, 10.5, 1); sun.position.set(-22, 8.5, -80); NS.add(sun);
+  // 地平线上一层紫粉辉光
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(260, 40), new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    vertexShader: `varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.); }`,
+    fragmentShader: `varying vec2 vU; void main(){ float k = exp(-pow((vU.y - .38) * 5., 2.)) * (1. - pow(abs(vU.x - .42) * 2., 2.) * .6); gl_FragColor = vec4(vec3(.55, .12, .6) * k, 1.); }` }));
+  glow.position.set(-10, 0, -82); NS.add(glow);
+  { const p = []; for (let i = 0; i < 320; i++) p.push((hash(i * 3.1) - .5) * 200, hash(i * 7.7) * 60 + 4, -84 - hash(i * 1.3) * 6);
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(p, 3));
+    NS.add(new THREE.Points(g, new THREE.PointsMaterial({ color: N.pale, size: .25, fog: false, transparent: true, opacity: .7 }))); }
+
+  // ---- 尺寸 / 鼠标视差 ----
+  let VW = 1, VH = 1; const mouse = { x: 0, y: 0, sx: 0, sy: 0 };
+  function nsize() {
+    VW = innerWidth; VH = innerHeight; NR.setSize(VW, VH, false); comp.setSize(VW, VH);
+    NC.aspect = VW / VH; NC.setViewOffset(VW, VH, VW > VH * 1.1 ? -VW * .25 : 0, 0, VW, VH); NC.updateProjectionMatrix();
+    mats.forEach(m => m.resolution.set(VW, VH));
+    if (reduceMotion) comp.render();
+  }
+  nsize(); addEventListener('resize', nsize);
+  addEventListener('pointermove', e => { mouse.x = e.clientX / innerWidth * 2 - 1; mouse.y = e.clientY / innerHeight * 2 - 1; });
+
+  // ---- 动画 ----
+  const born = performance.now(); let hideAt = null, flick = [];
+  const objs = [pc, tape, nes, cube, top, lego, ...marbles];
+  function nloop() {
+    if (!reduceMotion) requestAnimationFrame(nloop);
+    if (document.hidden) return;
+    const now = performance.now(), hid = host.classList.contains('hide');
+    if (hid) { if (hideAt == null) hideAt = now; if (now - hideAt > 1000) return; } else hideAt = null;
+    const t = reduceMotion ? 8 : (now - born) / 1000;
+    // 开场逐段“描线”
+    reveal.forEach((m, i) => { const k = cl((t - .15 - (i % 9) * .09) / 1.4); m.geometry.instanceCount = Math.max(0, Math.ceil(m.userData.n * eio(k))); });
+    objs.forEach((g, i) => { const [x, y, z] = g.userData.base; g.position.y = y + Math.sin(t * .9 + i * 1.7) * .12; if (g.userData.ry != null) g.rotation.y = g.userData.ry + Math.sin(t * .35 + i) * .22; });
+    pc.userData.cur.visible = (t % 1) < .55;
+    tape.userData.reels.forEach(r => r.rotation.z -= .03);
+    cube.rotation.set(t * .31, t * .43, .2);
+    top.userData.spin.rotation.y = t * 9; top.rotation.z = Math.sin(t * 1.3) * .18; top.rotation.x = Math.cos(t * 1.3) * .18;
+    marbles.forEach((g, i) => { g.rotation.set(t * (1 + i * .3), t * .7, 0); });
+    const a = t * .45, cx = 1.4 + Math.cos(a) * 5.2, cz = -6 + Math.sin(a) * 3.2;
+    car.position.set(cx, FLOOR, cz); car.rotation.y = -Math.atan2(Math.cos(a) * 3.2, -Math.sin(a) * 5.2);
+    car.userData.wh.forEach(w => w.rotation.z -= .35);
+    TU.uT.value = t; sunU.uT.value = t;
+    // 霓虹接触不良似的偶尔闪一下
+    if (Math.random() < .012) flick = [mats[Math.floor(Math.random() * mats.length)], now + 60 + Math.random() * 120];
+    if (flick.length) { flick[0].visible = now > flick[1]; if (now > flick[1]) flick = []; }
+    mouse.sx += (mouse.x - mouse.sx) * .05; mouse.sy += (mouse.y - mouse.sy) * .05;
+    NC.position.set(mouse.sx * .8, .9 - mouse.sy * .5, 14.5); NC.lookAt(1, .1, 0);
+    comp.render();
+  }
+  nloop();
+}
+  } catch (error) {
+    document.getElementById('neon')?.remove();
+    console.warn('Neon backdrop unavailable; the arcade links remain ready.', error);
+  }
+}
+initBackdrop();
+</script>
+</body>
+</html>

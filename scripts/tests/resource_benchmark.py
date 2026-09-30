@@ -1,3 +1,4 @@
+# Historical v1.0.0 tooling; paths and selectors predate the current portal.
 """Compare cold, unchanged revisit, and code-revision media-cache behavior.
 
 The local fixture is HTTP/1.1 with gzip. Browser networking is throttled to a
