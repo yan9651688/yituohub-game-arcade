@@ -1,0 +1,62 @@
+{
+  "method": "same-host generator for Nginx overhead; excludes public uplink, geography and device rendering",
+  "cpu_count": 4,
+  "rows": [
+    {
+      "concurrency": 1,
+      "requests": 100,
+      "errors": 0,
+      "seconds": 0.783,
+      "requests_per_second": 127.75,
+      "p50_ms": 7.24,
+      "p95_ms": 11.21,
+      "max_ms": 12.41,
+      "body_bytes": 18847237,
+      "nginx_cpu_percent_one_core": 25.55,
+      "nginx_rss_sum_mib": 54.67,
+      "scenario": "mixed compressed HTML/catalog, largest WebP, 64KiB MP3 Range; new verified TLS HTTP/1.1 connections"
+    },
+    {
+      "concurrency": 10,
+      "requests": 100,
+      "errors": 0,
+      "seconds": 0.277,
+      "requests_per_second": 361.51,
+      "p50_ms": 24.02,
+      "p95_ms": 51.67,
+      "max_ms": 74.35,
+      "body_bytes": 18847237,
+      "nginx_cpu_percent_one_core": 68.69,
+      "nginx_rss_sum_mib": 54.99,
+      "scenario": "mixed compressed HTML/catalog, largest WebP, 64KiB MP3 Range; new verified TLS HTTP/1.1 connections"
+    },
+    {
+      "concurrency": 50,
+      "requests": 150,
+      "errors": 0,
+      "seconds": 0.456,
+      "requests_per_second": 329.24,
+      "p50_ms": 70.36,
+      "p95_ms": 207.74,
+      "max_ms": 294.44,
+      "body_bytes": 28255840,
+      "nginx_cpu_percent_one_core": 63.65,
+      "nginx_rss_sum_mib": 55.51,
+      "scenario": "mixed compressed HTML/catalog, largest WebP, 64KiB MP3 Range; new verified TLS HTTP/1.1 connections"
+    },
+    {
+      "concurrency": 100,
+      "requests": 300,
+      "errors": 0,
+      "seconds": 0.934,
+      "requests_per_second": 321.1,
+      "p50_ms": 95.63,
+      "p95_ms": 355.55,
+      "max_ms": 459.07,
+      "body_bytes": 57725002,
+      "nginx_cpu_percent_one_core": 64.22,
+      "nginx_rss_sum_mib": 56.75,
+      "scenario": "mixed compressed HTML/catalog, largest WebP, 64KiB MP3 Range; new verified TLS HTTP/1.1 connections"
+    }
+  ]
+}

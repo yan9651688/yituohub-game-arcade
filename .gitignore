@@ -1,0 +1,43 @@
+# Local dependencies and runtimes
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Browser QA output and local reports
+playwright-report/
+test-results/
+.cache/
+coverage/
+*.log
+
+# Local backups and release staging
+backups/
+.deploy/
+*.tar.gz
+*.tgz
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# Generated static bundles and private QA
+dist/
+qa/
+*.gz
+*.br
+.release/

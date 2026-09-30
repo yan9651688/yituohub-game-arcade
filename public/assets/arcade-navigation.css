@@ -1,0 +1,24 @@
+/* Navigation back to the arcade; placed in native menus, away from game controls. */
+.arcade-home-link{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;min-height:40px;padding:8px 12px;border:1px solid #8bcbb67a;border-radius:6px;background:#102732d9;color:#d9fff2;font:600 12px/1.2 "Segoe UI","Microsoft YaHei",sans-serif;letter-spacing:0;text-decoration:none;white-space:nowrap;cursor:pointer;pointer-events:auto;touch-action:manipulation;user-select:none}
+.arcade-home-link:hover{background:#284a4f;border-color:#b4f8dd;color:#fff}
+.arcade-home-link:focus-visible{outline:2px solid #b4f8dd;outline-offset:3px}
+.arcade-home-link .arcade-back-arrow{font-size:17px;line-height:1}
+.arcade-pause-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-bottom:8px}
+.arcade-pause-heading>.eyebrow,.arcade-pause-heading>.tiny{margin:0}
+body[data-arcade-game="fallen-frontier"] .home-header{z-index:5}
+body[data-arcade-game="iron-front"] .arcade-home-link{background:#234c66;color:#f6fbff;border-color:#9dcce385}
+body[data-arcade-game="iron-front"].playing .topbar #arcade-home-link{display:none}
+body[data-arcade-game="neon-swarm"] .home-top .home-status{margin-left:auto;margin-right:20px}
+body[data-arcade-game="road-fury"] .arcade-home-link{color:#ffe3b0;border-color:#f3bd737a;background:#152c38e0}
+body[data-arcade-game="thunderwing"] .arcade-pause-heading{max-width:540px}
+@media(max-width:680px) and (orientation:portrait){body[data-arcade-game="fallen-frontier"] #touchLook{top:max(15%,145px)}}
+@media(max-width:700px){
+  .arcade-home-link{font-size:11px;gap:5px;padding:7px 8px;min-height:40px}
+  body[data-arcade-game="fallen-frontier"] .header-right{gap:8px}
+  body[data-arcade-game="fallen-frontier"] .header-right .text-button{margin-left:0}
+  body[data-arcade-game="road-fury"] .tour-pill .pill{display:none}
+  body[data-arcade-game="iron-front"] .topbar .tools{gap:4px}
+  body[data-arcade-game="thunderwing"] .brand-name{white-space:nowrap;letter-spacing:1px}
+  body[data-arcade-game="thunderwing"] .header-tools .arcade-home-link{padding-left:6px;padding-right:6px}
+  body[data-arcade-game="thunderwing"] .mobile-hud{margin-right:6px}
+}

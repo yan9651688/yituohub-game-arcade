@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.jpg -text
+*.png -text
+*.webp -text
+*.mp3 -text
+
+# Preserve the supplied originals and their byte-level provenance hashes
+design/** -text

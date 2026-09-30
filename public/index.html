@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEON ARCADE · AI 小游戏站</title>
+<meta name="description" content="NEON ARCADE，AI 参与创造的免费小游戏宇宙。无需登录，点开就玩；也可以观看原创 3D 音乐短片《千禧凝思》。" />
+<meta name="theme-color" content="#03040a" />
+<link rel="canonical" href="https://game.yituohub.com/" />
+<meta property="og:type" content="website" /><meta property="og:url" content="https://game.yituohub.com/" />
+<meta property="og:title" content="NEON ARCADE · AI 小游戏站" /><meta property="og:description" content="免费小游戏，点开就玩。保留六种交互形态与原创音乐影片《千禧凝思》。" />
+<meta property="og:image" content="https://game.yituohub.com/assets/film-preview.jpg" />
+<link rel="stylesheet" href="/assets/site/site.css" />
+<style>
+  :root {
+    --bg: #03040a;
+    --cyan: #00f0ff;
+    --magenta: #ff2bd6;
+    --violet: #8a5cff;
+    --lime: #b6ff3b;
+    --accent: #00f0ff;
+    --text: #e8f1ff;
+    --muted: #7d8aa8;
+    --line: rgba(0, 240, 255, 0.18);
+    --mono: "JetBrains Mono", "Cascadia Code", Consolas, "SFMono-Regular", monospace;
+    --sans: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; user-select: none; }
+  a { color: inherit; text-decoration: none; }
+
+  #stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+  #stage.dragging { cursor: grabbing; }
+  .fx { position: fixed; inset: 0; pointer-events: none; }
+  .scanlines { background: repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 3px); mix-blend-mode: overlay; }
+  .vignette { background: radial-gradient(ellipse at 56% 47%, transparent 40%, rgba(0,0,0,.8) 100%); }
+  .ui { position: fixed; z-index: 5; }
+
+  /* 四角框 */
+  .corner { position: fixed; width: 22px; height: 22px; border: 0 solid rgba(0,240,255,.5); z-index: 5; pointer-events: none; }
+  .corner.tl { top: 16px; left: 16px; border-width: 1px 0 0 1px; }
+  .corner.tr { top: 16px; right: 16px; border-width: 1px 1px 0 0; }
+  .corner.bl { bottom: 16px; left: 16px; border-width: 0 0 1px 1px; }
+  .corner.br { bottom: 16px; right: 16px; border-width: 0 1px 1px 0; }
+
+  /* 顶栏 */
+  header { top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 30px 48px; pointer-events: none; }
+  header > * { pointer-events: auto; }
+  .logo { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-weight: 700; letter-spacing: .2em; font-size: 15px; }
+  .logo-mark { width: 24px; height: 24px; border: 1.5px solid var(--cyan); transform: rotate(45deg); position: relative;
+    box-shadow: 0 0 12px var(--cyan), inset 0 0 8px rgba(0,240,255,.5); animation: spin 8s linear infinite; }
+  .logo-mark::after { content: ""; position: absolute; inset: 5px; border: 1.5px solid var(--magenta); box-shadow: 0 0 10px var(--magenta); }
+  @keyframes spin { to { transform: rotate(405deg); } }
+  nav { display: flex; gap: 36px; font-family: var(--mono); font-size: 13px; letter-spacing: .14em; }
+  nav a { color: var(--muted); transition: color .2s, text-shadow .2s; }
+  nav a:hover { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+  nav a::before { content: "/"; color: var(--magenta); margin-right: 6px; opacity: .7; }
+
+  /* 主文案 */
+  .copy { left: 48px; bottom: 64px; max-width: 560px; }
+  .tag { font-family: var(--mono); font-size: 12px; letter-spacing: .32em; color: var(--cyan); display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 10px var(--lime); animation: blink 1.6s infinite; }
+  @keyframes blink { 50% { opacity: .25; } }
+  h1 { font-size: clamp(44px, 6.6vw, 104px); line-height: .98; font-weight: 900; letter-spacing: -.02em; }
+  h1 .l1 { display: block; color: transparent; -webkit-text-stroke: 1.4px var(--cyan); filter: drop-shadow(0 0 14px rgba(0,240,255,.55)); position: relative; }
+  h1 .l2 { display: block; background: linear-gradient(90deg, var(--magenta), var(--violet) 50%, var(--cyan));
+    -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 22px rgba(255,43,214,.4)); }
+  .l1::before, .l1::after { content: attr(data-text); position: absolute; left: 0; top: 0; -webkit-text-stroke: 0; pointer-events: none; }
+  .l1::before { color: var(--magenta); animation: g1 3.4s infinite steps(1); }
+  .l1::after  { color: var(--cyan);    animation: g2 3.4s infinite steps(1); }
+  @keyframes g1 { 0%,92%,100% { clip-path: inset(100% 0 0 0); } 93% { clip-path: inset(10% 0 60% 0); transform: translateX(-6px); } 95% { clip-path: inset(55% 0 20% 0); transform: translateX(5px); } 97% { clip-path: inset(30% 0 45% 0); transform: translateX(-3px); } }
+  @keyframes g2 { 0%,92%,100% { clip-path: inset(100% 0 0 0); } 93% { clip-path: inset(70% 0 5% 0); transform: translateX(6px); } 95% { clip-path: inset(5% 0 75% 0); transform: translateX(-5px); } 97% { clip-path: inset(40% 0 35% 0); transform: translateX(3px); } }
+  .sub { margin-top: 24px; font-size: 16px; line-height: 1.85; color: #a9b6d3; }
+  .sub b { color: var(--text); font-weight: 600; }
+  .actions { margin-top: 34px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn { font-family: var(--mono); font-size: 14px; letter-spacing: .18em; padding: 17px 32px; display: inline-flex; align-items: center; gap: 12px; cursor: pointer; border: none;
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px); transition: transform .2s, box-shadow .2s, background .2s; }
+  .btn-primary { background: linear-gradient(90deg, var(--cyan), #52a8ff); color: #00111a; font-weight: 700; box-shadow: 0 0 30px rgba(0,240,255,.45); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,240,255,.8); }
+  .btn-ghost { background: rgba(255,43,214,.06); color: var(--magenta); outline: 1px solid var(--magenta); outline-offset: -1px; }
+  .btn-ghost:hover { background: rgba(255,43,214,.16); }
+  .btn .arrow { transition: transform .2s; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  /* 形态面板 */
+  .forms { right: 48px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; }
+  .form-item { display: grid; grid-template-columns: 34px 1fr; gap: 2px 12px; padding: 12px 18px 12px 14px; cursor: pointer; text-align: right;
+    border-right: 1px solid rgba(125,138,168,.25); transition: border-color .3s, background .3s; }
+  .form-item .idx { grid-row: span 2; font-family: var(--mono); font-size: 12px; color: var(--muted); align-self: center; text-align: left; }
+  .form-item .cn { font-size: 15px; color: var(--muted); transition: color .3s; }
+  .form-item .en { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; color: rgba(125,138,168,.6); }
+  .form-item .bar { grid-column: 1 / -1; height: 1px; background: rgba(125,138,168,.15); margin-top: 8px; overflow: hidden; }
+  .form-item .bar i { display: block; height: 100%; width: 0; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .form-item:hover .cn { color: var(--text); }
+  .form-item.on { border-right: 2px solid var(--accent); background: linear-gradient(270deg, rgba(255,255,255,.05), transparent); }
+  .form-item.on .cn { color: var(--text); text-shadow: 0 0 12px var(--accent); }
+  .form-item.on .idx, .form-item.on .en { color: var(--accent); }
+
+  /* 形态标题 */
+  .caption { left: 56%; top: 9%; transform: translateX(-50%); text-align: center; pointer-events: none; }
+  .caption .no { font-family: var(--mono); font-size: 11px; letter-spacing: .4em; color: var(--muted); }
+  .caption .name { margin-top: 8px; font-family: var(--mono); font-size: 20px; letter-spacing: .35em; color: var(--accent); text-shadow: 0 0 16px var(--accent); white-space: nowrap; }
+
+  /* 数据读数 */
+  .readout { right: 48px; bottom: 44px; font-family: var(--mono); font-size: 11px; letter-spacing: .15em; color: var(--muted); text-align: right; line-height: 2; }
+  .readout b { color: var(--accent); font-weight: 400; }
+  .hint { left: 56%; bottom: 36px; transform: translateX(-50%); font-family: var(--mono); font-size: 11px; letter-spacing: .25em; color: rgba(125,138,168,.7); white-space: nowrap; }
+  .hint kbd { font-family: inherit; border: 1px solid rgba(125,138,168,.4); padding: 1px 6px; margin: 0 2px; }
+
+  @media (max-width: 900px) {
+    header { padding: 22px 24px; }
+    nav { display: none; }
+    .copy { left: 24px; right: 24px; bottom: 40px; }
+    .sub { font-size: 14px; }
+    .forms { right: auto; left: 50%; top: auto; bottom: auto; top: 58%; transform: translateX(-50%); flex-direction: row; gap: 10px; }
+    .form-item { display: block; width: 36px; padding: 0; border: none; }
+    .form-item .cn, .form-item .en, .form-item .idx { display: none; }
+    .form-item .bar { height: 3px; margin: 0; background: rgba(125,138,168,.3); }
+    .form-item.on { border: none; background: none; }
+    .caption { left: 50%; top: 10%; }
+    .caption .name { font-size: 15px; }
+    .readout, .hint { display: none; }
+  }
+
+header .film-nav{color:#ff84e7}.home-film-reason{display:block;font-size:10px;line-height:1.5;color:#bdc8df;margin-top:4px}.form-item:focus-visible,.btn:focus-visible,nav a:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}.actions{margin-top:22px}
+@media(max-width:900px){header nav{display:flex;gap:16px;font-size:11px;letter-spacing:.04em}header nav .nav-more,header nav .film-full{display:none}header nav a::before{display:none}.logo{font-size:12px;letter-spacing:.15em}.btn{padding:13px 22px;font-size:12px;letter-spacing:.08em}.actions{gap:12px;margin-top:18px}}
+@media(max-width:900px) and (min-height:501px){html,body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto}.copy{position:relative;left:auto;right:auto;bottom:auto;max-width:none;margin-top:max(300px,44svh);padding:0 24px 30px}.forms{position:absolute;top:max(272px,calc(44svh - 28px));height:24px}.form-item{height:24px;padding-top:10px}.sub{margin-top:18px}.tag{margin-bottom:18px}.hint{display:none}}
+@media(max-height:500px) and (min-width:601px){.copy{left:24px;right:auto;top:76px;bottom:auto;width:43%;max-width:390px}.tag{display:none}h1{font-size:28px;line-height:1}.sub{margin-top:9px;font-size:10px;line-height:1.6}.actions{margin-top:12px;gap:9px}.btn{font-size:11px;padding:10px 15px;letter-spacing:.05em}.caption{left:70%;top:11%}.caption .name{font-size:12px}.forms{left:70%;top:auto;bottom:32px}.home-film-teaser{grid-template-columns:60px minmax(0,1fr) auto;gap:9px;padding:8px;margin-top:10px}.home-film-preview{width:60px;height:65px}.home-film-title{font-size:17px}.home-film-kicker{font-size:8px;letter-spacing:0}.home-film-reason{font-size:9px;margin-top:3px}.home-film-meta{font-size:9px;margin-top:4px}.home-film-watch{font-size:10px}.hint{display:none}}
+@media(prefers-reduced-motion:reduce){.logo-mark,.tag .dot,.l1::before,.l1::after{animation:none!important}.btn{transition:none}}
+@media(max-width:900px){header nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px}}
+@media(max-width:360px) and (min-height:501px){.tag{display:none}.actions{margin-top:14px}}
+</style>
+</head>
+<body>
+
+<canvas id="stage"></canvas>
+<div class="fx scanlines"></div>
+<div class="fx vignette"></div>
+<span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+
+<header class="ui">
+  <a href="./" class="logo"><span class="logo-mark"></span>NEON ARCADE</a>
+  <nav>
+    <a href="games.html">游戏库</a>
+    <a href="/film.html" class="film-nav">影片<span class="film-full"> · 千禧凝思</span></a>
+    <a href="changelog.html" class="nav-more">更新日志</a>
+    <a href="about.html" class="nav-more">关于</a>
+  </nav>
+</header>
+
+<div class="ui caption">
+  <div class="no" id="capNo">FORM 01 / 06</div>
+  <div class="name" id="capName">TRINITY KNOT</div>
+</div>
+
+<section class="ui copy">
+  <div class="tag"><span class="dot"></span>AI-GENERATED GAME UNIVERSE</div>
+  <h1><span class="l1" data-text="AI 造梦">AI 造梦</span><span class="l2">游戏宇宙</span></h1>
+  <p class="sub">每一款游戏都由 <b>AI 参与创造</b>。<br />无需登录，免费开玩，不用下载。</p>
+  <a id="film-feature" class="home-film-teaser" href="/film.html" aria-label="观看千禧凝思，原创 3D 音乐短片，约 3 分 10 秒，请打开声音">
+    <img class="home-film-preview" src="/assets/film-preview.jpg" alt="千禧凝思中的红砖院落与灯笼" width="80" height="75" decoding="async" />
+    <span class="home-film-copy"><span class="home-film-kicker">原创 3D 音乐短片 · 推荐观看</span><strong class="home-film-title">千禧凝思</strong><span class="home-film-reason">一首歌，走回千禧年代的旧院子。</span><span class="home-film-meta">约 3 分 10 秒 · 请打开声音</span></span>
+    <span class="home-film-watch"><b aria-hidden="true">▶</b>观看影片</span>
+  </a>
+  <div class="actions">
+    <a href="games.html" class="btn btn-primary">进入游戏库 <span class="arrow">→</span></a>
+    <button class="btn btn-ghost" id="nextBtn">切换形态 ⟳</button>
+  </div>
+</section>
+
+<aside class="ui forms" id="forms"></aside>
+
+<div class="ui readout">
+  <div>VOXELS <b id="rTris">0</b></div>
+  <div>POINTS <b id="rPts">0</b></div>
+  <div>FPS <b id="rFps">60</b></div>
+</div>
+<div class="ui hint">拖拽旋转 · 点击变形 · <kbd>←</kbd><kbd>→</kbd> / <kbd>1</kbd>–<kbd>6</kbd> 切换</div>
+
+<script>
+/* ================================================================
+ *  工具
+ * ================================================================ */
+const TAU = Math.PI * 2;
+const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
+const touchDevice = matchMedia('(pointer: coarse)').matches;
+const lowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
+const frameInterval = 1000 / (touchDevice || lowMemory ? 30 : 60);
+let animationId = 0, lastPaint = 0, forcePaint = false, pausedAt = 0, pausedDuration = 0;
+function requestFrame(force = false) { if (document.hidden) return; forcePaint = forcePaint || force; if (!animationId) animationId = requestAnimationFrame(frame); }
+function pauseRendering() {
+  if (document.hidden) { pausedAt = performance.now(); cancelAnimationFrame(animationId); animationId = 0; }
+  else { if (pausedAt) pausedDuration += performance.now() - pausedAt; pausedAt = 0; lastPaint = 0; lastFrame = performance.now(); fpsAcc = 0; fpsN = 0; requestFrame(true); }
+}
+document.addEventListener('visibilitychange', pauseRendering);
+motionQuery.addEventListener('change', () => requestFrame(true));
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const mix = (a, b, k) => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
+const ease = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rY = (p, a) => { const c = Math.cos(a), s = Math.sin(a); return [p[0] * c + p[2] * s, p[1], -p[0] * s + p[2] * c]; };
+const rX = (p, a) => { const c = Math.cos(a), s = Math.sin(a); return [p[0], p[1] * c - p[2] * s, p[1] * s + p[2] * c]; };
+const rZ = (p, a) => { const c = Math.cos(a), s = Math.sin(a); return [p[0] * c - p[1] * s, p[0] * s + p[1] * c, p[2]]; };
+const add = (a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+const sub = (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+const scl = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
+const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const nrm = a => { const l = Math.hypot(a[0], a[1], a[2]) || 1; return [a[0] / l, a[1] / l, a[2] / l]; };
+// 由“主轴 + 参考上方向”构造正交基 [x, y, z]
+function basis(x, up = [0, 1, 0]) {
+  x = nrm(x);
+  let y = sub(up, scl(x, dot(up, x)));
+  if (Math.hypot(...y) < 1e-4) y = sub([0, 0, 1], scl(x, x[2]));
+  y = nrm(y);
+  return [x, y, cross(x, y)];
+}
+const I3 = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+const rotB = (B, f) => B.map(f);
+
+const C = {
+  cyan: [20, 230, 255], teal: [0, 255, 200], blue: [50, 120, 255], deep: [70, 80, 255], violet: [150, 70, 255],
+  magenta: [240, 60, 255], pink: [255, 60, 200], orange: [255, 120, 40], amber: [255, 170, 70], gold: [255, 210, 120], ember: [255, 90, 30], white: [230, 240, 255],
+};
+
+/* ================================================================
+ *  方块写入器：每个形态每帧写入一批“发光玻璃方块”
+ *  box(中心, 半尺寸[sx,sy,sz], 基[x,y,z], 颜色, 透明度, 自发光 0~1)
+ * ================================================================ */
+const MAXB = 900;
+const BC = new Float32Array(MAXB * 3), BS = new Float32Array(MAXB * 3), BR = new Float32Array(MAXB * 9);
+const BCOL = new Float32Array(MAXB * 3), BA = new Float32Array(MAXB), BG = new Float32Array(MAXB), BE = new Float32Array(MAXB), BK = new Float32Array(MAXB), BQ = new Float32Array(MAXB * 12);
+let bn = 0;
+function box(c, s, B, col, a = 1, g = 0, e = 1) {
+  BC.set(c, bn * 3); BS.set(s, bn * 3);
+  BR.set(B[0], bn * 9); BR.set(B[1], bn * 9 + 3); BR.set(B[2], bn * 9 + 6);
+  BCOL.set(col, bn * 3); BA[bn] = a; BG[bn] = g; BE[bn] = e; BK[bn] = 0; BQ.set([-s[0], -s[1], 0, s[0], -s[1], 0, s[0], s[1], 0, -s[0], s[1], 0], bn * 12); bn++;
+}
+// 多边形面（三角 / 四边形）：存中心 + 基 + 各顶点局部坐标；法线朝外（背离 o）
+function poly(V, col, a = 1, g = 0, e = 1, o = null) {
+  let n = V.length === 4 ? cross(sub(V[2], V[0]), sub(V[3], V[1])) : cross(sub(V[1], V[0]), sub(V[2], V[0]));
+  const c = scl(V.reduce(add), 1 / V.length);
+  if (o ? dot(n, sub(c, o)) < 0 : n[2] > 0) n = scl(n, -1);
+  n = nrm(n);
+  const d = sub(V[1], V[0]), x = nrm(sub(d, scl(n, dot(d, n)))), y = cross(n, x);
+  const L = V.map(p => { const q = sub(p, c); return [dot(q, x), dot(q, y), dot(q, n)]; });
+  if (L.length === 3) L.push(L[2]);
+  const s = [Math.max(...L.map(l => Math.abs(l[0]))), Math.max(...L.map(l => Math.abs(l[1]))), 0.004];
+  box(c, s, [x, y, n], col, a, g, e);
+  BK[bn - 1] = 1; BQ.set(L.flat(), (bn - 1) * 12);
+}
+
+/* ================================================================
+ *  形态 1：三结环 —— 一根方截面管子打成的三叶结，截面沿管缓慢扭转，
+ *  一段光脉冲沿管流动
+ * ================================================================ */
+const KNOT = (() => {
+  const s = 0.29, N = 48, F = 2000;
+  const P = u => [s * (Math.sin(u) + 2 * Math.sin(2 * u)), s * (Math.cos(u) - 2 * Math.cos(2 * u)), s * -Math.sin(3 * u) * 1.1];
+  // 按弧长等距取样
+  const us = [0], L = [0];
+  for (let i = 1; i <= F; i++) { const u = i / F * TAU; us.push(u); L.push(L[i - 1] + Math.hypot(...sub(P(u), P(us[i - 1])))); }
+  const total = L[F], seg = total / N, pts = [];
+  for (let k = 0, j = 0; k < N; k++) {
+    const target = k * seg; while (L[j + 1] < target) j++;
+    pts.push(P(us[j] + (target - L[j]) / (L[j + 1] - L[j]) * (us[j + 1] - us[j])));
+  }
+  // 平行移动标架，避免截面乱翻
+  const T = pts.map((p, i) => nrm(sub(pts[(i + 1) % N], pts[(i + N - 1) % N])));
+  const Nm = [nrm(cross(T[0], [0, 0, 1]))];
+  for (let i = 1; i < N; i++) Nm.push(nrm(sub(Nm[i - 1], scl(T[i], dot(Nm[i - 1], T[i])))));
+  const end = nrm(sub(Nm[N - 1], scl(T[0], dot(Nm[N - 1], T[0]))));
+  const hol = Math.atan2(dot(cross(end, Nm[0]), T[0]), dot(end, Nm[0]));
+  for (let i = 0; i < N; i++) { const a = hol * i / N, b = cross(T[i], Nm[i]); Nm[i] = nrm(add(scl(Nm[i], Math.cos(a)), scl(b, Math.sin(a)))); }
+  return { pts, T, Nm, N, half: seg / 2 };
+})();
+function buildRings(t) {
+  const { pts, T, Nm, N, half } = KNOT;
+  const view = v => rX(rY(rZ(v, t * 0.25), Math.sin(t * 0.4) * 0.4), 0.2 + Math.sin(t * 0.3) * 0.12);
+  const pulse = (t * 0.12) % 1;
+  for (let i = 0; i < N; i++) {
+    const tw = i / N * Math.PI + t * 0.6;                      // 截面扭转
+    const b = cross(T[i], Nm[i]);
+    const side = add(scl(Nm[i], Math.cos(tw)), scl(b, Math.sin(tw)));
+    const Bv = basis(T[i], side).map(view);
+    const d = Math.abs(i / N - pulse), glow = Math.max(0, 1 - Math.min(d, 1 - d) * 14);
+    const col = mix(mix(C.teal, C.blue, 0.5 + 0.5 * Math.sin(i / N * TAU * 3)), C.magenta, glow);
+    // 单列立方体（同双螺旋的方块风格），块与块之间留缝
+    const cs = half * 0.8;
+    box(view(pts[i]), [cs, cs, cs], Bv, col, 1, glow * 0.6);
+  }
+}
+function ringLines(t) {
+  const circle = (r, y) => Array.from({ length: 97 }, (_, i) => [Math.cos(i / 96 * TAU) * r, y, Math.sin(i / 96 * TAU) * r]);
+  return [{ pts: circle(1.25, -1.1), col: C.teal, dash: true }];
+}
+
+/* ================================================================
+ *  形态 2：双螺旋 —— 分段方块横条层层扭转（时而笔直时而螺旋）
+ * ================================================================ */
+function buildHelix(t) {
+  const L = 16, cs = 0.058, gap = 0.128, dy = 0.148;
+  const twist = 0.42 * (0.5 + 0.5 * Math.sin(t * 0.55 - 1));
+  for (let l = 0; l < L; l++) {
+    const n = Math.max(1, Math.round(8 - Math.abs(l - 8) * 0.95));
+    const ang = l * twist + t * 0.35 + l * 0.12;
+    const y = (l - L / 2) * dy + 0.05;
+    const B = basis([Math.cos(ang), 0, -Math.sin(ang)]);
+    const col = l % 2 ? C.violet : C.blue;
+    for (let i = 0; i < n; i++) {
+      const x = (i - (n - 1) / 2) * gap;
+      const end = n > 2 && (i === 0 || i === n - 1);
+      const c = add([0, y, 0], scl(B[0], x));
+      // 两端的方块构成“两条链”
+      box(c, [cs * 0.88, cs * 0.72, cs], B, end ? (i === 0 ? C.cyan : C.magenta) : col, 1, end ? 0.25 : 0);
+    }
+  }
+}
+
+/* ================================================================
+ *  形态 3：空构面具 —— 136 个四边形格子沿眼眶 / 鼻 / 唇 / 颏布线，
+ *  每格沿法线挤出成“前壳 + 内壳 + 连杆”的空心线框（不填面）；
+ *  面具外缘的格子松脱漂移，碎方块从边缘不断剥离、飘散、消失
+ * ================================================================ */
+const MASK_V = [-0.126,0.425,0.956,-0.205,0.653,0.927,-0.259,0.542,0.857,-0.18,0.42,0.882,0.18,0.42,0.882,0.259,0.542,0.857,0.205,0.653,0.927,0.126,0.425,0.956,-0.285,0.49,0.798,-0.205,0.418,0.82,0.205,0.418,0.82,0.285,0.49,0.798,-0.458,0.704,0.888,-0.457,0.578,0.848,0.457,0.578,0.848,0.458,0.704,0.888,-0.456,0.519,0.802,0.456,0.519,0.802,-0.718,0.639,0.688,-0.655,0.532,0.726,0.655,0.532,0.726,0.718,0.639,0.688,-0.625,0.482,0.717,0.625,0.482,0.717,-0.86,0.42,0.41,-0.772,0.417,0.524,0.772,0.417,0.524,0.86,0.42,0.41,-0.731,0.415,0.578,0.731,0.415,0.578,-0.765,0.18,0.628,-0.662,0.296,0.7,0.662,0.296,0.7,0.765,0.18,0.628,-0.613,0.351,0.734,0.613,0.351,0.734,-0.455,0.144,0.803,-0.454,0.277,0.804,0.454,0.277,0.804,0.455,0.144,0.803,-0.453,0.34,0.805,0.453,0.34,0.805,-0.242,0.23,0.892,-0.282,0.322,0.847,0.282,0.322,0.847,0.242,0.23,0.892,-0.301,0.365,0.826,0.301,0.365,0.826,0,1.012,0.889,-0.233,1.002,0.882,0,0.737,0.953,0.233,1.002,0.882,-0.48,1.014,0.82,0.48,1.014,0.82,-0.744,0.975,0.627,0.744,0.975,0.627,-0.986,0.976,0.168,-0.978,0.648,0.188,0.978,0.648,0.188,0.986,0.976,0.168,0,1.287,0.756,-0.235,1.281,0.744,0.235,1.281,0.744,-0.48,1.265,0.674,0.48,1.265,0.674,-0.735,1.233,0.48,0.735,1.233,0.48,-0.932,1.2,0.138,0.932,1.2,0.138,0,1.539,0.586,-0.245,1.528,0.572,0.245,1.528,0.572,-0.486,1.49,0.498,0.486,1.49,0.498,-0.714,1.455,0.341,0.714,1.455,0.341,-0.856,1.414,0.12,0.856,1.414,0.12,-0.983,0.38,0.147,0.983,0.38,0.147,-0.967,0.03,0.211,0.967,0.03,0.211,-0.946,-0.21,0.238,-0.714,-0.076,0.756,0.714,-0.076,0.756,0.946,-0.21,0.238,-0.857,-0.627,0.254,-0.69,-0.48,0.623,0.69,-0.48,0.623,0.857,-0.627,0.254,0,0.425,1.065,-0.122,0.082,1.161,0,0.082,1.191,0.122,0.082,1.161,-0.135,-0.135,1.236,0,-0.14,1.287,0.135,-0.135,1.236,-0.12,-0.263,1.16,0,-0.257,1.204,0.12,-0.263,1.16,-0.111,-0.355,0.933,0,-0.355,0.952,0.111,-0.355,0.933,-0.256,0.005,0.959,0.256,0.005,0.959,-0.421,-0.259,0.85,0.421,-0.259,0.85,-0.254,-0.169,1.075,0.254,-0.169,1.075,-0.251,-0.304,1.048,0.251,-0.304,1.048,-0.231,-0.396,0.907,0.231,-0.396,0.907,0.501,-0.724,0.751,0.324,-0.536,0.873,0.268,-0.634,0.935,0.407,-0.724,0.815,0.266,-0.699,0.926,0.386,-0.724,0.812,0.138,-0.489,0.946,0.134,-0.61,1.008,0.129,-0.691,0.999,0,-0.497,0.949,0,-0.641,0.993,0,-0.705,1,-0.138,-0.489,0.946,-0.134,-0.61,1.008,-0.129,-0.691,0.999,-0.324,-0.536,0.873,-0.268,-0.634,0.935,-0.266,-0.699,0.926,-0.501,-0.724,0.751,-0.407,-0.724,0.815,-0.386,-0.724,0.812,-0.328,-0.949,0.841,-0.269,-0.839,0.923,-0.266,-0.755,0.918,-0.155,-0.982,0.895,-0.135,-0.855,0.989,-0.129,-0.764,0.994,0,-0.983,0.902,0,-0.862,1.007,0,-0.765,1.005,0.155,-0.982,0.895,0.135,-0.855,0.989,0.129,-0.764,0.994,0.328,-0.949,0.841,0.269,-0.839,0.923,0.266,-0.755,0.918,-0.718,-1.027,0.343,0.718,-1.027,0.343,-0.16,-1.185,0.853,0,-1.19,0.86,0.16,-1.185,0.853,-0.309,-1.152,0.786,0.309,-1.152,0.786,-0.504,-1.156,0.656,0.504,-1.156,0.656,-0.155,-1.354,0.679,0,-1.36,0.688,0.155,-1.354,0.679,-0.31,-1.346,0.62,0.31,-1.346,0.62,-0.462,-1.325,0.516,0.462,-1.325,0.516], MASK_N = [-0.628,0.233,0.742,-0.255,0.071,0.964,-0.396,-0.426,0.814,-0.717,-0.01,0.697,0.717,-0.01,0.697,0.396,-0.426,0.814,0.255,0.071,0.964,0.628,0.233,0.742,-0.375,-0.622,0.687,-0.765,-0.034,0.643,0.765,-0.034,0.643,0.375,-0.622,0.687,-0.427,0.031,0.904,-0.338,-0.373,0.864,0.338,-0.373,0.864,0.427,0.031,0.904,-0.232,-0.587,0.775,0.232,-0.587,0.775,-0.808,-0.005,0.589,-0.626,-0.268,0.732,0.626,-0.268,0.732,0.808,-0.005,0.589,-0.489,-0.448,0.748,0.489,-0.448,0.748,-0.877,0.009,0.481,-0.775,-0.001,0.632,0.775,-0.001,0.632,0.877,0.009,0.481,-0.745,-0.054,0.665,0.745,-0.054,0.665,-0.771,0.076,0.632,-0.623,0.087,0.778,0.623,0.087,0.778,0.771,0.076,0.632,-0.601,0.062,0.797,0.601,0.062,0.797,-0.433,0.131,0.892,-0.412,0.012,0.911,0.412,0.012,0.911,0.433,0.131,0.892,-0.348,0.016,0.937,0.348,0.016,0.937,-0.655,0.193,0.73,-0.46,0.224,0.859,0.46,0.224,0.859,0.655,0.193,0.73,-0.373,0.352,0.858,0.373,0.352,0.858,0,0.309,0.951,-0.148,0.306,0.941,0,0.177,0.984,0.148,0.306,0.941,-0.44,0.282,0.853,0.44,0.282,0.853,-0.784,0.176,0.596,0.784,0.176,0.596,-0.878,0.116,0.464,-0.889,-0.002,0.459,0.889,-0.002,0.459,0.878,0.116,0.464,0,0.503,0.864,-0.163,0.509,0.845,0.163,0.509,0.845,-0.434,0.485,0.759,0.434,0.485,0.759,-0.724,0.381,0.575,0.724,0.381,0.575,-0.838,0.305,0.452,0.838,0.305,0.452,0,0.564,0.825,-0.181,0.566,0.804,0.181,0.566,0.804,-0.433,0.531,0.728,0.433,0.531,0.728,-0.7,0.427,0.572,0.7,0.427,0.572,-0.823,0.345,0.45,0.823,0.345,0.45,-0.9,0.007,0.435,0.9,0.007,0.435,-0.906,0.015,0.422,0.906,0.015,0.422,-0.891,-0.109,0.441,-0.753,-0.076,0.653,0.753,-0.076,0.653,0.891,-0.109,0.441,-0.845,-0.208,0.493,-0.781,-0.206,0.59,0.781,-0.206,0.59,0.845,-0.208,0.493,0,0.314,0.949,-0.668,0.322,0.671,0,0.408,0.913,0.668,0.322,0.671,-0.641,0.056,0.765,0,0.017,1,0.641,0.056,0.765,-0.248,-0.759,0.602,0,-0.821,0.571,0.248,-0.759,0.602,-0.115,-0.643,0.757,0,-0.692,0.722,0.115,-0.643,0.757,-0.755,0.202,0.624,0.755,0.202,0.624,-0.524,0.02,0.851,0.524,0.02,0.851,-0.814,0.105,0.572,0.814,0.105,0.572,-0.664,-0.309,0.681,0.664,-0.309,0.681,-0.327,-0.293,0.899,0.327,-0.293,0.899,0.702,-0.196,0.684,0.463,0.045,0.885,0.544,0.082,0.835,0.62,-0.049,0.783,0.494,-0.206,0.845,0.564,-0.022,0.825,0.213,0.226,0.951,0.221,0.226,0.949,0.235,-0.079,0.969,0,0.222,0.975,0,0.25,0.968,0,-0.012,1,-0.213,0.226,0.951,-0.221,0.226,0.949,-0.235,-0.079,0.969,-0.463,0.045,0.885,-0.544,0.082,0.835,-0.494,-0.206,0.845,-0.702,-0.196,0.684,-0.62,-0.049,0.783,-0.564,-0.022,0.825,-0.526,-0.237,0.817,-0.529,-0.181,0.829,-0.494,0.102,0.864,-0.236,-0.357,0.904,-0.272,-0.366,0.89,-0.297,0.007,0.955,0,-0.384,0.923,0,-0.429,0.903,0,-0.013,1,0.236,-0.357,0.904,0.272,-0.366,0.89,0.297,0.007,0.955,0.526,-0.237,0.817,0.529,-0.181,0.829,0.494,0.102,0.864,-0.826,-0.236,0.512,0.826,-0.236,0.512,-0.232,-0.483,0.844,0,-0.498,0.867,0.232,-0.483,0.844,-0.49,-0.404,0.772,0.49,-0.404,0.772,-0.721,-0.308,0.621,0.721,-0.308,0.621,-0.221,-0.683,0.696,0,-0.715,0.699,0.221,-0.683,0.696,-0.422,-0.618,0.663,0.422,-0.618,0.663,-0.765,-0.35,0.541,0.765,-0.35,0.541], MASK_T = [0.477,0.7,0.48,0.48,0.48,0.48,0.7,0.477,0.48,0.48,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,0.7,0.48,0.48,1,1,0.75,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.511,0.511,0.511,0.511,0.348,0.45,0.396,0.348,0.45,0.396,0.542,0.7,0.7,0.75,0.75,0.7,0.7,0.348,0.396,0.348,0.396,0.542,0.7,0.5,0.5,0.2,0.2,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,0.5,0.2,0.2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+const MASK_REG = ["orbit","lid","forehead","temple","cheek-edge","nose","cheek","muzzle","lip","philtrum","jaw-edge","chin"], MASK_C = [0,1,2,3,0,0,4,5,6,7,0,0,3,2,8,9,1,0,10,11,5,4,1,0,1,12,13,2,0,0,5,14,15,6,0,0,2,13,16,8,1,0,11,17,14,5,1,0,12,18,19,13,0,0,14,20,21,15,0,0,13,19,22,16,1,0,17,23,20,14,1,0,18,24,25,19,0,0,20,26,27,21,0,0,19,25,28,22,1,0,23,29,26,20,1,0,24,30,31,25,0,0,26,32,33,27,0,0,25,31,34,28,1,0,29,35,32,26,1,0,30,36,37,31,0,0,32,38,39,33,0,0,31,37,40,34,1,0,35,41,38,32,1,0,36,42,43,37,0,0,38,44,45,39,0,0,37,43,46,40,1,0,41,47,44,38,1,0,42,0,3,43,0,0,44,4,7,45,0,0,43,3,9,46,1,0,47,10,4,44,1,0,48,49,1,50,2,0,50,6,51,48,2,0,49,52,12,1,2,0,6,15,53,51,2,0,52,54,18,12,2,0,15,21,55,53,2,0,54,56,57,18,2,1,21,58,59,55,2,1,60,61,49,48,2,0,48,51,62,60,2,0,61,63,52,49,2,0,51,53,64,62,2,0,63,65,54,52,2,0,53,55,66,64,2,0,65,67,56,54,2,1,55,59,68,66,2,1,69,70,61,60,2,1,60,62,71,69,2,1,70,72,63,61,2,1,62,64,73,71,2,1,72,74,65,63,2,1,64,66,75,73,2,1,74,76,67,65,2,1,66,68,77,75,2,1,18,57,78,24,3,1,27,79,58,21,3,1,24,78,80,30,3,1,33,81,79,27,3,1,30,80,82,83,4,1,84,85,81,33,4,1,83,82,86,87,4,1,88,89,85,84,4,1,50,1,0,90,5,0,90,7,6,50,5,0,90,0,91,92,5,0,92,93,7,90,5,0,92,91,94,95,5,0,95,96,93,92,5,0,95,94,97,98,5,0,98,99,96,95,5,0,98,97,100,101,5,0,101,102,99,98,5,0,0,42,103,91,5,0,93,104,45,7,5,0,42,36,105,103,5,0,104,106,39,45,5,0,91,103,107,94,5,0,96,108,104,93,5,0,103,105,109,107,5,0,108,110,106,104,5,0,94,107,109,97,5,0,99,110,108,96,5,0,97,109,111,100,5,0,102,112,110,99,5,0,36,30,83,105,6,0,106,84,33,39,6,0,113,114,115,116,7,0,116,115,117,118,8,0,114,119,120,115,7,0,115,120,121,117,8,0,119,122,123,120,7,0,120,123,124,121,8,0,122,125,126,123,7,0,123,126,127,124,8,0,125,128,129,126,7,0,126,129,130,127,8,0,128,131,132,129,7,0,129,132,133,130,8,0,131,134,135,132,7,0,132,135,136,133,8,0,134,137,138,135,7,0,135,138,139,136,8,0,137,140,141,138,7,0,138,141,142,139,8,0,140,143,144,141,7,0,141,144,145,142,8,0,143,146,147,144,7,0,144,147,148,145,8,0,146,113,116,147,7,0,147,116,118,148,8,0,101,100,125,122,9,0,122,119,102,101,9,0,100,111,128,125,9,0,119,114,112,102,9,0,111,105,131,128,9,0,114,113,106,112,9,0,105,83,87,131,6,0,113,88,84,106,6,0,87,86,149,131,10,1,113,150,89,88,10,1,140,137,151,152,11,0,152,153,143,140,11,0,137,134,154,151,11,0,153,155,146,143,11,0,134,131,156,154,11,0,155,157,113,146,11,0,152,151,158,159,11,1,159,160,153,152,11,1,151,154,161,158,11,1,160,162,155,153,11,1,154,156,163,161,11,1,162,164,157,155,11,1,131,149,163,156,10,1,157,164,150,113,10,1];
+const rotAxis = (p, k, a) => { const c = Math.cos(a), s = Math.sin(a); return add(add(scl(p, c), scl(cross(k, p), s)), scl(k, dot(k, p) * (1 - c))); };
+const smooth = (a, b, x) => { const k = clamp((x - a) / (b - a)); return k * k * (3 - 2 * k); };
+const MASK = (() => {
+  const R = rng(1937), S = 0.74, nv = MASK_T.length;
+  const front = [], inner = [];
+  for (let k = 0; k < nv; k++) {
+    const p = [MASK_V[k * 3] * S, (MASK_V[k * 3 + 1] - 0.08) * S, -(MASK_V[k * 3 + 2] - 0.72) * S];
+    const n = [MASK_N[k * 3], MASK_N[k * 3 + 1], -MASK_N[k * 3 + 2]];
+    front.push(p); inner.push(add(p, scl(n, -MASK_T[k] * 0.22 * S)));   // 内壳：沿法线向后挤出
+  }
+  const W = { orbit: 1, lid: 0.72, nose: 0.94, muzzle: 0.78, lip: 0.84, philtrum: 0.75, forehead: 0.85, chin: 0.86 };
+  const cells = [], tied = new Set();
+  for (let i = 0; i < MASK_C.length; i += 6) {
+    const q = MASK_C.slice(i, i + 4), reg = MASK_REG[MASK_C[i + 4]], bd = MASK_C[i + 5];
+    const seed = R(), c = scl(q.map(k => front[k]).reduce(add), 0.25);
+    const ef = Math.max(bd ? 0.55 : 0, smooth(0.8, 1.12, Math.hypot(c[0] / 0.66, (c[1] - 0.05) / 0.92)));
+    const det = ef > 0.04 ? ef ** 1.3 * (0.5 + R() ** 0.65 * 1.1) : 0;
+    cells.push({
+      q, c, seed, det, ef, bright: (W[reg] ?? 0.86) * (bd ? 0.85 : 1),
+      dir: nrm([c[0] * 1.15, (c[1] - 0.02) * 0.68, -(0.12 + (seed - 0.5) * 0.4) * S]),
+      axis: nrm([Math.sin(seed * 71.3) + 0.2, Math.cos(seed * 43.6) + 0.15, Math.sin(seed * 29.1) + 0.3]),
+    });
+    if (!det) q.forEach(k => tied.add(k));
+  }
+  // 方块：一部分贴在脸面上（聚拢时拼出“方块人脸”），一部分围在外缘；
+  // 全部像推箱子一样沿上下左右前后逐格移动，按呼吸节奏分散 → 聚拢
+  const STEP = 0.11, rim = p => Math.hypot(p[0] / 0.66, (p[1] - 0.05) / 0.92), cubes = [];
+  const addCube = (h, maxR, face, sz) => {
+    if (cubes.some(b => Math.hypot(...sub(b.h, h)) < STEP * 1.35)) return;
+    const s = STEP * sz;
+    cubes.push({ h, o: [0, 0, 0], prev: [0, 0, 0], dir: [1, 0, 0], k: -1, per: 0.55 + R() * 0.6, off: R() * 10, s: [s, s, s], face, maxR, m: rim(h), bright: 0.35 + R() ** 1.5 * 0.65 });
+  };
+  const anchors = cells.filter(c => c.det);
+  for (let i = 0; cubes.length < 64 && i < 6000; i++) {
+    const an = anchors[Math.floor(R() * anchors.length)], d = nrm([an.c[0], an.c[1] - 0.05, 0]);
+    const p = add(add(an.c, scl(d, 0.06 + R() ** 0.9 * 0.42)), [(R() - 0.5) * 0.15, (R() - 0.5) * 0.15, (R() - 0.5) * 0.4]);
+    const m = rim(p); if (m > 0.96 && m < 1.55 && R() < 1.6 - m) addCube(p, 2 + Math.round(R() * 2), false, 0.42 + R() ** 1.5 * 0.3);
+  }
+  const breath = (t, m) => 0.5 - 0.5 * Math.cos(TAU * (t - m * 1.6) / 9);
+  const stepCubes = t => {
+    for (const b of cubes) {
+      const k = Math.floor((t + b.off) / b.per);
+      if (b.k < 0 || k < b.k || k - b.k > 4) { b.k = k; b.prev = [...b.o]; continue; }
+      while (b.k < k) {
+        b.k++; b.prev = [...b.o];
+        const br = breath(b.k * b.per - b.off, b.m);
+        const Rt = Math.round(b.maxR * br), L = b.o.reduce((s, v) => s + Math.abs(v), 0);
+        let d = null;
+        if (L > Rt || (L === Rt && Rt > 0 && R() < 0.5)) {               // 往回推一格
+          const ax = [0, 1, 2].filter(a => b.o[a]); const a = ax[Math.floor(R() * ax.length)];
+          d = [0, 0, 0]; d[a] = -Math.sign(b.o[a]);
+        } else if (L < Rt) {                                               // 往外推一格（偏向脸外 / 镜头方向）
+          const a = Math.floor(R() * 3); d = [0, 0, 0];
+          d[a] = b.o[a] ? Math.sign(b.o[a]) : a === 0 ? (Math.sign(b.h[0]) || 1) * (R() < 0.8 ? 1 : -1) : a === 1 ? (b.h[1] > 0.05 ? 1 : -1) * (R() < 0.7 ? 1 : -1) : -1;
+        }
+        if (d) { b.o = add(b.o, d); b.dir = d; }
+      }
+    }
+  };
+  return { S, front, inner, cells, ties: [...tied], cubes, stepCubes, STEP, rim, breath };
+})();
+const maskView = t => { const yaw = -0.3 + Math.sin(t * 0.3) * 0.3, pitch = -0.06 + Math.sin(t * 0.27) * 0.04; return p => rX(rY(p, yaw), pitch); };
+// 与三叶结同一套配色：青绿 → 蓝的斜向渐变 + 自上而下扫过的品红扫描带
+const maskCol = (p, t = 0) => {
+  const u = p[0] / MASK.S, v = p[1] / MASK.S;
+  const base = mix(C.teal, C.blue, smooth(-0.9, 0.9, u * 0.9 - v * 0.55 + 0.25 * Math.sin(v * 5 + u * 2)));
+  const d = Math.abs(v - (1.8 - ((t * 0.11) % 1) * 3.6)), glow = Math.max(0, 1 - d * 2.4);
+  return mix(base, C.magenta, glow * 0.85);
+};
+// 边界格子的松脱：外漂 + 绕随机轴摆动 + 略微缩小
+function maskCellT(f, t) {
+  if (!f.det) return p => p;
+  const br = MASK.breath(t, MASK.rim(f.c)), r = f.det * 0.8 * (0.25 + 0.95 * br);
+  const ang = r * (Math.sin(t * 0.31 + f.seed * 17) * 0.22 + (f.seed - 0.5) * 0.4);
+  const off = add(scl(f.dir, r * (0.1 + 0.05 * Math.sin(t * 0.43 + f.seed * 23)) * MASK.S * 1.4), [0, Math.sin(t * 0.7 + f.seed * 9) * 0.03 * r, 0]);
+  const c = add(f.c, off), k = 1 - r * 0.3;
+  return p => add(c, rotAxis(scl(sub(p, f.c), k), f.axis, ang));
+}
+function buildFace(t) {
+  const X = maskView(t), O = X([0, 0, 1.2]), { front, inner } = MASK;
+  for (const f of MASK.cells) {
+    const T = maskCellT(f, t), col = maskCol(f.c, t);
+    const a = f.bright * (1 - f.ef ** 1.1 * (0.62 + 0.3 * Math.sin(t * 0.8 + f.seed * 13)));   // 边缘淡出、呼吸闪烁
+    poly(f.q.map(k => X(T(front[k]))), col, a, 2.2, 1, O);   // 前壳：淡色玻璃面
+    poly(f.q.map(k => X(T(inner[k]))), mix(col, C.deep, 0.3), a, 3, 0.18, O);   // 内壳：双面板，背面看是实心
+  }
+  MASK.stepCubes(t);
+  for (const b of MASK.cubes) {
+    const fr = ((t + b.off) / b.per) % 1, e = ease(clamp(fr / Math.min(0.6, 0.32 / b.per)));
+    const c = add(b.h, scl(add(b.prev, scl(sub(b.o, b.prev), e)), MASK.STEP));
+    const tilt = Math.sin(e * Math.PI) * 0.3, ax = b.dir[2] ? [1, 0, 0] : nrm(cross([0, 0, 1], b.dir));   // 推动时轻微翻滚
+    const B3 = [[1, 0, 0], [0, 1, 0], [0, 0, 1]].map(v => X(tilt ? rotAxis(v, ax, tilt) : v));
+    const a = (0.5 + b.bright * 0.45) * (1 - smooth(1.05, 1.7, MASK.rim(c)) * 0.75);
+    box(X(c), b.s, B3, maskCol(c, t), a, 0, 1);
+  }
+}
+// 前后壳之间的连杆（按左右分三束颜色，一次描完）
+function faceLines(t) {
+  const X = maskView(t), { front, inner } = MASK, G = [[], [], []];
+  // 只画朝向镜头的连杆：从背面看它们会被内壳实面挡住
+  const put = (a, b) => {
+    const A = X(a), Bv = X(b), va = view(...A), vb = view(...Bv);
+    if (dot(sub(va, vb), [va[0], va[1], va[2] + DIST]) > 0) return;
+    G[a[0] < -0.2 ? 0 : a[0] > 0.2 ? 2 : 1].push([A, Bv]);
+  };
+  for (const k of MASK.ties) put(front[k], inner[k]);
+  for (const f of MASK.cells) if (f.det && f.ef < 0.6) { const T = maskCellT(f, t); for (const k of f.q) put(T(front[k]), T(inner[k])); }
+  return G.map((segs, i) => ({ segs, col: mix(C.teal, C.blue, i / 2), a: 0.7 }));
+}
+
+/* ================================================================
+ *  形态 4：异形魔方 —— 4×4×4 镜面魔方式结构：内部切面规则，
+ *  外层厚度各不相同；成形后每块外凸高度持续起伏，随机转层
+ * ================================================================ */
+const CUBE = (() => {
+  const R = rng(5), cubies = [];
+  // 六个外表面的基础偏移（+x,-x,+y,-y,+z,-z），造成“镜面魔方”的不对称外形
+  const OFF = [[0.6, -0.4], [0.8, -0.2], [-0.3, 0.5]];
+  for (const x of [-3, -1, 1, 3]) for (const y of [-3, -1, 1, 3]) for (const z of [-3, -1, 1, 3]) {
+    const o = [x, y, z];
+    cubies.push({
+      o, p: [...o], R: [1, 0, 0, 0, 1, 0, 0, 0, 1],
+      ph: [R() * TAU, R() * TAU, R() * TAU], sp: 0.8 + R() * 1.2,
+      col: R() < .5 ? C.blue : R() < .6 ? C.violet : C.cyan,
+    });
+  }
+  return { cubies, OFF, move: null, lastT: -1 };
+})();
+const axisRot = (ax, th) => {
+  const c = Math.cos(th), s = Math.sin(th);
+  return ax === 0 ? [1, 0, 0, 0, c, -s, 0, s, c] : ax === 1 ? [c, 0, s, 0, 1, 0, -s, 0, c] : [c, -s, 0, s, c, 0, 0, 0, 1];
+};
+const mulMV = (M, v) => [M[0] * v[0] + M[1] * v[1] + M[2] * v[2], M[3] * v[0] + M[4] * v[1] + M[5] * v[2], M[6] * v[0] + M[7] * v[1] + M[8] * v[2]];
+const mulMM = (A, B) => { const o = []; for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) o[i * 3 + j] = A[i * 3] * B[j] + A[i * 3 + 1] * B[3 + j] + A[i * 3 + 2] * B[6 + j]; return o; };
+function buildCube(t) {
+  const S = CUBE, DUR = 0.75, layers = [-3, -1, 1, 3];
+  const newMove = t0 => ({ ax: Math.floor(Math.random() * 3), layer: layers[Math.floor(Math.random() * 4)], dir: Math.random() < .5 ? 1 : -1, t0 });
+  if (S.lastT < 0 || t < S.lastT || !S.move) S.move = newMove(t + 0.6);
+  S.lastT = t;
+  let k = (t - S.move.t0) / DUR;
+  if (k >= 1) {
+    const M = axisRot(S.move.ax, S.move.dir * Math.PI / 2);
+    for (const c of S.cubies) if (c.p[S.move.ax] === S.move.layer) { c.p = mulMV(M, c.p).map(Math.round); c.R = mulMM(M, c.R); }
+    S.move = newMove(t + 0.35); k = 0;
+  }
+  const Mv = axisRot(S.move.ax, S.move.dir * Math.PI / 2 * ease(clamp(k)));
+  // 成形之后再逐渐放开“高低起伏”
+  const amp = clamp((t - (S.born ?? 1e9) - 1.8) / 1.5);
+  const sp = 0.125, gap = 0.1;
+  const view = v => rY(rX(v, 0.5 + Math.sin(t * 0.3) * 0.12), t * 0.28 + 0.7);
+  for (const c of S.cubies) {
+    // 在“原始”局部坐标里计算这块的包围范围（随块一起转动）
+    const lo = [], hi = [];
+    let hmax = 0;
+    for (let a = 0; a < 3; a++) {
+      const v = c.o[a];
+      lo[a] = v - 1; hi[a] = v + 1;
+      if (Math.abs(v) === 3) {
+        const wave = amp * 1.1 * (0.5 + 0.5 * Math.sin(t * c.sp + c.ph[a]));
+        const ext = (v > 0 ? S.OFF[a][0] : S.OFF[a][1]) + wave;
+        if (v > 0) hi[a] += ext; else lo[a] -= ext;
+        hmax = Math.max(hmax, wave);
+      }
+    }
+    const lc = [0, 1, 2].map(a => (lo[a] + hi[a]) / 2), hs = [0, 1, 2].map(a => ((hi[a] - lo[a]) / 2 - gap) * sp);
+    const moving = c.p[S.move.ax] === S.move.layer;
+    const Rm = moving ? mulMM(Mv, c.R) : c.R;
+    const pos = scl(mulMV(Rm, lc), sp);
+    const B = [[Rm[0], Rm[3], Rm[6]], [Rm[1], Rm[4], Rm[7]], [Rm[2], Rm[5], Rm[8]]].map(view);
+    const col = hmax > 0.95 ? mix(c.col, C.magenta, clamp((hmax - 0.95) / 0.15) * 0.7) : c.col;
+    box(view(pos), hs, B, col, 1, 0);
+  }
+}
+
+/* ================================================================
+ *  形态 5：超新星 —— 阶梯状方块星芒 + 爆散碎块 + 轨道
+ * ================================================================ */
+const NOVA = (() => {
+  const R = rng(9);
+  const debris = Array.from({ length: 40 }, () => {
+    const a = R() * TAU, e = (R() - .5) * 1.6;
+    return { d: nrm([Math.cos(a), e, Math.sin(a)]), ph: R(), s: 0.02 + R() * 0.03, len: 1 + R() * 2.5, orange: R() < .45 };
+  });
+  return { debris };
+})();
+function buildNova(t) {
+  const spin = v => rX(rY(v, t * 0.18), 0.28);
+  const ext = 1 + 0.22 * Math.sin(t * 1.4);          // 星芒呼吸式外扩
+  const arms = [[1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1], [0, 1, 0], [0, -1, 0]];
+  arms.forEach((d, ai) => {
+    const vert = d[1] !== 0, n = vert ? 7 : 6, B = basis(d, vert ? [1, 0, 0] : [0, 1, 0]);
+    for (let i = 0; i < n; i++) {
+      const r = (0.16 + i * (vert ? 0.2 : 0.17)) * ext;
+      const w = 0.075 * (1 - i / (n + 1.5));
+      const col = (i + ai) % 2 ? C.magenta : C.blue;
+      box(spin(scl(d, r)), [(vert ? 0.1 : 0.085) * ext, w, w], rotB(B, spin), col, 1, i === 0 ? 0.2 : 0);
+      if (i % 2 === 0 && i < n - 1) { // 阶梯状的伴随方块
+        const side = scl(B[1], w * 1.9);
+        box(spin(add(scl(d, r + 0.03), side)), [0.06 * ext, w * 0.8, w * 0.8], rotB(B, spin), col === C.magenta ? C.cyan : C.magenta, 1, 0);
+      }
+    }
+  });
+  // 水平对角臂
+  for (let k = 0; k < 4; k++) {
+    const a = Math.PI / 4 + k * Math.PI / 2, d = [Math.cos(a), 0, Math.sin(a)], B = basis(d);
+    for (let i = 0; i < 4; i++) {
+      const w = 0.045 * (1 - i * 0.18);
+      box(spin(scl(d, (0.22 + i * 0.15) * ext)), [0.06, w, w], rotB(B, spin), i % 2 ? C.magenta : C.blue, 1, 0);
+    }
+  }
+  // 核心
+  box(spin([0, 0, 0]), [0.09, 0.09, 0.09], rotB(rotB(I3, v => rX(rZ(v, Math.PI / 4), Math.PI / 4 + t)), spin), C.blue, 1, 1);
+  for (let i = 0; i < 8; i++) {
+    const d = [i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? 1 : -1];
+    box(spin(scl(d, 0.1 * ext)), [0.04, 0.04, 0.04], rotB(I3, spin), C.magenta, 1, 0.5);
+  }
+  // 爆散碎块：从中心沿径向飞出，淡出后循环
+  for (const b of NOVA.debris) {
+    const ph = (t * 0.12 + b.ph) % 1;
+    const r = 0.45 + ph * 1.0;
+    const B = rotB(I3, v => rY(v, b.ph * 6));
+    box(spin(scl(b.d, r)), [b.s, b.s * b.len, b.s], rotB(B, spin), b.orange ? C.violet : C.blue, Math.sin(ph * Math.PI), 0);
+  }
+}
+function novaLines(t) {
+  const spin = v => rX(rY(v, t * 0.18), 0.28);
+  const circle = (r, f, n = 96) => Array.from({ length: n + 1 }, (_, i) => spin(f([Math.cos(i / n * TAU) * r, 0, Math.sin(i / n * TAU) * r])));
+  return [
+    { pts: circle(1.35, p => rX(p, 0.08)), col: C.blue, dash: false },
+    { pts: circle(1.2, p => rZ(rX(p, 1.15), 0.45)), col: C.magenta, dash: true },
+    { pts: circle(1.05, p => rZ(rX(p, -0.9), -0.6)), col: C.blue, dash: true },
+    { pts: circle(0.2, p => add(p, [0, 1.45, 0]), 32), col: C.blue, dash: false },
+    { pts: circle(0.2, p => add(p, [0, -1.45, 0]), 32), col: C.blue, dash: false },
+    { pts: [spin([0, -1.6, 0]), spin([0, 1.6, 0])], col: C.blue, dash: false },
+  ];
+}
+
+/* ================================================================
+ *  形态表
+ * ================================================================ */
+/* ================================================================
+ *  形态 6：机械水母 —— 伞盖由贴合曲面的小方块一圈圈拼成（8 条肋骨加亮），
+ *  伞内齿轮核心；4 条螺旋口腕 + 16 条触手，收缩波沿触手向下传递；
+ *  伞缘方块不断剥落、下沉、消散；品红脉冲随每次收缩从伞顶扫到触手末端
+ * ================================================================ */
+const JELLY = (() => {
+  const R = rng(4242), TOP = 1.02, HB = 0.62, RB = 0.86, TH1 = 1.5, cell = 0.17;
+  const rows = [];
+  for (let th = 0.2; th <= TH1 + 1e-6; th += 0.21) {
+    const n = Math.max(8, Math.round(TAU * Math.sin(th) * RB / cell / 8) * 8);   // 8 的倍数：肋骨对齐
+    rows.push({ th, n, off: 0 });
+  }
+  const tent = Array.from({ length: 12 }, (_, k) => ({ phi: (k + 0.5) / 12 * TAU, ph: R() * TAU, len: 0.85 + R() * 0.3 }));
+  const flakes = Array.from({ length: 22 }, () => ({ phi: R() * TAU, per: 3.5 + R() * 3, off: R() * 10, s: 0.03 + R() * 0.025, sp: (R() - 0.5) * 3 }));
+  return { TOP, HB, RB, TH1, rows, tent, flakes };
+})();
+// 搏动：0.3 周期内快速收缩，其余缓慢舒张
+const jellyCon = t => { const p = (t * 0.42) % 1; return p < 0.3 ? ease(p / 0.3) : 1 - ease((p - 0.3) / 0.7); };
+const jellyCol = (y, t) => {
+  const base = mix(C.teal, C.blue, smooth(-0.9, 0.95, 0.9 - y));
+  const band = 1.25 - ((t * 0.42) % 1) * 3.2, glow = Math.max(0, 1 - Math.abs(y - band) * 3);   // 随收缩下扫
+  return mix(base, C.magenta, glow * 0.8);
+};
+function buildJelly(t) {
+  const { TOP, HB, RB, TH1, rows, tent, flakes } = JELLY;
+  const bob = Math.sin(t * 0.42 * TAU - 1.2) * 0.05 - 0.02;
+  const rot = v => rY(rX(rZ(v, Math.sin(t * 0.37) * 0.08), 0.18 + Math.sin(t * 0.29) * 0.05), t * 0.18);
+  const JS = 0.74, view = v => rot([v[0] * JS, (v[1] + bob) * JS + 0.17, v[2] * JS]);
+  const jb = (p, s, ...r) => box(view(p), scl(s, JS), ...r);
+  // 伞盖曲面：th = 距顶角，收缩时下缘向内收、舒张时外翻
+  const bell = (th, phi, tt, lift = 0) => {
+    const k = th / TH1, c = jellyCon(tt);
+    const r = Math.sin(th) * RB * (1 - c * 0.2 * k * k) + (1 - c) * 0.07 * k ** 4 + lift * Math.sin(th);
+    const y = TOP - (1 - Math.cos(th)) * HB * (1 + c * 0.1) + lift * Math.cos(th);
+    return [Math.cos(phi) * r, y, Math.sin(phi) * r];
+  };
+  const rimAt = (phi, tt) => bell(TH1, phi, tt);
+  // 1) 伞盖
+  for (const [ri, row] of rows.entries()) {
+    const rim = ri === rows.length - 1;
+    for (let j = 0; j < row.n; j++) {
+      const phi = (j + row.off) / row.n * TAU + t * 0.05;
+      const rib = !row.off && j % (row.n / 8) === 0;
+      const p = bell(row.th, phi, t, rib ? 0.02 : 0);
+      const tan = [-Math.sin(phi), 0, Math.cos(phi)], mer = nrm(sub(bell(row.th + 0.02, phi, t, rib ? 0.02 : 0), p));
+      const w = Math.PI * Math.sin(row.th) * RB / row.n * 0.8, h = 0.21 * Math.hypot(Math.cos(row.th) * RB, Math.sin(row.th) * HB) * 0.5 * 0.78;
+      const col = jellyCol(p[1], t), a = rim ? 0.55 + 0.4 * Math.sin(phi * 3 + t * 2) ** 2 : 1;
+      jb(p, [w, h, rib ? 0.011 : 0.006], basis(tan, mer).map(rot), rib ? mix(col, C.white, 0.15) : col, a, rib ? 0.35 : 0);
+    }
+  }
+  // 2) 伞内齿轮核心
+  const cy = TOP - HB * 0.55;
+  for (let k = 0; k < 14; k++) {
+    const phi = k / 14 * TAU - t * 0.7, p = [Math.cos(phi) * 0.3, cy, Math.sin(phi) * 0.3];
+    const s = k % 2 ? 0.035 : 0.05;
+    jb(p, [s, 0.04, s], basis([-Math.sin(phi), 0, Math.cos(phi)]).map(rot), mix(C.blue, C.cyan, 0.4), 0.9, 0.15);
+  }
+  for (let k = 0; k < 4; k++) {
+    const B3 = basis([Math.cos(t * 0.9 + k), 0, Math.sin(t * 0.9 + k)]).map(rot);
+    jb([0, cy + 0.12 - k * 0.1, 0], [0.08 - k * 0.012, 0.04, 0.08 - k * 0.012], B3, k ? C.cyan : mix(C.magenta, C.white, 0.2), 1, k ? 0.3 : 0.7);
+  }
+  // 顽皮摆动：沿链累积弯折角（鞭梢效应）+ 不定期的“甩一下” + 末端卷曲
+  const whip = (ph, u, sp) => {
+    const k = (t * (0.19 + (ph % 1) * 0.08) + ph * 0.37) % 1;
+    const flick = k < 0.18 ? Math.sin(k / 0.18 * Math.PI) * (k < 0.09 ? 1 : 0.6) : 0;
+    return [
+      (0.16 * Math.sin(t * 1.7 * sp - u * 4.2 + ph) + 0.1 * Math.sin(t * 2.9 * sp + ph * 2.3 - u * 6.5) + flick * 0.55 * u) * (0.35 + u),
+      (0.11 * Math.sin(t * 1.25 * sp - u * 3.4 + ph * 1.7) + 0.07 * Math.sin(t * 2.3 * sp + ph - u * 5)) * (0.35 + u) + flick * 0.25 * u * u,
+    ];
+  };
+  const chain = (p0, out, n, segL, ph, sp, splay, onSeg, twist = 0) => {
+    const sid = [-out[2], 0, out[0]];
+    let p = p0, aS = 0, aO = splay, prev = p0;
+    const tw = (q, u) => twist ? rY(q, -twist * u) : q;
+    for (let s = 0; s < n; s++) {
+      const u = s / (n - 1), [bS, bO] = whip(ph, u, sp);
+      aS += bS * 0.42; aO += bO * 0.4 - aO * 0.08;
+      const d = nrm(add(add([0, -1, 0], scl(sid, Math.sin(aS))), scl(out, Math.sin(aO))));
+      if (s) p = add(p, scl(d, segL * (1 - u * 0.25)));
+      const q = tw(p, u);
+      onSeg(q, s ? nrm(sub(q, prev)) : d, u, s); prev = q;
+    }
+  };
+  // 3) 中心口腕：4 条，比触手长得多，绕中轴螺旋下垂，末端变细
+  for (let k = 0; k < 4; k++) {
+    const ang = k / 4 * TAU + t * 0.25, out = [Math.cos(ang), 0, Math.sin(ang)];
+    chain([out[0] * 0.1, cy - 0.12 + jellyCon(t) * 0.04, out[2] * 0.1], out, 24, 0.118, k * 1.9 + 0.4, 0.8, 0.14, (p, d, u, s) => {
+      const sz = 0.054 * (1 - u * 0.62);
+      jb(p, [sz * 0.8, sz * 0.55, sz * (s % 2 ? 1.5 : 0.85)], basis(d, out).map(rot), jellyCol(p[1], t), 0.95 - u * 0.35, s === 23 ? 0.6 : 0);
+    }, 3.2 + Math.sin(t * 0.5 + k) * 0.4);
+  }
+  // 4) 伞缘触手：较短，收缩时向外张开，各自顽皮甩动
+  for (const tn of tent) {
+    const base = rimAt(tn.phi + t * 0.05, t - 0.15), out = nrm([base[0], 0, base[2]]);
+    chain(add(base, [0, -0.04, 0]), out, 9, tn.len * 0.1, tn.ph, 1.1, -0.1 + (1 - jellyCon(t - 0.3)) * 0.35, (p, d, u, s) => {
+      const sz = 0.03 * (1 - u * 0.5);
+      jb(p, [sz, sz * 1.3, sz], basis(d, out).map(rot), jellyCol(p[1], t), 0.95 - u * 0.5, s === 8 ? 0.5 : 0);
+    });
+  }
+  // 5) 伞缘剥落的碎方块：外飘、下沉、翻滚、消散（边缘无形）
+  for (const f of flakes) {
+    const fr = ((t + f.off) / f.per) % 1, life = smooth(0, 0.12, fr) * (1 - smooth(0.55, 1, fr));
+    const base = rimAt(f.phi, t - fr * 1.5), out = nrm([base[0], 0, base[2]]);
+    const p = add(base, add(scl(out, 0.05 + fr * 0.28), [0, -fr * 0.55, 0]));
+    const B3 = I3.map(v => rot(rotAxis(v, nrm([out[2], 0.4, -out[0]]), fr * f.sp)));
+    jb(p, [f.s, f.s, f.s], B3, jellyCol(p[1], t), 0.85 * life, 0);
+  }
+}
+// 伞下的光环（淡）
+function jellyLines(t) {
+  const ring = (r, y, n) => Array.from({ length: n + 1 }, (_, i) => { const a = i / n * TAU + t * 0.1; return [Math.cos(a) * r, y, Math.sin(a) * r]; });
+  return [{ pts: ring(1.12, -1.18, 80), col: C.teal, dash: true }];
+}
+
+const FORMS = [
+  { cn: "三结环", en: "TRINITY KNOT", build: buildRings, accent: C.teal,    spread: () => 0.08, lines: ringLines },
+  { cn: "双螺旋",       en: "DOUBLE HELIX",   build: buildHelix, accent: C.violet,  spread: () => 0.12 },
+  { cn: "空构面具",     en: "HOLLOW MASK", build: buildFace,  accent: C.blue,  spread: () => 0.1, lines: faceLines },
+  { cn: "异形魔方",     en: "MIRROR CUBE",     build: buildCube,  accent: C.blue,    spread: () => 0.1 },
+  { cn: "超新星",       en: "SUPERNOVA",      build: buildNova,  accent: C.cyan,  spread: t => 0.5 + 0.35 * Math.sin(t * 1.4), lines: novaLines },
+  { cn: "机械水母",     en: "MECHA JELLY",    build: buildJelly, accent: C.magenta, spread: t => 0.1 + jellyCon(t) * 0.12, lines: jellyLines },
+];
+FORMS.forEach(f => { bn = 0; f.build(0); f.n = bn; f.fade = 0; });
+CUBE.lastT = -1;
+const B = Math.max(...FORMS.map(f => f.n));
+FORMS.forEach(f => {
+  f.map = new Int32Array(B); f.ghost = new Uint8Array(B);
+  for (let i = 0; i < B; i++) { const j = Math.floor(i * f.n / B); f.map[i] = j; f.ghost[i] = i > 0 && Math.floor((i - 1) * f.n / B) === j ? 1 : 0; }
+});
+
+/* ================================================================
+ *  方块池 & 粒子池
+ * ================================================================ */
+const R0 = rng(11);
+const pc = new Float32Array(B * 3), ps = new Float32Array(B * 3), pR = new Float32Array(B * 9), pcol = new Float32Array(B * 3), pa = new Float32Array(B), pg = new Float32Array(B), pe = new Float32Array(B).fill(1), pkind = new Float32Array(B), pq = new Float32Array(B * 12);
+const fc = new Float32Array(B * 3), fs = new Float32Array(B * 3), fR = new Float32Array(B * 9), fcol = new Float32Array(B * 3), fa = new Float32Array(B), fg = new Float32Array(B), fe = new Float32Array(B), fkind = new Float32Array(B), fq = new Float32Array(B * 12);
+const delay = new Float32Array(B), burst = new Float32Array(B * 3), bspin = new Float32Array(B);
+for (let i = 0; i < B; i++) {
+  const d = nrm([R0() - .5, R0() - .5, R0() - .5]), r = 2.5 + R0() * 3;
+  pc.set(scl(d, r), i * 3); ps.set([0.05, 0.05, 0.05], i * 3); pR.set([1, 0, 0, 0, 1, 0, 0, 0, 1], i * 9); pcol.set(C.blue, i * 3);
+  const b = nrm([R0() - .5, R0() - .5, R0() - .5]), m = 0.3 + R0() * 0.8;
+  burst.set(scl(b, m), i * 3); bspin[i] = (R0() - .5) * 6;
+}
+
+const NP = touchDevice || innerWidth < 700 ? 800 : 1600;
+const px = new Float32Array(NP), py = new Float32Array(NP), pz = new Float32Array(NP);
+const pbox = new Int32Array(NP), pu = new Float32Array(NP * 3), po = new Float32Array(NP), pk = new Float32Array(NP);
+for (let i = 0; i < NP; i++) {
+  const ax = Math.floor(R0() * 3), u = [R0() * 2 - 1, R0() * 2 - 1, R0() * 2 - 1];
+  u[ax] = R0() < .5 ? -1 : 1;                              // 贴在方块表面
+  pu.set(u, i * 3); po[i] = Math.pow(R0(), 2.5); pk[i] = R0();
+  pbox[i] = Math.floor(R0() * B);
+  const d = nrm([R0() - .5, R0() - .5, R0() - .5]), r = 3 + R0() * 4;
+  px[i] = d[0] * r; py[i] = d[1] * r; pz[i] = d[2] * r;
+}
+const dust = Array.from({ length: 260 }, () => [(R0() - .5) * 5, (R0() - .5) * 3.4, (R0() - .5) * 4, R0()]);
+
+/* ================================================================
+ *  状态 & 切换
+ * ================================================================ */
+let cur = 0, tStart = 0, DUR = 2.6, HOLD = 8, holdStart = 0, needDelays = true;
+let accent = [...C.teal], spread = 0.08;
+const t0 = performance.now();
+const now = () => ((pausedAt || performance.now()) - t0 - pausedDuration) / 1000;
+
+function goTo(i) {
+  cur = (i + FORMS.length) % FORMS.length;
+  fc.set(pc); fs.set(ps); fR.set(pR); fcol.set(pcol); fa.set(pa); fg.set(pg); fe.set(pe); fkind.set(pkind); fq.set(pq);
+  tStart = now(); holdStart = tStart + DUR; needDelays = true;
+  if (cur === 3) { CUBE.lastT = -1; CUBE.born = tStart; }
+  const f = FORMS[cur];
+  for (let p = 0; p < NP; p++) {
+    if (f.ghost[pbox[p]] || R0() < 0.35) { let k; do { k = Math.floor(R0() * B); } while (f.ghost[k]); pbox[p] = k; }
+  }
+  updateUI();
+  requestFrame(true);
+}
+
+/* ================================================================
+ *  画布
+ * ================================================================ */
+const stage = document.getElementById("stage"), ctx = stage.getContext("2d");
+const scene = document.createElement("canvas"), sx = scene.getContext("2d");
+const bloomA = document.createElement("canvas"), ba = bloomA.getContext("2d");
+const bloomB = document.createElement("canvas"), bb = bloomB.getContext("2d");
+const refl = document.createElement("canvas"), rc = refl.getContext("2d");
+let W, H, DPR, CX, CY, FOC, DIST = 4, mobile;
+function resize() {
+  DPR = Math.min(devicePixelRatio || 1, lowMemory ? 1 : touchDevice ? 1.25 : 1.5); W = innerWidth; H = innerHeight; mobile = W < 900;
+  for (const c of [stage, scene]) { c.width = W * DPR; c.height = H * DPR; }
+  bloomA.width = refl.width = Math.ceil(W / 4); bloomA.height = refl.height = Math.ceil(H / 4);
+  bloomB.width = Math.ceil(W / 8); bloomB.height = Math.ceil(H / 8);
+  const landscape = mobile && W > 600 && H <= 500;
+  CX = landscape ? W * 0.70 : mobile ? W / 2 : W * 0.56; CY = landscape ? H * 0.38 : mobile ? H * 0.36 : H * 0.5;
+  FOC = Math.min(W, H) * (mobile ? 0.9 : 0.94);
+}
+resize(); addEventListener("resize", () => { resize(); requestFrame(true); });
+
+// 交互
+let yaw = 0, pitch = 0, vyaw = 0, vpitch = 0, mx = 0, my = 0, smx = 0, smy = 0;
+let drag = null, pointer = { x: -1e4, y: -1e4 };
+stage.addEventListener("pointerdown", e => { drag = { x: e.clientX, y: e.clientY, moved: 0 }; stage.setPointerCapture(e.pointerId); stage.classList.add("dragging"); });
+addEventListener("pointermove", e => {
+  mx = e.clientX / W - .5; my = e.clientY / H - .5; pointer.x = e.clientX; pointer.y = e.clientY;
+  if (drag) {
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    drag.moved += Math.abs(dx) + Math.abs(dy); drag.x = e.clientX; drag.y = e.clientY;
+    vyaw = dx * 0.006; vpitch = dy * 0.004;
+    if (motionQuery.matches) requestFrame(true);
+  }
+});
+addEventListener("pointerup", () => {
+  if (drag && drag.moved < 6) goTo(cur + 1);
+  drag = null; stage.classList.remove("dragging");
+});
+document.addEventListener("pointerleave", () => { pointer.x = pointer.y = -1e4; });
+addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); goTo(cur + 1); }
+  else if (e.key === "ArrowLeft") goTo(cur - 1);
+  else if (/^[1-6]$/.test(e.key)) goTo(+e.key - 1);
+});
+document.getElementById("nextBtn").onclick = () => goTo(cur + 1);
+
+/* ================================================================
+ *  UI
+ * ================================================================ */
+const formsEl = document.getElementById("forms");
+FORMS.forEach((f, i) => {
+  const el = document.createElement("div");
+  el.className = "form-item";
+  el.tabIndex = 0; el.setAttribute('role', 'button'); el.setAttribute('aria-label', '切换到' + f.cn);
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); goTo(i); } });
+  el.innerHTML = `<span class="idx">0${i + 1}</span><span class="cn">${f.cn}</span><span class="en">${f.en}</span><span class="bar"><i></i></span>`;
+  el.onclick = () => goTo(i);
+  formsEl.appendChild(el);
+});
+const bars = [...formsEl.querySelectorAll(".bar i")];
+const capNo = document.getElementById("capNo"), capName = document.getElementById("capName");
+let scrambleId = 0;
+function updateUI() {
+  [...formsEl.children].forEach((el, i) => el.classList.toggle("on", i === cur));
+  bars.forEach((b, i) => { if (i !== cur) b.style.width = "0"; });
+  capNo.textContent = `FORM 0${cur + 1} / 0${FORMS.length}`;
+  if (motionQuery.matches) { capName.textContent = FORMS[cur].en; return; }
+  const target = FORMS[cur].en, glyphs = "!<>-_\\/[]{}—=+*^?#01ΔΣΩ", id = ++scrambleId, st = performance.now();
+  (function tick() {
+    if (id !== scrambleId || document.hidden) return;
+    const k = (performance.now() - st) / 700;
+    capName.textContent = [...target].map((ch, i) => ch === " " ? " " : i / target.length < k ? ch : glyphs[Math.floor(Math.random() * glyphs.length)]).join("");
+    if (k < 1) requestAnimationFrame(tick);
+  })();
+}
+document.getElementById("rPts").textContent = NP.toLocaleString();
+
+/* ================================================================
+ *  渲染
+ * ================================================================ */
+const FACES = [[1, 3, 7, 5, 0, 1], [0, 4, 6, 2, 0, -1], [2, 6, 7, 3, 1, 1], [0, 1, 5, 4, 1, -1], [4, 5, 7, 6, 2, 1], [0, 2, 3, 1, 2, -1]];
+const EDGES = [[0, 1], [2, 3], [4, 5], [6, 7], [0, 2], [1, 3], [4, 6], [5, 7], [0, 4], [1, 5], [2, 6], [3, 7]];
+const FACE_EDGES = FACES.map(f => [[f[0], f[1]], [f[1], f[2]], [f[2], f[3]], [f[3], f[0]]]);
+const LIGHT = nrm([-0.4, 0.8, -0.5]), LIGHT_P = nrm([0.6, 0.55, -0.6]);
+const rgba = (c, a) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a.toFixed(3)})`;
+let cyw, syw, cp, sp;
+const view = (x, y, z) => { const x1 = x * cyw + z * syw, z1 = -x * syw + z * cyw; return [x1, y * cp - z1 * sp, y * sp + z1 * cp]; };
+const proj = v => { const f = FOC / (v[2] + DIST); return [CX + v[0] * f, CY - v[1] * f, f]; };
+
+const order = new Int32Array(B), depthArr = new Float32Array(B);
+const corners = Array.from({ length: 8 }, () => [0, 0, 0]), scr = Array.from({ length: 8 }, () => [0, 0]);
+
+function drawBox(i) {
+  const a = pa[i], col = [pcol[i * 3], pcol[i * 3 + 1], pcol[i * 3 + 2]], g = pg[i], ed = pe[i];
+  const c = view(pc[i * 3], pc[i * 3 + 1], pc[i * 3 + 2]);
+  const ax = [0, 1, 2].map(k => view(pR[i * 9 + k * 3], pR[i * 9 + k * 3 + 1], pR[i * 9 + k * 3 + 2]));
+  const s = [ps[i * 3], ps[i * 3 + 1], ps[i * 3 + 2]];
+  if (pkind[i] > 0.5) return drawPoly(i, c, ax, col, a, g, ed);
+  for (let k = 0; k < 8; k++) {
+    const u = k & 1 ? 1 : -1, v = k & 2 ? 1 : -1, w = k & 4 ? 1 : -1;
+    const P = corners[k];
+    P[0] = c[0] + ax[0][0] * s[0] * u + ax[1][0] * s[1] * v + ax[2][0] * s[2] * w;
+    P[1] = c[1] + ax[0][1] * s[0] * u + ax[1][1] * s[1] * v + ax[2][1] * s[2] * w;
+    P[2] = c[2] + ax[0][2] * s[0] * u + ax[1][2] * s[1] * v + ax[2][2] * s[2] * w;
+    const f = FOC / (P[2] + DIST); scr[k][0] = CX + P[0] * f; scr[k][1] = CY - P[1] * f;
+  }
+  const depthK = clamp((1.6 - c[2]) / 3, 0.25, 1);
+  if (g > 1.5) {
+    sx.globalCompositeOperation = "lighter"; sx.beginPath();
+    for (const [p, q] of EDGES) { sx.moveTo(scr[p][0], scr[p][1]); sx.lineTo(scr[q][0], scr[q][1]); }
+    sx.strokeStyle = rgba(col, 0.28 * a * depthK * ed); sx.lineWidth = 2.6; sx.stroke();
+    sx.strokeStyle = rgba(mix(col, C.white, 0.5), 0.9 * a * depthK * ed); sx.lineWidth = 0.9; sx.stroke();
+    return;
+  }
+  // 1) 背面的边（会被玻璃面压暗）
+  sx.globalCompositeOperation = "lighter";
+  sx.strokeStyle = rgba(col, 0.28 * a * depthK * ed); sx.lineWidth = 0.8;
+  sx.beginPath();
+  for (const [p, q] of EDGES) { sx.moveTo(scr[p][0], scr[p][1]); sx.lineTo(scr[q][0], scr[q][1]); }
+  sx.stroke();
+  // 2) 可见的玻璃面
+  sx.globalCompositeOperation = "source-over";
+  const vis = [];
+  for (let fi = 0; fi < 6; fi++) {
+    const F = FACES[fi], n = scl(ax[F[4]], F[5]);
+    const fcn = add(c, scl(n, s[F[4]]));
+    if (dot(n, [fcn[0], fcn[1], fcn[2] + DIST]) >= 0) continue;
+    vis.push(fi);
+    const lam = Math.max(0, dot(n, LIGHT));
+    const base = g > 0 ? mix(scl(col, 0.25), mix(col, C.white, 0.5), g)
+      : g < 0 ? mix([5, 7, 20], mix(col, C.white, 0.35), 0.08 + lam * -g)   // 石膏逐面明暗
+      : mix([4, 6, 18], col, 0.1 + lam * 0.16);
+    sx.fillStyle = rgba(base, (g !== 0 ? 0.92 : 0.8) * a);
+    sx.beginPath();
+    sx.moveTo(scr[F[0]][0], scr[F[0]][1]); sx.lineTo(scr[F[1]][0], scr[F[1]][1]); sx.lineTo(scr[F[2]][0], scr[F[2]][1]); sx.lineTo(scr[F[3]][0], scr[F[3]][1]);
+    sx.closePath(); sx.fill();
+  }
+  // 3) 正面的霓虹边：宽光晕 + 亮芯
+  sx.globalCompositeOperation = "lighter";
+  sx.beginPath();
+  for (const fi of vis) for (const [p, q] of FACE_EDGES[fi]) { sx.moveTo(scr[p][0], scr[p][1]); sx.lineTo(scr[q][0], scr[q][1]); }
+  sx.strokeStyle = rgba(col, 0.25 * a * depthK * ed); sx.lineWidth = 3.2; sx.stroke();
+  sx.strokeStyle = rgba(mix(col, C.white, 0.45), 0.95 * a * depthK * ed); sx.lineWidth = 1.1; sx.stroke();
+}
+
+// 多边形面：石膏逐面明暗 + 霓虹描边；背面只留暗线
+function drawPoly(i, c, ax, col, a, g, ed) {
+  const pts = [];
+  sx.beginPath();
+  for (let k = 0; k < 4; k++) {
+    const u = pq[i * 12 + k * 3], v = pq[i * 12 + k * 3 + 1], w = pq[i * 12 + k * 3 + 2];
+    const x = c[0] + ax[0][0] * u + ax[1][0] * v + ax[2][0] * w, y = c[1] + ax[0][1] * u + ax[1][1] * v + ax[2][1] * w, z = c[2] + ax[0][2] * u + ax[1][2] * v + ax[2][2] * w;
+    const f = FOC / (z + DIST);
+    pts.push(CX + x * f, CY - y * f);
+    k ? sx.lineTo(CX + x * f, CY - y * f) : sx.moveTo(CX + x * f, CY - y * f);
+  }
+  sx.closePath();
+  const n = ax[2], front = dot(n, [c[0], c[1], c[2] + DIST]) < 0;
+  const depthK = clamp((1.6 - c[2]) / 3, 0.25, 1);
+  sx.globalCompositeOperation = "lighter";
+  if (!front && g > 2.5) {                                  // 双面板从背面看：石膏实面 + 亮边
+    const lam = Math.max(0, dot(scl(n, -1), LIGHT_P));
+    sx.globalCompositeOperation = "source-over";
+    sx.fillStyle = rgba(mix([6, 8, 26], mix(col, [205, 214, 255], 0.55), 0.08 + lam ** 1.4 * 0.75), 0.95 * a); sx.fill();
+    polyEdges.push(pts, col, a * depthK);
+    return;
+  }
+  if (!front) { sx.strokeStyle = rgba(col, 0.1 * a * depthK * ed); sx.lineWidth = 0.7; sx.stroke(); return; }
+  const lam = Math.max(0, dot(n, g < 0 ? LIGHT_P : LIGHT));
+  const base = g > 0 ? mix(scl(col, 0.25), mix(col, C.white, 0.5), g)
+    : g < 0 ? mix([6, 8, 26], mix(col, [205, 214, 255], 0.6), 0.1 + lam ** 1.4 * -g)
+    : mix([4, 6, 18], col, 0.1 + lam * 0.3);
+  if (g > 2.05 && g < 2.5) {                                // 淡色玻璃：半透明着色 + 受光
+    sx.globalCompositeOperation = "source-over";
+    sx.fillStyle = rgba(mix([4, 6, 18], col, 0.08 + lam * 0.2), 0.62 * a); sx.fill();
+  }
+  if (g < 1.5) { sx.globalCompositeOperation = "source-over"; sx.fillStyle = rgba(base, (g < 0 ? 0.96 : 0.85) * a); sx.fill(); }
+  // 描边延后统一画，避免被相邻面的填充盖掉一半
+  polyEdges.push(pts, col, a * depthK * ed);
+}
+const polyEdges = [];
+function flushPolyEdges() {
+  sx.globalCompositeOperation = "lighter";
+  for (let q = 0; q < polyEdges.length; q += 3) {
+    const p = polyEdges[q], col = polyEdges[q + 1], k = polyEdges[q + 2];
+    sx.beginPath(); sx.moveTo(p[0], p[1]);
+    for (let m = 2; m < 8; m += 2) sx.lineTo(p[m], p[m + 1]);
+    sx.closePath();
+    sx.strokeStyle = rgba(col, Math.min(1, 0.22 * k)); sx.lineWidth = 2.8; sx.stroke();
+    sx.strokeStyle = rgba(mix(col, C.white, 0.55), Math.min(1, 1.05 * k)); sx.lineWidth = 1.1; sx.stroke();
+  }
+  polyEdges.length = 0;
+}
+
+function drawLines(lines, alpha, t) {
+  sx.globalCompositeOperation = "lighter";
+  for (const L of lines) {
+    if (L.segs) {
+      sx.setLineDash([]); sx.strokeStyle = rgba(L.col, L.a * alpha); sx.lineWidth = 0.8; sx.beginPath();
+      for (const [p, q] of L.segs) { const u = proj(view(...p)), v = proj(view(...q)); sx.moveTo(u[0], u[1]); sx.lineTo(v[0], v[1]); }
+      sx.stroke(); continue;
+    }
+    sx.setLineDash(L.dash ? [3, 7] : []);
+    sx.strokeStyle = rgba(L.col, 0.45 * alpha); sx.lineWidth = 1;
+    sx.beginPath();
+    L.pts.forEach((p, k) => { const s = proj(view(...p)); k ? sx.lineTo(s[0], s[1]) : sx.moveTo(s[0], s[1]); });
+    sx.stroke();
+    if (L.pts.length > 3) { // 轨道上流动的光点
+      const k = Math.floor(((t * 0.08 + L.pts.length * 0.013) % 1) * (L.pts.length - 1));
+      const s = proj(view(...L.pts[k]));
+      sx.fillStyle = rgba(mix(L.col, C.white, .5), alpha); sx.fillRect(s[0] - 2, s[1] - 2, 4, 4);
+    }
+  }
+  sx.setLineDash([]);
+}
+
+/* ================================================================
+ *  远景 + 地面：星空 → 远处漂浮巨方块 → 两层体素天际线 → 地平线辉光
+ *  → 透视网格地面（随拖拽旋转）+ 地砖涟漪 / 闪烁
+ * ================================================================ */
+let SKY = null, skyW = 0, skyH = 0;
+const STARS = (() => { const R = rng(503); return Array.from({ length: 240 }, () => [R(), R() ** 1.7, R(), R()]); })();
+const MONO = (() => {
+  const R = rng(91);
+  return Array.from({ length: 7 }, (_, k) => {
+    const a = (k / 7 + R() * 0.08) * TAU;
+    return { p: [Math.sin(a) * (10 + R() * 8), 1.4 + R() * 3.2, Math.cos(a) * (10 + R() * 8)], s: 0.45 + R() * 0.8, ph: R() * TAU, sp: (R() - 0.5) * 0.3 };
+  });
+})();
+function buildSky() {
+  skyW = W; skyH = H;
+  const PW = Math.ceil(W * 1.5), hh = Math.ceil(H * 0.3), R = rng(77);
+  SKY = { PW, hh, L: [0, 1].map(L => {
+    const cv = document.createElement("canvas"); cv.width = PW * DPR; cv.height = hh * DPR;
+    const g = cv.getContext("2d"); g.scale(DPR, DPR);
+    const col = L ? C.violet : C.blue;
+    for (let x = 0; x < PW;) {
+      const w = Math.min(PW - x, (L ? 16 : 10) + R() * (L ? 44 : 30));
+      let h = (L ? 10 : 8) + R() ** 2.3 * hh * (L ? 0.62 : 0.8);
+      if (R() < 0.3) h *= 0.35;
+      // 阶梯状塔楼：1~3 段逐级内收
+      let bx = x, bw = w, by = hh;
+      const steps = 1 + Math.floor(R() * 3);
+      for (let s = 0; s < steps && bw > 5; s++) {
+        const sh = h / steps * (0.7 + R() * 0.6);
+        g.fillStyle = L ? "#05061a" : "#070a24";
+        g.fillRect(bx, by - sh, bw, sh);
+        g.strokeStyle = rgba(col, L ? 0.38 : 0.2); g.lineWidth = 1;
+        g.strokeRect(bx + 0.5, by - sh + 0.5, bw - 1, sh);
+        if (L) for (let wy = by - sh + 5; wy < by - 4; wy += 6) for (let wx = bx + 4; wx < bx + bw - 4; wx += 6)
+          if (R() < 0.07) { g.fillStyle = rgba(R() < 0.6 ? C.cyan : C.magenta, 0.35 + R() * 0.4); g.fillRect(wx, wy, 2, 2); }
+        by -= sh; const ins = bw * (0.12 + R() * 0.16); bx += ins; bw -= ins * 2;
+      }
+      x += w + (R() < 0.35 ? R() * 14 : 0);
+    }
+    return cv;
+  }) };
+}
+function drawWorld(t, ay) {
+  if (skyW !== W || skyH !== H) buildSky();
+  const floorY = CY + 1.25 * FOC / DIST, HZ = CY + 0.05 * FOC;
+  const camH = (floorY - HZ) * DIST / FOC, cy = Math.cos(ay), sy = Math.sin(ay);
+  // 世界坐标（地面 y=-1.25）→ 屏幕；返回 null 表示在镜头后
+  const fp = (x, y, z) => {
+    const x1 = x * cy + z * sy, zd = -x * sy + z * cy + DIST;
+    if (zd < 0.35) return null;
+    const f = FOC / zd; return [CX + x1 * f, HZ + (camH - y - 1.25) * f];
+  };
+  ctx.globalCompositeOperation = "source-over";
+  // 天空：地平线附近微微泛出主题色
+  const sk = ctx.createLinearGradient(0, 0, 0, HZ);
+  sk.addColorStop(0, "rgba(2,3,10,0)"); sk.addColorStop(1, rgba(mix([10, 8, 40], accent, 0.18), 0.9));
+  ctx.fillStyle = sk; ctx.fillRect(0, 0, W, HZ);
+  // 星空（随视角轻微视差）
+  for (const s of STARS) {
+    const x = ((s[0] * W * 1.3 - ay * W * 0.05) % (W * 1.3) + W * 1.3) % (W * 1.3) - W * 0.15, y = s[1] * (HZ - 20);
+    const a = (0.15 + 0.55 * s[2]) * (0.55 + 0.45 * Math.sin(t * (0.6 + s[3] * 2) + s[3] * 40)) * (1 - s[1] * 0.6);
+    ctx.fillStyle = rgba(s[3] > 0.85 ? C.cyan : C.white, a);
+    const z = s[2] > 0.93 ? 1.8 : 1; ctx.fillRect(x, y, z, z);
+  }
+  // 远处漂浮的巨型线框方块
+  ctx.globalCompositeOperation = "lighter"; ctx.lineWidth = 1;
+  for (const m of MONO) {
+    const c = add(m.p, [0, Math.sin(t * 0.3 + m.ph) * 0.25, 0]), a = m.ph + t * m.sp;
+    const V = [];
+    for (let k = 0; k < 8; k++) {
+      const v = rX(rY([(k & 1 ? 1 : -1) * m.s, (k & 2 ? 1 : -1) * m.s, (k & 4 ? 1 : -1) * m.s], a), a * 0.6);
+      V.push(fp(c[0] + v[0], c[1] + v[1], c[2] + v[2]));
+    }
+    if (V.some(v => !v)) continue;
+    const mx0 = V.reduce((s, v) => s + v[0], 0) / 8, fa = mobile ? 1 : clamp((W * 0.84 - mx0) / (W * 0.1)) * clamp((mx0 - W * 0.3) / (W * 0.1));
+    if (fa < 0.02) continue;
+    ctx.beginPath();
+    for (const [p, q] of [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]]) { ctx.moveTo(V[p][0], V[p][1]); ctx.lineTo(V[q][0], V[q][1]); }
+    ctx.strokeStyle = rgba(mix(accent, C.violet, 0.5), 0.16 * fa); ctx.stroke();
+  }
+  // 两层天际线（远层慢、近层快）
+  ctx.globalCompositeOperation = "source-over";
+  const { PW, hh } = SKY;
+  SKY.L.forEach((cv, L) => {
+    const ox = ((-ay * W * (L ? 0.26 : 0.13) + (L ? 0 : PW * 0.37)) % PW + PW) % PW;
+    ctx.globalAlpha = L ? 0.9 : 0.55;
+    ctx.drawImage(cv, -ox, HZ - hh, PW, hh); ctx.drawImage(cv, PW - ox, HZ - hh, PW, hh);
+  });
+  ctx.globalAlpha = 1;
+  // 地面底色
+  const gb = ctx.createLinearGradient(0, HZ, 0, H);
+  gb.addColorStop(0, "#050716"); gb.addColorStop(1, "#02030a");
+  ctx.fillStyle = gb; ctx.fillRect(0, HZ, W, H - HZ);
+  // 透视网格（世界坐标，跟随拖拽旋转）
+  ctx.globalCompositeOperation = "lighter";
+  const cell = 0.6, NL = 26, RR = NL * cell;
+  const line = (a, b) => {
+    let A = [a[0] * cy + a[1] * sy, -a[0] * sy + a[1] * cy + DIST], Bq = [b[0] * cy + b[1] * sy, -b[0] * sy + b[1] * cy + DIST];
+    if (A[1] < 0.35 && Bq[1] < 0.35) return;
+    if (A[1] < 0.35 || Bq[1] < 0.35) { const k = (0.35 - A[1]) / (Bq[1] - A[1]), P = [A[0] + (Bq[0] - A[0]) * k, 0.35]; if (A[1] < 0.35) A = P; else Bq = P; }
+    ctx.moveTo(CX + A[0] * FOC / A[1], HZ + camH * FOC / A[1]); ctx.lineTo(CX + Bq[0] * FOC / Bq[1], HZ + camH * FOC / Bq[1]);
+  };
+  ctx.beginPath();
+  for (let i = -NL; i <= NL; i++) { line([i * cell, -RR], [i * cell, RR]); line([-RR, i * cell], [RR, i * cell]); }
+  const gg = ctx.createLinearGradient(0, HZ, 0, H);
+  gg.addColorStop(0, rgba(accent, 0)); gg.addColorStop(0.3, rgba(accent, 0.12)); gg.addColorStop(1, rgba(accent, 0.3));
+  ctx.strokeStyle = gg; ctx.lineWidth = 1; ctx.stroke();
+  // 地砖：从脚下扩散的涟漪 + 零星闪烁
+  const r0 = (t * 0.9) % 8, wA = 1 - r0 / 8;
+  for (let i = -12; i < 12; i++) for (let j = -12; j < 12; j++) {
+    const cx0 = (i + 0.5) * cell, cz0 = (j + 0.5) * cell, d = Math.hypot(cx0, cz0);
+    const h = Math.abs(Math.sin(i * 127.1 + j * 311.7) * 43758.5) % 1;
+    let b = Math.exp(-(((d - r0) / 0.45) ** 2)) * wA * 0.8;
+    if (h > 0.94) b += Math.max(0, Math.sin(t * (0.8 + h) + h * 60)) ** 6 * 0.9;
+    if (b < 0.04) continue;
+    const q = [[0, 0], [1, 0], [1, 1], [0, 1]].map(([u, v]) => fp(i * cell + u * cell, -1.25, j * cell + v * cell));
+    if (q.some(v => !v)) continue;
+    ctx.beginPath(); ctx.moveTo(q[0][0], q[0][1]); for (let k = 1; k < 4; k++) ctx.lineTo(q[k][0], q[k][1]); ctx.closePath();
+    ctx.fillStyle = rgba(h > 0.97 ? C.magenta : accent, 0.13 * b); ctx.fill();
+    ctx.strokeStyle = rgba(mix(accent, C.white, 0.4), 0.4 * b); ctx.stroke();
+  }
+  // 脚下的接地光斑
+  ctx.save(); ctx.translate(CX, floorY); ctx.scale(1, 0.22);
+  const cg = ctx.createRadialGradient(0, 0, 0, 0, 0, FOC * 0.42);
+  cg.addColorStop(0, rgba(accent, 0.16)); cg.addColorStop(1, rgba(accent, 0));
+  ctx.fillStyle = cg; ctx.fillRect(-FOC * 0.42, -FOC * 0.42, FOC * 0.84, FOC * 0.84); ctx.restore();
+  // 地平线雾 + 光线
+  ctx.globalCompositeOperation = "source-over";
+  const fog = ctx.createLinearGradient(0, HZ - 30, 0, HZ + (floorY - HZ) * 0.45);
+  fog.addColorStop(0, "rgba(5,7,22,0)"); fog.addColorStop(0.35, "rgba(5,7,22,0.85)"); fog.addColorStop(1, "rgba(5,7,22,0)");
+  ctx.fillStyle = fog; ctx.fillRect(0, HZ - 30, W, (floorY - HZ) * 0.45 + 30);
+  ctx.globalCompositeOperation = "lighter";
+  const hg = ctx.createLinearGradient(0, HZ - 50, 0, HZ + 24);
+  hg.addColorStop(0, rgba(accent, 0)); hg.addColorStop(0.68, rgba(accent, 0.13)); hg.addColorStop(1, rgba(accent, 0));
+  ctx.fillStyle = hg; ctx.fillRect(0, HZ - 50, W, 74);
+  const hl = ctx.createLinearGradient(0, 0, W, 0);
+  hl.addColorStop(0, rgba(accent, 0)); hl.addColorStop(CX / W, rgba(mix(accent, C.white, 0.3), 0.5)); hl.addColorStop(1, rgba(accent, 0));
+  ctx.fillStyle = hl; ctx.fillRect(0, HZ, W, 1);
+  // 左侧文案区压暗，保证可读性
+  ctx.globalCompositeOperation = "source-over";
+  if (!mobile) {
+    const lv = ctx.createLinearGradient(0, 0, W * 0.48, 0);
+    lv.addColorStop(0, "rgba(2,3,10,0.78)"); lv.addColorStop(1, "rgba(2,3,10,0)");
+    ctx.fillStyle = lv; ctx.fillRect(0, 0, W * 0.48, H);
+    const rv = ctx.createLinearGradient(W * 0.78, 0, W, 0);
+    rv.addColorStop(0, "rgba(2,3,10,0)"); rv.addColorStop(1, "rgba(2,3,10,0.6)");
+    ctx.fillStyle = rv; ctx.fillRect(W * 0.78, 0, W * 0.22, H);
+  }
+}
+
+let fpsAcc = 0, fpsN = 0, lastFrame = performance.now();
+function frame(nowMs = performance.now()) {
+  animationId = 0; if (document.hidden) return;
+  const elapsedPaint = nowMs - lastPaint;
+  if (!forcePaint && !motionQuery.matches && elapsedPaint + 0.5 < frameInterval) { requestFrame(); return; }
+  forcePaint = false; lastPaint = nowMs - (elapsedPaint % frameInterval);
+  const dt = Math.max(0, nowMs - lastFrame); lastFrame = nowMs;
+  fpsAcc += dt; fpsN++;
+  if (fpsAcc > 500) { document.getElementById("rFps").textContent = Math.round(1000 / (fpsAcc / fpsN)); fpsAcc = fpsN = 0; }
+
+  const t = motionQuery.matches ? tStart + DUR : now(), f = FORMS[cur];
+  if (!motionQuery.matches && t - holdStart > HOLD) goTo(cur + 1);
+  const P = (t - tStart) / DUR;
+  bars[cur].style.width = clamp((t - holdStart) / HOLD) * 100 + "%";
+
+  smx += (mx - smx) * 0.05; smy += (my - smy) * 0.05;
+  if (!drag) { vyaw *= 0.94; vpitch *= 0.94; pitch *= 0.985; }
+  yaw += vyaw; pitch = clamp(pitch + vpitch, -1.2, 1.2);
+  const ay = yaw + smx * 0.6, axp = pitch + smy * 0.3 - 0.08;
+  cyw = Math.cos(ay); syw = Math.sin(ay); cp = Math.cos(axp); sp = Math.sin(axp);
+
+  // 目标几何
+  bn = 0; f.build(t);
+  const map = f.map, ghost = f.ghost;
+  if (needDelays) {
+    needDelays = false;
+    const mode = Math.floor(Math.random() * 3); let lo = 1e9, hi = -1e9; const val = new Float32Array(B);
+    for (let i = 0; i < B; i++) { const o = map[i] * 3, x = BC[o], y = BC[o + 1], z = BC[o + 2]; val[i] = mode === 0 ? -y : mode === 1 ? x : Math.hypot(x, y, z); lo = Math.min(lo, val[i]); hi = Math.max(hi, val[i]); }
+    for (let i = 0; i < B; i++) delay[i] = (val[i] - lo) / (hi - lo || 1) * 0.42 + Math.random() * 0.08;
+  }
+  for (let i = 0; i < B; i++) {
+    const j = map[i], gh = ghost[i];
+    const ta = gh ? 0 : BA[j], tg = BG[j];
+    if (P < 1) {
+      const k = clamp((P - delay[i]) / 0.5), e = ease(k), b = Math.sin(Math.PI * k);
+      for (let q = 0; q < 3; q++) {
+        pc[i * 3 + q] = fc[i * 3 + q] + (BC[j * 3 + q] - fc[i * 3 + q]) * e + burst[i * 3 + q] * b;
+        ps[i * 3 + q] = fs[i * 3 + q] + ((gh ? 0 : BS[j * 3 + q]) - fs[i * 3 + q]) * e;
+        pcol[i * 3 + q] = fcol[i * 3 + q] + (BCOL[j * 3 + q] - fcol[i * 3 + q]) * e;
+      }
+      // 姿态插值 + 飞行中的翻滚，再正交化
+      let X = [0, 1, 2].map(q => fR[i * 9 + q] + (BR[j * 9 + q] - fR[i * 9 + q]) * e);
+      let Y = [0, 1, 2].map(q => fR[i * 9 + 3 + q] + (BR[j * 9 + 3 + q] - fR[i * 9 + 3 + q]) * e);
+      const roll = bspin[i] * b;
+      X = rZ(rX(X, roll), roll * .7); Y = rZ(rX(Y, roll), roll * .7);
+      const Bn = basis(Math.hypot(...X) < 1e-3 ? [1, 0, 0] : X, Y);
+      pR.set(Bn[0], i * 9); pR.set(Bn[1], i * 9 + 3); pR.set(Bn[2], i * 9 + 6);
+      pa[i] = fa[i] + (ta - fa[i]) * e; pg[i] = fg[i] + (tg - fg[i]) * e; pe[i] = fe[i] + (BE[j] - fe[i]) * e;
+      for (let q = i * 12, r = j * 12, m = q + 12; q < m; q++, r++) pq[q] = fq[q] + (BQ[r] - fq[q]) * e;
+      pkind[i] = e > 0.5 ? BK[j] : fkind[i];
+    } else {
+      pc.set(BC.subarray(j * 3, j * 3 + 3), i * 3);
+      if (gh) ps.fill(0, i * 3, i * 3 + 3); else ps.set(BS.subarray(j * 3, j * 3 + 3), i * 3);
+      pR.set(BR.subarray(j * 9, j * 9 + 9), i * 9);
+      pcol.set(BCOL.subarray(j * 3, j * 3 + 3), i * 3);
+      pa[i] = ta; pg[i] = tg; pe[i] = BE[j]; pkind[i] = BK[j]; pq.set(BQ.subarray(j * 12, j * 12 + 12), i * 12);
+    }
+  }
+
+  accent = mix(accent, f.accent, 0.04);
+  spread += (f.spread(t) - spread) * 0.05;
+  document.documentElement.style.setProperty("--accent", rgba(accent, 1));
+
+  /* ---------- 背景 ---------- */
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+  ctx.fillStyle = "#02030a"; ctx.fillRect(0, 0, W, H);
+  drawWorld(t, ay);
+  const Rr = Math.min(W, H) * (mobile ? 0.36 : 0.4);
+  const bgG = ctx.createRadialGradient(CX, CY, 0, CX, CY, Rr * 2.2);
+  bgG.addColorStop(0, rgba(accent, 0.1)); bgG.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = bgG; ctx.fillRect(0, 0, W, H);
+  drawHUD(t, Rr);
+
+  /* ---------- 场景 ---------- */
+  sx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  sx.clearRect(0, 0, W, H);
+  sx.lineJoin = "round";
+
+  // 环境尘埃
+  sx.globalCompositeOperation = "lighter";
+  for (const d of dust) {
+    const v = view(d[0] + Math.sin(t * 0.1 + d[3] * 9) * 0.1, d[1] + Math.sin(t * 0.13 + d[3] * 7) * 0.1, d[2]);
+    if (v[2] + DIST < 0.5) continue;
+    const s = proj(v);
+    sx.fillStyle = rgba(mix(accent, C.white, 0.5), (0.2 + 0.5 * Math.sin(t * 1.5 + d[3] * 20) ** 2) * clamp(s[2] / 300));
+    sx.fillRect(s[0], s[1], 1.3, 1.3);
+  }
+
+  // 轨道线（按形态淡入淡出）
+  FORMS.forEach((F, fi) => {
+    F.fade += ((fi === cur && P > 0.5 ? 1 : 0) - F.fade) * 0.04;
+    if (F.lines && F.fade > 0.01) drawLines(F.lines(t), F.fade, t);
+  });
+
+  // 方块：由远及近
+  let cnt = 0;
+  for (let i = 0; i < B; i++) {
+    if (pa[i] < 0.01 || ps[i * 3] + ps[i * 3 + 1] + ps[i * 3 + 2] < 0.004) continue;
+    depthArr[i] = view(pc[i * 3], pc[i * 3 + 1], pc[i * 3 + 2])[2];
+    order[cnt++] = i;
+  }
+  const ord = Array.from(order.subarray(0, cnt)).sort((a, b) => depthArr[b] - depthArr[a]);
+  for (const i of ord) drawBox(i);
+  flushPolyEdges();
+  document.getElementById("rTris").textContent = cnt;
+
+  // 点云粒子
+  sx.globalCompositeOperation = "lighter";
+  for (let p = 0; p < NP; p++) {
+    const i = pbox[p], u = pu[p * 3], v = pu[p * 3 + 1], w = pu[p * 3 + 2];
+    const s0 = ps[i * 3], s1 = ps[i * 3 + 1], s2 = ps[i * 3 + 2], r = i * 9;
+    let x = pc[i * 3] + pR[r] * s0 * u + pR[r + 3] * s1 * v + pR[r + 6] * s2 * w;
+    let y = pc[i * 3 + 1] + pR[r + 1] * s0 * u + pR[r + 4] * s1 * v + pR[r + 7] * s2 * w;
+    let z = pc[i * 3 + 2] + pR[r + 2] * s0 * u + pR[r + 5] * s1 * v + pR[r + 8] * s2 * w;
+    const k = 1 + po[p] * spread; x *= k; y *= k; z *= k;
+    const lr = 0.05 + pk[p] * 0.08;
+    px[p] += (x - px[p]) * lr; py[p] += (y - py[p]) * lr; pz[p] += (z - pz[p]) * lr;
+    const V = view(px[p], py[p], pz[p]); if (V[2] + DIST < 0.5) continue;
+    const S = proj(V);
+    let X = S[0], Y = S[1];
+    const dx = X - pointer.x, dy = Y - pointer.y, d2 = dx * dx + dy * dy;
+    if (d2 < 10000) { const d = Math.sqrt(d2) || 1, m = (1 - d2 / 10000) * 24; X += dx / d * m; Y += dy / d * m; }
+    const al = Math.max(pa[i], 0.12) * clamp((1.8 - V[2]) / 3, 0.1, 1) * (0.35 + po[p] * 0.5);
+    const col = pk[p] > 0.75 ? C.white : mix([pcol[i * 3], pcol[i * 3 + 1], pcol[i * 3 + 2]], C.white, 0.35);
+    sx.fillStyle = rgba(col, al);
+    const sz = Math.max(0.8, S[2] * 0.0028) * (pk[p] > 0.95 ? 1.8 : 1);
+    sx.fillRect(X - sz / 2, Y - sz / 2, sz, sz);
+  }
+
+  /* ---------- 泛光 + 地面倒影 ---------- */
+  ba.clearRect(0, 0, bloomA.width, bloomA.height); ba.drawImage(scene, 0, 0, bloomA.width, bloomA.height);
+  bb.clearRect(0, 0, bloomB.width, bloomB.height); bb.drawImage(bloomA, 0, 0, bloomB.width, bloomB.height);
+
+  const floorY = CY + 1.25 * FOC / DIST;
+  const fy = floorY / 4, rw = refl.width, rh = refl.height;
+  rc.globalCompositeOperation = "source-over";
+  rc.clearRect(0, 0, rw, rh);
+  rc.save(); rc.translate(0, fy * 2); rc.scale(1, -1.15);  // 镜像并略微拉长，模拟湿地面
+  rc.globalAlpha = 0.55; rc.drawImage(bloomA, 0, 0, rw, rh);
+  rc.globalAlpha = 0.5; rc.drawImage(bloomB, 0, 0, rw, rh);
+  rc.restore();
+  rc.globalAlpha = 1;
+  rc.globalCompositeOperation = "destination-in";
+  const rg = rc.createLinearGradient(0, fy, 0, rh);
+  rg.addColorStop(0, "rgba(0,0,0,1)"); rg.addColorStop(0.5, "rgba(0,0,0,0.3)"); rg.addColorStop(1, "rgba(0,0,0,0)");
+  rc.fillStyle = rg; rc.fillRect(0, 0, rw, rh);
+  rc.globalCompositeOperation = "destination-out"; rc.fillStyle = "#000"; rc.fillRect(0, 0, rw, fy);
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  // 地面光带
+  const fl = ctx.createLinearGradient(0, floorY * DPR, 0, H * DPR);
+  fl.addColorStop(0, rgba(accent, 0.07)); fl.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.fillStyle = fl; ctx.fillRect(0, floorY * DPR, W * DPR, (H - floorY) * DPR);
+  ctx.globalCompositeOperation = "lighter";
+  ctx.drawImage(refl, 0, 0, stage.width, stage.height);
+  ctx.globalAlpha = 0.9; ctx.drawImage(bloomB, 0, 0, stage.width, stage.height);
+  ctx.globalAlpha = 0.65; ctx.drawImage(bloomA, 0, 0, stage.width, stage.height);
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+  ctx.drawImage(scene, 0, 0);
+
+  if (!motionQuery.matches) requestFrame(); else document.getElementById("rFps").textContent = "—";
+}
+
+// 环绕的 HUD 圆环（淡）
+function drawHUD(t, R) {
+  ctx.save();
+  ctx.translate(CX, CY);
+  ctx.strokeStyle = rgba(accent, 0.1); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(0, 0, R * 1.22, 0, TAU); ctx.stroke();
+  ctx.rotate(t * 0.04);
+  for (let i = 0; i < 120; i++) {
+    const a = i / 120 * TAU, long = i % 10 === 0, r1 = R * 1.26, r2 = r1 + (long ? 10 : 4);
+    ctx.strokeStyle = rgba(accent, long ? 0.3 : 0.1);
+    ctx.beginPath(); ctx.moveTo(Math.cos(a) * r1, Math.sin(a) * r1); ctx.lineTo(Math.cos(a) * r2, Math.sin(a) * r2); ctx.stroke();
+  }
+  ctx.rotate(-t * 0.04);
+  ctx.lineWidth = 1.5;
+  for (let k = 0; k < 2; k++) {
+    const s = t * (0.25 + k * 0.15) * (k ? -1 : 1) + k * 2;
+    ctx.strokeStyle = rgba(k ? C.magenta : accent, 0.3);
+    ctx.beginPath(); ctx.arc(0, 0, R * (1.14 + k * 0.03), s, s + 0.6 + k * 0.3); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// 支持 ?form=1~5 直接定位到某个形态
+goTo(clamp((+new URLSearchParams(location.search).get("form") || 1) - 1, 0, FORMS.length - 1));
+requestFrame(true);
+
+</script>
+</body>
+</html>

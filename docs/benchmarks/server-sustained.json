@@ -1,0 +1,22 @@
+{
+  "method": "same-host generator for Nginx overhead; excludes public uplink, geography and device rendering",
+  "cpu_count": 4,
+  "rows": [
+    {
+      "concurrency": 100,
+      "requests": 3000,
+      "errors": 0,
+      "seconds": 30.001,
+      "requests_per_second": 100.0,
+      "p50_ms": 7.44,
+      "p95_ms": 12.32,
+      "max_ms": 15.38,
+      "body_bytes": 575362191,
+      "nginx_cpu_percent_one_core": 20.77,
+      "nginx_rss_sum_mib": 65.48,
+      "scenario": "mixed compressed HTML/catalog, largest WebP, 64KiB MP3 Range; new verified TLS HTTP/1.1 connections",
+      "scheduled_rate": 100,
+      "scheduled_seconds": 30
+    }
+  ]
+}

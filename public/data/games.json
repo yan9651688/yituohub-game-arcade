@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "games": [
+    {
+      "id": "fallen-frontier",
+      "title": "星陨前线",
+      "englishTitle": "FALLEN FRONTIER",
+      "category": "射击",
+      "description": "携双枪、驾驶战甲，争夺战场上的能源据点。",
+      "tags": [
+        "机甲",
+        "占点",
+        "人机对战"
+      ],
+      "url": "/games/fallen-frontier.html",
+      "preview": "/assets/previews/fallen-frontier.jpg"
+    },
+    {
+      "id": "iron-front",
+      "title": "智械前线",
+      "englishTitle": "IRON FRONT",
+      "category": "射击",
+      "description": "从三人小队走向重装军团，突破机器人防线。",
+      "tags": [
+        "机器人",
+        "小队",
+        "推进守线"
+      ],
+      "url": "/games/iron-front.html",
+      "preview": "/assets/previews/iron-front.jpg"
+    },
+    {
+      "id": "neon-swarm",
+      "title": "霓潮",
+      "englishTitle": "NEON SWARM",
+      "category": "生存",
+      "description": "守住最后的花园，收集强化，在敌潮中活下去。",
+      "tags": [
+        "生存",
+        "强化",
+        "自动攻击"
+      ],
+      "url": "/games/neon-swarm.html",
+      "preview": "/assets/previews/neon-swarm.jpg"
+    },
+    {
+      "id": "road-fury",
+      "title": "公路狂徒",
+      "englishTitle": "ROAD FURY",
+      "category": "竞速",
+      "description": "骑上摩托，冲过十二条公路，追上对手并肩出击。",
+      "tags": [
+        "摩托",
+        "竞速",
+        "战斗"
+      ],
+      "url": "/games/road-fury.html",
+      "preview": "/assets/previews/road-fury.jpg"
+    },
+    {
+      "id": "thunderwing",
+      "title": "雷霆战翼",
+      "englishTitle": "THUNDERWING",
+      "category": "射击",
+      "description": "穿越礁海、突破舰队，让一束脉冲进化为整片雷霆。",
+      "tags": [
+        "战机",
+        "飞行",
+        "升级"
+      ],
+      "url": "/games/thunderwing.html",
+      "preview": "/assets/previews/thunderwing.jpg"
+    }
+  ]
+}
