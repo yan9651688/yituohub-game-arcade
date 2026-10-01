@@ -100,5 +100,5 @@ for (const path of JSON.parse(fs.readFileSync(0, 'utf8'))) {
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--version", default="1.1.0")
+    parser.add_argument("--version", default="1.2.0")
     build(parser.parse_args().version)

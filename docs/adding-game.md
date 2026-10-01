@@ -23,7 +23,7 @@
 
 4. 同时更新 `public/games.html` 的 `<noscript>` 直链列表。正常入口由游戏库自动生成 `play.html?game=your-game`，无需为每款游戏复制加载页。
 5. 用 `python -m http.server 8080 --directory public` 本地检查。确认新条目、搜索与分类正常，加载页能进入游戏；电脑与触屏视口能开始、暂停，并通过右侧「游戏库」返回。鼠标锁定时先按 Esc。还要检查网络中断时的重试、取消，以及直接访问原游戏文件时的资源路径。
-6. 运行 `python scripts/build_release.py --version 1.1.0`，版本号按实际发布调整。构建检查 ID 唯一及游戏、封面文件存在，保持全部源文件路径与内容，生成 gzip 和可选 Brotli。Brotli 使用 Node.js 内置模块；未安装 Node 时仍可生成 gzip 包。
+6. 运行 `python scripts/build_release.py --version 1.2.0`，版本号按实际发布调整。构建检查 ID 唯一及游戏、封面文件存在，保持全部源文件路径与内容，生成 gzip 和可选 Brotli。Brotli 使用 Node.js 内置模块；未安装 Node 时仍可生成 gzip 包。
 7. 将 `dist/` 发布到静态服务器，先检查新版本再切换；保留上一版目录便于回滚。构建不会自动创建 GitHub 标签或发布线上服务。
 
 当前封面、JS、CSS 和第三方库使用固定路径。发布时使用可重验证的缓存策略，详见 [Nginx 部署说明](nginx.md)。如果以后引入内容指纹与长期缓存，需要同时更新所有资源引用。

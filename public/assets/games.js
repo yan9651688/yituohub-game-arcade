@@ -1,6 +1,18 @@
 /* Add a game here to publish it in the library and use the shared launch page. */
 window.ARCADE_GAMES = Object.freeze([
   {
+    id: "contra-2026",
+    title: "魂斗罗 2026",
+    en: "CONTRA 2026 · RE: FRONTLINE",
+    category: "动作射击",
+    tags: ["30条命", "八关战役", "双人同屏"],
+    description: "带上30条命重返战场。从丛林、纵深基地到异星巢穴，跑跳、趴下、切换五种火力，突破八道防线。",
+    controls: "WASD 移动 / 瞄准 · J 射击 · K / 空格 跳跃 · 手机触屏",
+    path: "game-arcade/games/contra-2026.html",
+    sizeBytes: 7374,
+    cover: "assets/covers/v2/contra-2026.png"
+  },
+  {
     id: "fallen-frontier",
     title: "星陨前线",
     en: "FALLEN FRONTIER",

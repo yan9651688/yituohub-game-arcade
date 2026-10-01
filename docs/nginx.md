@@ -1,6 +1,6 @@
 # 静态发布与缓存
 
-开发时可以直接用 Python 服务 `public/`。生产先运行 `python scripts/build_release.py --version 1.1.0`，发布生成的 `dist/`，版本号按实际发布调整。配置示例在 [deploy/nginx.conf](../deploy/nginx.conf)。
+开发时可以直接用 Python 服务 `public/`。生产先运行 `python scripts/build_release.py --version 1.2.0`，发布生成的 `dist/`，版本号按实际发布调整。配置示例在 [deploy/nginx.conf](../deploy/nginx.conf)。
 
 当前构建保持 `public/` 的目录与源文件内容，额外生成文本的压缩副本和 `version.json`。它不重写链接、不拆分游戏里的内嵌媒体，也不为资源添加内容指纹。游戏库和加载页共用 `assets/games.js`，原游戏、影片及 Three.js 位于 `game-arcade/` 下；发布时需要保留整个目录。
 

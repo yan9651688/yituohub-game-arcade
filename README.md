@@ -6,11 +6,11 @@
 
 **打开网页，挑一款游戏，免费开玩。**
 
-5 款小游戏 · AI 放映厅 · PC 与手机 · 无需登录
+6 款小游戏 · AI 放映厅 · PC 与手机 · 无需登录
 
 [![在线游玩](https://img.shields.io/badge/在线游玩-game.yituohub.com-05d9e8)](https://game.yituohub.com/)
 [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![游戏](https://img.shields.io/badge/小游戏-5款-ff2a6d)](#-游戏库)
+[![游戏](https://img.shields.io/badge/小游戏-6款-ff2a6d)](#-游戏库)
 [![纯静态](https://img.shields.io/badge/部署-纯静态-success)](#-本地运行)
 [![欢迎贡献](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-一起加新游戏)
 
@@ -35,7 +35,7 @@
 <table>
 <tr>
 <td width="50%" align="center"><img src="docs/assets/home-preview.png" width="100%" alt="NEON ARCADE 首页实机预览"><br><sub><b>霓虹首页 · 游戏库与 AI 放映厅</b></sub></td>
-<td width="50%" align="center"><img src="docs/assets/library-preview.png" width="100%" alt="五款小游戏的游戏库实机预览"><br><sub><b>游戏库 · 游戏封面、分类筛选与搜索</b></sub></td>
+<td width="50%" align="center"><img src="docs/assets/library-preview.png" width="100%" alt="六款小游戏的游戏库实机预览"><br><sub><b>游戏库 · 游戏封面、分类筛选与搜索</b></sub></td>
 </tr>
 </table>
 
@@ -43,6 +43,7 @@
 
 | 游戏 | 玩什么 |
 | --- | --- |
+| [魂斗罗 2026](https://game.yituohub.com/play.html?game=contra-2026) | 30 条命、八关战役、八向射击与双人同屏，支持手机触控 |
 | [星陨前线](https://game.yituohub.com/play.html?game=fallen-frontier) | 第三人称科幻占点战场，枪械与战甲作战 |
 | [智械前线](https://game.yituohub.com/play.html?game=iron-front) | 扩军、拾取军械与重装，突破机器人防线 |
 | [霓潮](https://game.yituohub.com/play.html?game=neon-swarm) | 在敌潮中生存，升级武器与技能，继续挑战无尽模式 |
@@ -50,6 +51,14 @@
 | [雷霆战翼](https://game.yituohub.com/play.html?game=thunderwing) | 驾驶战机穿越航线，拾取补给并升级火力 |
 
 游戏库与加载页共用 [游戏清单](public/assets/games.js)。新增游戏时，放入游戏文件与封面，再在 `ARCADE_GAMES` 中追加一条记录。具体步骤见 [添加游戏](docs/adding-game.md)。
+
+### 魂斗罗 2026
+
+![魂斗罗 2026 标题与实时战场](public/assets/covers/v2/contra-2026.png)
+
+以本站低多边形军工画风重新制作的八关跑跳射击游戏。丛林、两座纵深基地、瀑布、雪原、能源工厂、机库与异星巢穴各有独立地形和 Boss。默认 30 条命，过关继承余命；支持五种武器、趴下、检查点、暂停、键盘双人、手柄和手机触屏。
+
+经典模式一击倒下，协助模式提供三格装甲，硬核模式增加交火密度；三种难度都从 30 条命开始。关卡演练全部开放，可无限续战。八关主题与方向参照 FC 原作，关卡坐标与模型为重新制作，详细范围见[设计与操作说明](docs/contra-2026-design.md)。
 
 ## 🎬 千禧凝思
 
@@ -82,7 +91,7 @@ python -m http.server 8080 --directory public
 维护与本地预览使用 `public/`。构建生产发布文件时运行
 
 ```bash
-python scripts/build_release.py --version 1.1.0
+python scripts/build_release.py --version 1.2.0
 ```
 
 脚本检查游戏 ID、文件与封面路径，将 `public/` 按原目录复制到 `dist/`，并为文本生成 gzip 文件。电脑上有 Node.js 时，还会用内置模块生成 Brotli 文件。生产服务器发布 `dist/`，资源地址保持不变，缓存配置见 [部署说明](docs/nginx.md)。
@@ -100,7 +109,7 @@ public/
     covers/v2/         游戏封面
     mv/                放映厅封面
   game-arcade/
-    games/             五款游戏原页面
+    games/             六款游戏与独立模块
     film.html          千禧凝思影片
     vendor/three/      本地第三方库及其许可证
 design/

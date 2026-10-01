@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d2028">
+<title>魂斗罗 2026 · 重返战场</title>
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="contra2026/ui.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="world" aria-label="魂斗罗 2026 游戏画面"></canvas>
+  <div class="grain" aria-hidden="true"></div><div id="damage-flash" aria-hidden="true"></div>
+  <header class="topbar"><a class="brand" href="../../games.html" target="_top"><span class="brand-mark">N</span><span>NEON ARCADE<small>ORIGINAL REBUILD / 2026</small></span></a><div class="top-tools"><button id="sound-btn" class="icon-btn" title="开启或关闭声音" aria-label="开启或关闭声音">声音 开</button><button id="quality-btn" class="icon-btn" title="切换画质">画质 高</button><button id="fullscreen-btn" class="icon-btn" title="全屏" aria-label="全屏">⛶</button><button id="pause-btn" class="icon-btn" aria-label="暂停游戏" hidden>Ⅱ</button></div></header>
+  <section id="home" class="home overlay">
+    <div class="home-copy"><p class="eyebrow"><i></i> RUN. JUMP. NEVER SURRENDER.</p><h1>魂斗罗<span>2026</span></h1><div class="title-rule"><span>重 返 战 场</span><b>RE: FRONTLINE</b></div><p class="intro">从雨林的第一声枪响，<br>到异星心脏的最后一次脉搏。</p><div class="features"><span><strong>08</strong><small>战役关卡</small></span><span><strong>05</strong><small>武器形态</small></span><span><strong>02</strong><small>并肩作战</small></span></div>
+    <div class="loadout"><div class="choice-row"><span>作战模式</span><div id="difficulty-options" role="group" aria-label="作战难度"><button data-difficulty="assist">协助</button><button data-difficulty="classic" class="selected">经典</button><button data-difficulty="veteran">硬核</button></div></div><p id="difficulty-note">一击倒下 · 30 条生命 · 检查点继续</p><div class="choice-row"><span>出击人数</span><div id="player-options" role="group" aria-label="出击人数"><button data-players="1" class="selected">单人行动</button><button data-players="2">双人同屏</button></div></div></div>
+    <div class="launch-row"><button id="start-btn" class="primary"><span>开始战役</span><b>↗</b></button><button id="stages-btn" class="secondary">关卡演练</button></div><button id="continue-btn" class="continue-btn" hidden>继续上次战役 <span>→</span></button><p class="keyboard-help"><kbd>A D</kbd> 移动 <kbd>W S</kbd> 瞄准 / 趴下 <kbd>J</kbd> 射击 <kbd>K / 空格</kbd> 跳跃</p><p class="mobile-help">左侧摇杆移动与瞄准 · 右侧射击与跳跃 · 建议横屏</p></div>
+    <div class="scene-caption"><span class="live-dot"></span> LIVE BATTLEFIELD <b id="scene-name">雨林登陆</b><small>低多边形战场 · 实时演算</small></div><footer class="home-footer"><span>致敬经典 · 独立制作</span><span id="best-label">BEST 000000</span><a href="../../games.html" target="_top">返回游戏库 ↗</a></footer>
+  </section>
+  <div id="hud" hidden><div class="mission"><span id="sector-number">SECTOR 01 / 08</span><h2 id="mission-name">雨林登陆</h2><p id="mission-objective">突破前沿阵地</p><div class="progress"><i id="mission-progress"></i></div></div><div class="score-panel"><span>SCORE</span><strong id="score">000000</strong><small id="lives">余命 × 30</small></div><div class="player-status" id="player-status"></div><div class="weapon-panel"><span id="weapon-letter">N</span><div><small>当前装备</small><strong id="weapon-name">制式步枪</strong></div><em id="training-label" hidden>演练 · 无限续战</em></div><div class="play-hint" id="play-hint">J 持续射击 · K 跳跃 · S 趴下 · Esc 暂停</div><div id="boss-hud" hidden><div><span>WARNING / BOSS</span><b id="boss-name"></b><small id="boss-percent">100%</small></div><div class="boss-track"><i id="boss-bar"></i></div></div></div>
+  <div id="toast" role="status" aria-live="polite" hidden><span id="toast-kicker"></span><strong id="toast-text"></strong></div>
+  <div id="touch-controls" hidden><div id="joystick" aria-label="移动和八向瞄准"><span class="joy-cross"></span><i id="joy-stick"></i><b>MOVE / AIM</b></div><div class="touch-actions"><button id="touch-jump" aria-label="跳跃"><span>↟</span>跳跃</button><button id="touch-fire" aria-label="按住射击"><span>⌖</span>射击</button></div></div>
+  <section id="stage-select" class="modal-screen" role="dialog" aria-modal="true" aria-labelledby="stage-title" hidden><div class="stage-panel"><p class="eyebrow">FIELD TRAINING / 08 SECTORS</p><div class="modal-heading"><h2 id="stage-title">选择你的战场</h2><button id="stage-close" class="icon-btn" aria-label="关闭选关">×</button></div><p class="muted">八关全部开放。演练可无限续战，不计入最高纪录。</p><div id="stage-grid"></div><div class="training-footer"><span>横版突击 / 纵深基地 / 垂直攀登</span><span>选择关卡，立即出击 ↗</span></div></div></section>
+  <section id="pause-screen" class="modal-screen" role="dialog" aria-modal="true" aria-labelledby="pause-title" hidden><div class="dialog"><p class="eyebrow">MISSION SUSPENDED</p><h2 id="pause-title">战场，等你回来。</h2><p class="muted">呼吸一下。下一步，继续前进。</p><div class="controls-note"><p>1P　WASD 移动 / 瞄准　J 射击　K / 空格 跳跃</p><p>2P　方向键移动 / 瞄准　小键盘 1 射击　小键盘 2 跳跃</p><p>手柄　左摇杆移动　A 跳跃　X / RT 射击　Start 暂停</p><p>基地关　左右移动，瞄准墙面核心；击毁全部核心后前进。</p></div><div class="dialog-actions"><button id="resume-btn" class="primary">继续行动 <b>→</b></button><button id="retry-pause" class="secondary">重新挑战本关</button><button id="home-pause" class="text-button">返回标题</button><a href="../../games.html" target="_top">返回游戏库 ↗</a></div></div></section>
+  <section id="result-screen" class="modal-screen" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden><div class="dialog result"><p class="eyebrow" id="result-eyebrow">SECTOR SECURED</p><h2 id="result-title">防线，已突破。</h2><p class="muted" id="result-copy"></p><div class="result-stats"><div><b id="result-score">0</b><small>作战得分</small></div><div><b id="result-kills">0</b><small>击破目标</small></div><div><b id="result-time">00:00</b><small>行动时间</small></div></div><div class="dialog-actions"><button id="result-action" class="primary">下一战场 <b>→</b></button><button id="result-stages" class="secondary">关卡演练</button><button id="result-home" class="text-button">返回标题</button></div></div></section>
+  <div id="loading" class="boot-screen"><span class="boot-symbol">N</span><b>正在构建战场</b><small>PREPARING THE FRONTLINE</small></div>
+  <div id="fatal" hidden><h2>战场暂时无法启动</h2><p id="fatal-message"></p><button onclick="location.reload()">重新加载</button><a href="../../games.html" target="_top">返回游戏库</a></div>
+</div>
+<script type="module" src="contra2026/main.js"></script>
+</body>
+</html>
