@@ -1,0 +1,1097 @@
+{
+  "files": 109,
+  "totalBytes": 5885822,
+  "originalBytes": 24509662,
+  "records": [
+    {
+      "source": "assets/sprites/buildings/airDefense.png",
+      "file": "assets/sprites/buildings/airDefense.webp",
+      "width": 314,
+      "height": 267,
+      "alpha": true,
+      "bytes": 44960,
+      "originalBytes": 156333,
+      "sha256": "a1db6f9a3cc84d9b506edb28c3297a0b278e74ffcaf441aa631dcfabe3a0055c"
+    },
+    {
+      "source": "assets/sprites/buildings/airfield.png",
+      "file": "assets/sprites/buildings/airfield.webp",
+      "width": 313,
+      "height": 251,
+      "alpha": true,
+      "bytes": 40874,
+      "originalBytes": 150354,
+      "sha256": "37914f314122eb32d383c519a6df31594a32bccfc114ce4954dd1870efd64cc3"
+    },
+    {
+      "source": "assets/sprites/buildings/barracks.png",
+      "file": "assets/sprites/buildings/barracks.webp",
+      "width": 311,
+      "height": 203,
+      "alpha": true,
+      "bytes": 38934,
+      "originalBytes": 140264,
+      "sha256": "95114827ed00bd813815496b2c18048ef0d35e95d4a547d6ee40189fae1865ac"
+    },
+    {
+      "source": "assets/sprites/buildings/constructionYard.png",
+      "file": "assets/sprites/buildings/constructionYard.webp",
+      "width": 310,
+      "height": 240,
+      "alpha": true,
+      "bytes": 46526,
+      "originalBytes": 160969,
+      "sha256": "2bbc156bd04bf0ecd4832bb1c92ef1eefac3d75af02c9ea5335efe4d8a44c595"
+    },
+    {
+      "source": "assets/sprites/buildings/defenseTower.png",
+      "file": "assets/sprites/buildings/defenseTower.webp",
+      "width": 291,
+      "height": 323,
+      "alpha": true,
+      "bytes": 42914,
+      "originalBytes": 150873,
+      "sha256": "af6bafa71ca406f73fe731e67e375214341da06ee14a9ce6d14b2a03314afa26"
+    },
+    {
+      "source": "assets/sprites/buildings/hospital.png",
+      "file": "assets/sprites/buildings/hospital.webp",
+      "width": 317,
+      "height": 228,
+      "alpha": true,
+      "bytes": 37276,
+      "originalBytes": 143938,
+      "sha256": "cd0e11afc9aef687f45c9c4f8f634e1df5c85f490d117a221ede1d86fc766a5d"
+    },
+    {
+      "source": "assets/sprites/buildings/oilDerrick.png",
+      "file": "assets/sprites/buildings/oilDerrick.webp",
+      "width": 316,
+      "height": 319,
+      "alpha": true,
+      "bytes": 50636,
+      "originalBytes": 165267,
+      "sha256": "10161bacf0c19798c1f5a00dc00abc8b38d7b17c0fd8e6fb718af73bddc3f9a8"
+    },
+    {
+      "source": "assets/sprites/buildings/pillbox.png",
+      "file": "assets/sprites/buildings/pillbox.webp",
+      "width": 292,
+      "height": 238,
+      "alpha": true,
+      "bytes": 32042,
+      "originalBytes": 113899,
+      "sha256": "3ba28606ecbc98b15c659bf58a68d28b6aa24b4b2bf03c723124b3c4a731a310"
+    },
+    {
+      "source": "assets/sprites/buildings/powerPlant.png",
+      "file": "assets/sprites/buildings/powerPlant.webp",
+      "width": 304,
+      "height": 284,
+      "alpha": true,
+      "bytes": 41026,
+      "originalBytes": 155442,
+      "sha256": "1200b81fd3cc180db73906acf83c2494cd35a3c60ed7c9a13cc96b89a47d2b59"
+    },
+    {
+      "source": "assets/sprites/buildings/radar.png",
+      "file": "assets/sprites/buildings/radar.webp",
+      "width": 267,
+      "height": 275,
+      "alpha": true,
+      "bytes": 41264,
+      "originalBytes": 142670,
+      "sha256": "48dd98b3c74b3f7c411ea82ddd7834114e8b5e0bcd370b26666b89921e8a9ddc"
+    },
+    {
+      "source": "assets/sprites/buildings/refinery.png",
+      "file": "assets/sprites/buildings/refinery.webp",
+      "width": 308,
+      "height": 240,
+      "alpha": true,
+      "bytes": 43692,
+      "originalBytes": 161982,
+      "sha256": "daf1ea12c486d04089eba1f1085cb9385719d4504ddbd773b747dffca56ab666"
+    },
+    {
+      "source": "assets/sprites/buildings/repairDepot.png",
+      "file": "assets/sprites/buildings/repairDepot.webp",
+      "width": 305,
+      "height": 238,
+      "alpha": true,
+      "bytes": 40178,
+      "originalBytes": 152814,
+      "sha256": "351503b1607b06a6244aa2240486a2f310afdedc60b8bacca9a6a57d2803fde6"
+    },
+    {
+      "source": "assets/sprites/buildings/shipyard.png",
+      "file": "assets/sprites/buildings/shipyard.webp",
+      "width": 317,
+      "height": 279,
+      "alpha": true,
+      "bytes": 54788,
+      "originalBytes": 189809,
+      "sha256": "61a17957434e6fe0720d47dc41937865ec3422aab3e7c96174f5282198453642"
+    },
+    {
+      "source": "assets/sprites/buildings/superweapon.png",
+      "file": "assets/sprites/buildings/superweapon.webp",
+      "width": 326,
+      "height": 247,
+      "alpha": true,
+      "bytes": 47344,
+      "originalBytes": 191083,
+      "sha256": "7c12719c1f9a7cb80212790dd539c6dcccc5e8cee17d8569f59ffc953d6866b0"
+    },
+    {
+      "source": "assets/sprites/buildings/techLab.png",
+      "file": "assets/sprites/buildings/techLab.webp",
+      "width": 311,
+      "height": 279,
+      "alpha": true,
+      "bytes": 41506,
+      "originalBytes": 156591,
+      "sha256": "87d3b48861fd1cc9b91c2eb51987c60984c53f0b3d58cd1720a459681acca5a4"
+    },
+    {
+      "source": "assets/sprites/buildings/warFactory.png",
+      "file": "assets/sprites/buildings/warFactory.webp",
+      "width": 339,
+      "height": 283,
+      "alpha": true,
+      "bytes": 48072,
+      "originalBytes": 196256,
+      "sha256": "d117c617a3648b2ee1c18b746980b4d7a9b303c50676aceb44750df6292e786e"
+    },
+    {
+      "source": "assets/sprites/units/antiAir-0.png",
+      "file": "assets/sprites/units/antiAir-0.webp",
+      "width": 283,
+      "height": 284,
+      "alpha": true,
+      "bytes": 42270,
+      "originalBytes": 157229,
+      "sha256": "3ac022eb7bf231e6c50046d19696a8aeb1e40bc3a7033e50a35b37bf705cf5e0"
+    },
+    {
+      "source": "assets/sprites/units/antiAir-1.png",
+      "file": "assets/sprites/units/antiAir-1.webp",
+      "width": 281,
+      "height": 282,
+      "alpha": true,
+      "bytes": 42040,
+      "originalBytes": 156171,
+      "sha256": "d869a7679ccd050a5c38d993b49be6cf4ce9a7d74d1b816165eddd127c1a7c2e"
+    },
+    {
+      "source": "assets/sprites/units/antiAir-2.png",
+      "file": "assets/sprites/units/antiAir-2.webp",
+      "width": 274,
+      "height": 267,
+      "alpha": true,
+      "bytes": 40416,
+      "originalBytes": 146054,
+      "sha256": "3dbb2165492ca095c917aa19df5b16aa2552a7f0cdb0c175346f1f823c31db3a"
+    },
+    {
+      "source": "assets/sprites/units/antiAir-3.png",
+      "file": "assets/sprites/units/antiAir-3.webp",
+      "width": 279,
+      "height": 277,
+      "alpha": true,
+      "bytes": 41832,
+      "originalBytes": 150623,
+      "sha256": "4cb3ea47dca7a89ebaea9ddc2f3b55544e846b477f2fa59e8afc6caa1a72f426"
+    },
+    {
+      "source": "assets/sprites/units/apc-0.png",
+      "file": "assets/sprites/units/apc-0.webp",
+      "width": 266,
+      "height": 246,
+      "alpha": true,
+      "bytes": 33160,
+      "originalBytes": 126067,
+      "sha256": "22fac6241d7472ce0c09ad9a71dd472d18eeedf553b9bf7a18393579eab431fb"
+    },
+    {
+      "source": "assets/sprites/units/apc-1.png",
+      "file": "assets/sprites/units/apc-1.webp",
+      "width": 272,
+      "height": 243,
+      "alpha": true,
+      "bytes": 34438,
+      "originalBytes": 127625,
+      "sha256": "2b764fa16f3c8d8df5a2238c8935533a123c2a8a8d3698d62089a7159f6331ed"
+    },
+    {
+      "source": "assets/sprites/units/apc-2.png",
+      "file": "assets/sprites/units/apc-2.webp",
+      "width": 267,
+      "height": 224,
+      "alpha": true,
+      "bytes": 32758,
+      "originalBytes": 121480,
+      "sha256": "369e101e84b2f6a3cdad26d26163bf9b516884e150e445f2cb1c4a84b4b526dd"
+    },
+    {
+      "source": "assets/sprites/units/apc-3.png",
+      "file": "assets/sprites/units/apc-3.webp",
+      "width": 257,
+      "height": 233,
+      "alpha": true,
+      "bytes": 31674,
+      "originalBytes": 118563,
+      "sha256": "1124fd23d65f2108694537f21679c6da7839cb4ec3fcc63c1bd31a5d4342edc4"
+    },
+    {
+      "source": "assets/sprites/units/artillery-0.png",
+      "file": "assets/sprites/units/artillery-0.webp",
+      "width": 294,
+      "height": 295,
+      "alpha": true,
+      "bytes": 46332,
+      "originalBytes": 173786,
+      "sha256": "24876e7c33dc77fb9e2d8f5f1481c089d9b9b180849070365c6ba3c6596bf0a6"
+    },
+    {
+      "source": "assets/sprites/units/artillery-1.png",
+      "file": "assets/sprites/units/artillery-1.webp",
+      "width": 282,
+      "height": 285,
+      "alpha": true,
+      "bytes": 43520,
+      "originalBytes": 160477,
+      "sha256": "50bac2c2739176277c8bddfcf2a82fe4cd6cd73d2693a86779a981a8bf755c91"
+    },
+    {
+      "source": "assets/sprites/units/artillery-2.png",
+      "file": "assets/sprites/units/artillery-2.webp",
+      "width": 287,
+      "height": 314,
+      "alpha": true,
+      "bytes": 45058,
+      "originalBytes": 165604,
+      "sha256": "e98f08002a93ce331410521be18bbb46d76414d9a9b7d45bf3c275b0358bdee9"
+    },
+    {
+      "source": "assets/sprites/units/artillery-3.png",
+      "file": "assets/sprites/units/artillery-3.webp",
+      "width": 290,
+      "height": 318,
+      "alpha": true,
+      "bytes": 43642,
+      "originalBytes": 161968,
+      "sha256": "522148b09fadce9eb4d71edf0a7d7ae1ec3cc8be0069b5571dc2d3e0a6b9e23e"
+    },
+    {
+      "source": "assets/sprites/units/destroyer-0.png",
+      "file": "assets/sprites/units/destroyer-0.webp",
+      "width": 270,
+      "height": 247,
+      "alpha": true,
+      "bytes": 26798,
+      "originalBytes": 94180,
+      "sha256": "3efaf885e6e72e25e281bdc7f9c7142189673f0485009e209c25a91caa722783"
+    },
+    {
+      "source": "assets/sprites/units/destroyer-1.png",
+      "file": "assets/sprites/units/destroyer-1.webp",
+      "width": 272,
+      "height": 245,
+      "alpha": true,
+      "bytes": 28114,
+      "originalBytes": 96031,
+      "sha256": "7b761348e77264d1c1dcd357246e16450c01f50ede128510cf961958b3a4d5f7"
+    },
+    {
+      "source": "assets/sprites/units/destroyer-2.png",
+      "file": "assets/sprites/units/destroyer-2.webp",
+      "width": 259,
+      "height": 245,
+      "alpha": true,
+      "bytes": 26660,
+      "originalBytes": 87224,
+      "sha256": "6c098fc765992987d509edc707aca4b29eff2a44d3cbb0889f2f50a93d8f0129"
+    },
+    {
+      "source": "assets/sprites/units/destroyer-3.png",
+      "file": "assets/sprites/units/destroyer-3.webp",
+      "width": 259,
+      "height": 240,
+      "alpha": true,
+      "bytes": 28700,
+      "originalBytes": 97621,
+      "sha256": "2c61043d579eab0a86cfc1ef571f8441e59d14cc5581a8709b9ef4354fd74313"
+    },
+    {
+      "source": "assets/sprites/units/dog-0.png",
+      "file": "assets/sprites/units/dog-0.webp",
+      "width": 238,
+      "height": 233,
+      "alpha": true,
+      "bytes": 30620,
+      "originalBytes": 104884,
+      "sha256": "7c78ebf6327a56227c3388667ff93c640632c2258d9e431622d496c2a10310ee"
+    },
+    {
+      "source": "assets/sprites/units/dog-1.png",
+      "file": "assets/sprites/units/dog-1.webp",
+      "width": 212,
+      "height": 228,
+      "alpha": true,
+      "bytes": 27786,
+      "originalBytes": 96397,
+      "sha256": "219c26cecd08e755f1dc7ab331a1dfca1a4ad643739e1b35fd225e514469ce7a"
+    },
+    {
+      "source": "assets/sprites/units/dog-2.png",
+      "file": "assets/sprites/units/dog-2.webp",
+      "width": 186,
+      "height": 259,
+      "alpha": true,
+      "bytes": 27626,
+      "originalBytes": 92089,
+      "sha256": "445bd85e0c81c82752a0e4d7fa61b7e3d875cdfa0e0a26cc2b20e239f538a8c3"
+    },
+    {
+      "source": "assets/sprites/units/dog-3.png",
+      "file": "assets/sprites/units/dog-3.webp",
+      "width": 209,
+      "height": 257,
+      "alpha": true,
+      "bytes": 29048,
+      "originalBytes": 98693,
+      "sha256": "b9a84ee8b38ec2564eab8025effb0ec5051184bc9d5d025e75c8b57cb9c19a8d"
+    },
+    {
+      "source": "assets/sprites/units/engineer-0.png",
+      "file": "assets/sprites/units/engineer-0.webp",
+      "width": 179,
+      "height": 300,
+      "alpha": true,
+      "bytes": 36168,
+      "originalBytes": 121786,
+      "sha256": "ed7bc0dfe76eae0af19fd8b087749e5d4677e258209191d628cddafcbb348e48"
+    },
+    {
+      "source": "assets/sprites/units/engineer-1.png",
+      "file": "assets/sprites/units/engineer-1.webp",
+      "width": 182,
+      "height": 302,
+      "alpha": true,
+      "bytes": 36842,
+      "originalBytes": 119985,
+      "sha256": "dc57b1df26bf2fbd15666ad92cb59a2a43f3613051613600be9fd3d580979867"
+    },
+    {
+      "source": "assets/sprites/units/engineer-2.png",
+      "file": "assets/sprites/units/engineer-2.webp",
+      "width": 177,
+      "height": 306,
+      "alpha": true,
+      "bytes": 35578,
+      "originalBytes": 116438,
+      "sha256": "464b134fdfe67a07b1f468b637d00d90eaa902931f31e16cad464adba9306a7e"
+    },
+    {
+      "source": "assets/sprites/units/engineer-3.png",
+      "file": "assets/sprites/units/engineer-3.webp",
+      "width": 170,
+      "height": 308,
+      "alpha": true,
+      "bytes": 34152,
+      "originalBytes": 113862,
+      "sha256": "1ef92c16eef6b6a86bbea962c25a0f76496e83a269af63ad9b256e712fc7f37d"
+    },
+    {
+      "source": "assets/sprites/units/fighter-0.png",
+      "file": "assets/sprites/units/fighter-0.webp",
+      "width": 251,
+      "height": 207,
+      "alpha": true,
+      "bytes": 34166,
+      "originalBytes": 100556,
+      "sha256": "d03438f1757df26fa29aaec3852bd6de99f907084b1a2b2160d097846937f88f"
+    },
+    {
+      "source": "assets/sprites/units/fighter-1.png",
+      "file": "assets/sprites/units/fighter-1.webp",
+      "width": 264,
+      "height": 197,
+      "alpha": true,
+      "bytes": 32788,
+      "originalBytes": 99708,
+      "sha256": "8c683613f1b8b6600ebc09e72f8ea50b273ee80f89dc7255c0fe4c849b4dec50"
+    },
+    {
+      "source": "assets/sprites/units/fighter-2.png",
+      "file": "assets/sprites/units/fighter-2.webp",
+      "width": 243,
+      "height": 181,
+      "alpha": true,
+      "bytes": 30642,
+      "originalBytes": 94128,
+      "sha256": "e606a895c952de5a74e9fdafbacdeb2331d431f69cec6cc37e1d894c16805fcb"
+    },
+    {
+      "source": "assets/sprites/units/fighter-3.png",
+      "file": "assets/sprites/units/fighter-3.webp",
+      "width": 259,
+      "height": 189,
+      "alpha": true,
+      "bytes": 32356,
+      "originalBytes": 99723,
+      "sha256": "e553bc09ef3590613c33731a9de02ed80ad107406b1438d755162228661fb246"
+    },
+    {
+      "source": "assets/sprites/units/helicopter-0.png",
+      "file": "assets/sprites/units/helicopter-0.webp",
+      "width": 272,
+      "height": 227,
+      "alpha": true,
+      "bytes": 33474,
+      "originalBytes": 87729,
+      "sha256": "fdf64c430a0caf6eed23e5a6e02f6ee001f00f5d87e0bef707a8e7905432b098"
+    },
+    {
+      "source": "assets/sprites/units/helicopter-1.png",
+      "file": "assets/sprites/units/helicopter-1.webp",
+      "width": 252,
+      "height": 229,
+      "alpha": true,
+      "bytes": 32436,
+      "originalBytes": 83064,
+      "sha256": "f56597abd732c62a1efa2e20b5d7694fd024252c489420cbf2ff6238516da7de"
+    },
+    {
+      "source": "assets/sprites/units/helicopter-2.png",
+      "file": "assets/sprites/units/helicopter-2.webp",
+      "width": 260,
+      "height": 218,
+      "alpha": true,
+      "bytes": 29380,
+      "originalBytes": 76919,
+      "sha256": "177c168f98589ba24aa028862693730d96ec74409934f7df17f9b172c725c01c"
+    },
+    {
+      "source": "assets/sprites/units/helicopter-3.png",
+      "file": "assets/sprites/units/helicopter-3.webp",
+      "width": 254,
+      "height": 236,
+      "alpha": true,
+      "bytes": 32396,
+      "originalBytes": 81400,
+      "sha256": "6687352713118114b2cab0bbc2631b024ec4c78faa424ea162502b85d95c23c9"
+    },
+    {
+      "source": "assets/sprites/units/infantry-0.png",
+      "file": "assets/sprites/units/infantry-0.webp",
+      "width": 197,
+      "height": 286,
+      "alpha": true,
+      "bytes": 31486,
+      "originalBytes": 99598,
+      "sha256": "34df8ae732a216f0dfbd9b986c32bb98ad38401b80a72a0d814446bb9b897287"
+    },
+    {
+      "source": "assets/sprites/units/infantry-1.png",
+      "file": "assets/sprites/units/infantry-1.webp",
+      "width": 167,
+      "height": 294,
+      "alpha": true,
+      "bytes": 30438,
+      "originalBytes": 96996,
+      "sha256": "4e061d8fb67c9c633104de45e7e3b46c3b3d2e0b608747e8bd70c55486ad651c"
+    },
+    {
+      "source": "assets/sprites/units/infantry-2.png",
+      "file": "assets/sprites/units/infantry-2.webp",
+      "width": 204,
+      "height": 291,
+      "alpha": true,
+      "bytes": 32886,
+      "originalBytes": 99898,
+      "sha256": "c941c79d3138702c3dfaab5fb151ca9c247128f474b066ff51221a656ae8322c"
+    },
+    {
+      "source": "assets/sprites/units/infantry-3.png",
+      "file": "assets/sprites/units/infantry-3.webp",
+      "width": 179,
+      "height": 301,
+      "alpha": true,
+      "bytes": 30312,
+      "originalBytes": 97018,
+      "sha256": "e87a60e2d5c98efad1b0ef867d1a7d86089fe5707a80166394bd0d1b1d1aa7c4"
+    },
+    {
+      "source": "assets/sprites/units/kirov-0.png",
+      "file": "assets/sprites/units/kirov-0.webp",
+      "width": 283,
+      "height": 235,
+      "alpha": true,
+      "bytes": 32926,
+      "originalBytes": 115881,
+      "sha256": "c0390348b9a58ec225efec28700f602e6edc531e08bfb0c70c1b3c456f8f2c16"
+    },
+    {
+      "source": "assets/sprites/units/kirov-1.png",
+      "file": "assets/sprites/units/kirov-1.webp",
+      "width": 244,
+      "height": 234,
+      "alpha": true,
+      "bytes": 29138,
+      "originalBytes": 99406,
+      "sha256": "10c3d84168f3dcd120fa522aa105ed0570ec2c8a62f93d6d750a98fd3588925a"
+    },
+    {
+      "source": "assets/sprites/units/kirov-2.png",
+      "file": "assets/sprites/units/kirov-2.webp",
+      "width": 253,
+      "height": 214,
+      "alpha": true,
+      "bytes": 31242,
+      "originalBytes": 104024,
+      "sha256": "a2719e05ebc0a39a3986a802aaf3b58f901f3806bb75ac0fc4c1a741898e540a"
+    },
+    {
+      "source": "assets/sprites/units/kirov-3.png",
+      "file": "assets/sprites/units/kirov-3.webp",
+      "width": 255,
+      "height": 204,
+      "alpha": true,
+      "bytes": 30364,
+      "originalBytes": 102936,
+      "sha256": "03ed0d6296d2e77b9a63fb7559af5cab022f59a726fe3f18ebb27ade26e6fb8b"
+    },
+    {
+      "source": "assets/sprites/units/mammoth-0.png",
+      "file": "assets/sprites/units/mammoth-0.webp",
+      "width": 314,
+      "height": 302,
+      "alpha": true,
+      "bytes": 48230,
+      "originalBytes": 186376,
+      "sha256": "6f10190577fccebf4b28a9902cdfc9ce80b034cbe1d2caf17093bb360fdfce6e"
+    },
+    {
+      "source": "assets/sprites/units/mammoth-1.png",
+      "file": "assets/sprites/units/mammoth-1.webp",
+      "width": 292,
+      "height": 294,
+      "alpha": true,
+      "bytes": 44216,
+      "originalBytes": 167736,
+      "sha256": "3345d6b3dd9c909237a58a87898ff861fb1784bdcc67a47e7b727e5f57901506"
+    },
+    {
+      "source": "assets/sprites/units/mammoth-2.png",
+      "file": "assets/sprites/units/mammoth-2.webp",
+      "width": 293,
+      "height": 268,
+      "alpha": true,
+      "bytes": 45060,
+      "originalBytes": 163591,
+      "sha256": "8c5cf3554ae513afb798c605cf701c19d0ef2ca09f5aadcc643d67ff8e8a9f40"
+    },
+    {
+      "source": "assets/sprites/units/mammoth-3.png",
+      "file": "assets/sprites/units/mammoth-3.webp",
+      "width": 292,
+      "height": 262,
+      "alpha": true,
+      "bytes": 44840,
+      "originalBytes": 161370,
+      "sha256": "a2a51610248055a84a9b840c881c4e3e056d4814347bb8e31708bc9222c92448"
+    },
+    {
+      "source": "assets/sprites/units/mcv-0.png",
+      "file": "assets/sprites/units/mcv-0.webp",
+      "width": 295,
+      "height": 260,
+      "alpha": true,
+      "bytes": 46720,
+      "originalBytes": 168229,
+      "sha256": "820997e1db0d6eb93259a6f4fce8c0072fc42906c9139659a69388b10b4a4eb7"
+    },
+    {
+      "source": "assets/sprites/units/mcv-1.png",
+      "file": "assets/sprites/units/mcv-1.webp",
+      "width": 295,
+      "height": 254,
+      "alpha": true,
+      "bytes": 45034,
+      "originalBytes": 160283,
+      "sha256": "b0c32141cbcd0263b9e293683f2c7b52b3752dfc0cca6a73d0d1b6d431fc2852"
+    },
+    {
+      "source": "assets/sprites/units/mcv-2.png",
+      "file": "assets/sprites/units/mcv-2.webp",
+      "width": 289,
+      "height": 249,
+      "alpha": true,
+      "bytes": 44478,
+      "originalBytes": 161531,
+      "sha256": "1b7a3999313ea9f200a426f18b32b61fbe252bb3dd149f4429ed1859d8db330f"
+    },
+    {
+      "source": "assets/sprites/units/mcv-3.png",
+      "file": "assets/sprites/units/mcv-3.webp",
+      "width": 292,
+      "height": 281,
+      "alpha": true,
+      "bytes": 43544,
+      "originalBytes": 156778,
+      "sha256": "fb8690a80061cf89c68500c3d2a01c8c6ffedc07c5c38f7a044b164ecdc48cda"
+    },
+    {
+      "source": "assets/sprites/units/miner-0.png",
+      "file": "assets/sprites/units/miner-0.webp",
+      "width": 292,
+      "height": 276,
+      "alpha": true,
+      "bytes": 49730,
+      "originalBytes": 185155,
+      "sha256": "e23502efc4331c13d38844731137b031b1f617b94649e753289badb9c1519e06"
+    },
+    {
+      "source": "assets/sprites/units/miner-1.png",
+      "file": "assets/sprites/units/miner-1.webp",
+      "width": 297,
+      "height": 273,
+      "alpha": true,
+      "bytes": 48822,
+      "originalBytes": 184441,
+      "sha256": "4387ba30e27cd0f832f66cc81c220927f344743c36a5d618e0c8ba7d495e9338"
+    },
+    {
+      "source": "assets/sprites/units/miner-2.png",
+      "file": "assets/sprites/units/miner-2.webp",
+      "width": 289,
+      "height": 253,
+      "alpha": true,
+      "bytes": 45038,
+      "originalBytes": 169165,
+      "sha256": "15d9d0860f9f186dfa4fb5dfecbb4552dba53e26d307151324187ab3ca656234"
+    },
+    {
+      "source": "assets/sprites/units/miner-3.png",
+      "file": "assets/sprites/units/miner-3.webp",
+      "width": 289,
+      "height": 249,
+      "alpha": true,
+      "bytes": 44130,
+      "originalBytes": 164833,
+      "sha256": "e33cff4062d7c80ff077c219a48d6252816841973b14c3a00deef723ebfed7aa"
+    },
+    {
+      "source": "assets/sprites/units/prism-0.png",
+      "file": "assets/sprites/units/prism-0.webp",
+      "width": 277,
+      "height": 258,
+      "alpha": true,
+      "bytes": 42256,
+      "originalBytes": 157357,
+      "sha256": "d87833fbb51f8d0fd42e826e4a1e903ad19fa81e0e21e2e2e0dadf1c5a7bc46c"
+    },
+    {
+      "source": "assets/sprites/units/prism-1.png",
+      "file": "assets/sprites/units/prism-1.webp",
+      "width": 272,
+      "height": 260,
+      "alpha": true,
+      "bytes": 40426,
+      "originalBytes": 151743,
+      "sha256": "4ccb2f9fe37fc907657ee0c46c2d32d090103054e887a6a8750fe7dec2372559"
+    },
+    {
+      "source": "assets/sprites/units/prism-2.png",
+      "file": "assets/sprites/units/prism-2.webp",
+      "width": 280,
+      "height": 254,
+      "alpha": true,
+      "bytes": 40408,
+      "originalBytes": 144834,
+      "sha256": "ad8b2cda4c8a7874a34d05701dc9244e26658b50940237ee6d649ae85bfdf49e"
+    },
+    {
+      "source": "assets/sprites/units/prism-3.png",
+      "file": "assets/sprites/units/prism-3.webp",
+      "width": 277,
+      "height": 256,
+      "alpha": true,
+      "bytes": 40408,
+      "originalBytes": 147085,
+      "sha256": "2fa33637a02bd954b6934b1af32de87e96d07aa22fa7f496f901ffed1f0eee16"
+    },
+    {
+      "source": "assets/sprites/units/spy-0.png",
+      "file": "assets/sprites/units/spy-0.webp",
+      "width": 150,
+      "height": 302,
+      "alpha": true,
+      "bytes": 25566,
+      "originalBytes": 90844,
+      "sha256": "b7f2d7c219d635355b2d25c7dc21a2dbe08171e5fbec02dd224c14554c055a92"
+    },
+    {
+      "source": "assets/sprites/units/spy-1.png",
+      "file": "assets/sprites/units/spy-1.webp",
+      "width": 149,
+      "height": 304,
+      "alpha": true,
+      "bytes": 25442,
+      "originalBytes": 92274,
+      "sha256": "d3107be43998c47a4c4d368c5793e07bd9739fe1cb41d00214fc3cb71b89fb11"
+    },
+    {
+      "source": "assets/sprites/units/spy-2.png",
+      "file": "assets/sprites/units/spy-2.webp",
+      "width": 140,
+      "height": 303,
+      "alpha": true,
+      "bytes": 23688,
+      "originalBytes": 86021,
+      "sha256": "6dcb5e691fcbf819d5a3978bb7e69be399d83c157d01a2f052cab636751fa3c8"
+    },
+    {
+      "source": "assets/sprites/units/spy-3.png",
+      "file": "assets/sprites/units/spy-3.webp",
+      "width": 134,
+      "height": 310,
+      "alpha": true,
+      "bytes": 22814,
+      "originalBytes": 81974,
+      "sha256": "5c49d09b308699de1fb98b0ca8517c21788a2b6292418df18e48966096d9a5ce"
+    },
+    {
+      "source": "assets/sprites/units/tank-0.png",
+      "file": "assets/sprites/units/tank-0.webp",
+      "width": 310,
+      "height": 277,
+      "alpha": true,
+      "bytes": 40070,
+      "originalBytes": 144409,
+      "sha256": "375107fc04c9c05180fec1069a3d0918c330f6fc8a74a19d8a7e2e1b33996e84"
+    },
+    {
+      "source": "assets/sprites/units/tank-1.png",
+      "file": "assets/sprites/units/tank-1.webp",
+      "width": 301,
+      "height": 282,
+      "alpha": true,
+      "bytes": 37984,
+      "originalBytes": 135793,
+      "sha256": "3d7c77cf44863df24965426d8d5c402a48e3925335f6638c70b726e9d628450b"
+    },
+    {
+      "source": "assets/sprites/units/tank-2.png",
+      "file": "assets/sprites/units/tank-2.webp",
+      "width": 294,
+      "height": 260,
+      "alpha": true,
+      "bytes": 40646,
+      "originalBytes": 141941,
+      "sha256": "7c3fe4b1d0bff732d1dc97818a7f9243a3b357cedf725e20b76d44e122f63ff6"
+    },
+    {
+      "source": "assets/sprites/units/tank-3.png",
+      "file": "assets/sprites/units/tank-3.webp",
+      "width": 293,
+      "height": 254,
+      "alpha": true,
+      "bytes": 39190,
+      "originalBytes": 136947,
+      "sha256": "5a60c38caaedff416e16ee141f81ea6db542492606a4f5b609376557f48a103f"
+    },
+    {
+      "source": "assets/sprites/units/transport-0.png",
+      "file": "assets/sprites/units/transport-0.webp",
+      "width": 277,
+      "height": 237,
+      "alpha": true,
+      "bytes": 31134,
+      "originalBytes": 108218,
+      "sha256": "4102e1a494a87f770500b617657eac8fb4147d32eadafbc53ac1891ce430509f"
+    },
+    {
+      "source": "assets/sprites/units/transport-1.png",
+      "file": "assets/sprites/units/transport-1.webp",
+      "width": 267,
+      "height": 243,
+      "alpha": true,
+      "bytes": 31100,
+      "originalBytes": 107362,
+      "sha256": "94da2393393d5ae63588a110133c365a33fa7190673371661486928e3be70876"
+    },
+    {
+      "source": "assets/sprites/units/transport-2.png",
+      "file": "assets/sprites/units/transport-2.webp",
+      "width": 254,
+      "height": 224,
+      "alpha": true,
+      "bytes": 29778,
+      "originalBytes": 104424,
+      "sha256": "e1d0d46755772acd54c1cb350bcb045d583b60b3d8aa830e76b24feaa814703c"
+    },
+    {
+      "source": "assets/sprites/units/transport-3.png",
+      "file": "assets/sprites/units/transport-3.webp",
+      "width": 251,
+      "height": 227,
+      "alpha": true,
+      "bytes": 29108,
+      "originalBytes": 103307,
+      "sha256": "a6a1b3a759837fdd6a48f641c46245d997015dc8480b5d58029dcb94c7a92333"
+    },
+    {
+      "source": "assets/sprites/special/chronoSphere.png",
+      "file": "assets/sprites/special/chronoSphere.webp",
+      "width": 612,
+      "height": 536,
+      "alpha": true,
+      "bytes": 163836,
+      "originalBytes": 668395,
+      "sha256": "d14a306bbc881f92058003b6a0f6d29fac135f56aafe7aa6ed7908af531728c1"
+    },
+    {
+      "source": "assets/sprites/special/railStation.png",
+      "file": "assets/sprites/special/railStation.webp",
+      "width": 642,
+      "height": 458,
+      "alpha": true,
+      "bytes": 132884,
+      "originalBytes": 577771,
+      "sha256": "b71e9a0904c06e443c055f561617c7364129830e52b1cbbef629ce81a8905e94"
+    },
+    {
+      "source": "assets/sprites/special/teslaCoil.png",
+      "file": "assets/sprites/special/teslaCoil.webp",
+      "width": 574,
+      "height": 530,
+      "alpha": true,
+      "bytes": 131698,
+      "originalBytes": 521273,
+      "sha256": "b3e57a175ece4546d62e3b57451403317a737c2eb57198190955919843cd48d0"
+    },
+    {
+      "source": "assets/sprites/special/weatherControl.png",
+      "file": "assets/sprites/special/weatherControl.webp",
+      "width": 600,
+      "height": 521,
+      "alpha": true,
+      "bytes": 169592,
+      "originalBytes": 674039,
+      "sha256": "52671c10ef14bae9a557aaf80ded80863025e05d0bacd837a7a66c2a61eebbd4"
+    },
+    {
+      "source": "assets/sprites/scenery/cottage.png",
+      "file": "assets/sprites/scenery/cottage.webp",
+      "width": 421,
+      "height": 383,
+      "alpha": true,
+      "bytes": 87004,
+      "originalBytes": 326628,
+      "sha256": "24c09fe996238921cf28604a36fc43361f5168b1945925d6743483be439e3986"
+    },
+    {
+      "source": "assets/sprites/scenery/pine.png",
+      "file": "assets/sprites/scenery/pine.webp",
+      "width": 392,
+      "height": 422,
+      "alpha": true,
+      "bytes": 106724,
+      "originalBytes": 337822,
+      "sha256": "bbb6008bcc14d11fcb682650b13e1682835972d2db94b6a3cf4bc3449cec86b0"
+    },
+    {
+      "source": "assets/sprites/scenery/rock.png",
+      "file": "assets/sprites/scenery/rock.webp",
+      "width": 400,
+      "height": 331,
+      "alpha": true,
+      "bytes": 72410,
+      "originalBytes": 286588,
+      "sha256": "2491c9f8d8e55ccc1cafee696acb5b0c009260e0a7da7f9ef597adfb9f9dc356"
+    },
+    {
+      "source": "assets/sprites/scenery/ruin.png",
+      "file": "assets/sprites/scenery/ruin.webp",
+      "width": 424,
+      "height": 384,
+      "alpha": true,
+      "bytes": 93584,
+      "originalBytes": 367773,
+      "sha256": "edd7a42de26c8774084714a73d6bab2978d0102192a155479b46af96326dc453"
+    },
+    {
+      "source": "assets/sprites/scenery/sandRock.png",
+      "file": "assets/sprites/scenery/sandRock.webp",
+      "width": 402,
+      "height": 306,
+      "alpha": true,
+      "bytes": 72074,
+      "originalBytes": 287094,
+      "sha256": "16f08d91e126fefb0309ec4b1bd69bb6108fedd96533fc1303d370a4b07a09ff"
+    },
+    {
+      "source": "assets/sprites/scenery/snowCottage.png",
+      "file": "assets/sprites/scenery/snowCottage.webp",
+      "width": 373,
+      "height": 375,
+      "alpha": true,
+      "bytes": 74244,
+      "originalBytes": 292093,
+      "sha256": "9349b41bf66ee52ac17f0b1e24aa841c3ced2c347a0b1276c70edff732834079"
+    },
+    {
+      "source": "assets/sprites/scenery/snowPine.png",
+      "file": "assets/sprites/scenery/snowPine.webp",
+      "width": 383,
+      "height": 418,
+      "alpha": true,
+      "bytes": 97704,
+      "originalBytes": 334473,
+      "sha256": "4797ed87e58a9b72a11fc79e49470c0a547a73932a51bff164050dca19a65574"
+    },
+    {
+      "source": "assets/sprites/scenery/snowRock.png",
+      "file": "assets/sprites/scenery/snowRock.webp",
+      "width": 407,
+      "height": 305,
+      "alpha": true,
+      "bytes": 65924,
+      "originalBytes": 272613,
+      "sha256": "b75509c1a67b6022aeaccc9a959eb5f5575c5f233c7dae50f31ff3c69b69fec1"
+    },
+    {
+      "source": "assets/sprites/scenery/trees.png",
+      "file": "assets/sprites/scenery/trees.webp",
+      "width": 401,
+      "height": 397,
+      "alpha": true,
+      "bytes": 112850,
+      "originalBytes": 332279,
+      "sha256": "07d41712b0658011ef95159a6555bedac78d96c54116f58ded0c8b1a40f88bc7"
+    },
+    {
+      "source": "assets/textures/cliff.png",
+      "file": "assets/textures/cliff.webp",
+      "width": 627,
+      "height": 627,
+      "alpha": false,
+      "bytes": 200200,
+      "originalBytes": 1100089,
+      "sha256": "77fba9d158b66794cf50636620d50d2b3b952062b6531753cc94c7ad04b55d26"
+    },
+    {
+      "source": "assets/textures/concrete.png",
+      "file": "assets/textures/concrete.webp",
+      "width": 440,
+      "height": 439,
+      "alpha": false,
+      "bytes": 92628,
+      "originalBytes": 508878,
+      "sha256": "fd078b993dfa65491861323c50275d429d438814cebc60be89d2dc307174e8a9"
+    },
+    {
+      "source": "assets/textures/dirt.png",
+      "file": "assets/textures/dirt.webp",
+      "width": 440,
+      "height": 439,
+      "alpha": false,
+      "bytes": 106654,
+      "originalBytes": 549252,
+      "sha256": "c563b35db29af7a188844e7e15ab0e44b376f56cdf0d0e24ea8fe8a50ce3b36b"
+    },
+    {
+      "source": "assets/textures/grass.png",
+      "file": "assets/textures/grass.webp",
+      "width": 439,
+      "height": 439,
+      "alpha": false,
+      "bytes": 113546,
+      "originalBytes": 543698,
+      "sha256": "092204490a282eaff4687f6efc244dfb8861326153f283a3aac59496d54dac88"
+    },
+    {
+      "source": "assets/textures/ice.png",
+      "file": "assets/textures/ice.webp",
+      "width": 627,
+      "height": 627,
+      "alpha": false,
+      "bytes": 128576,
+      "originalBytes": 1020171,
+      "sha256": "3aaa29ea300b3b1fefc775f336a57e792f8e1e94066c6db1350f24b9f3909c01"
+    },
+    {
+      "source": "assets/textures/marsh.png",
+      "file": "assets/textures/marsh.webp",
+      "width": 627,
+      "height": 627,
+      "alpha": false,
+      "bytes": 186702,
+      "originalBytes": 1020478,
+      "sha256": "4c519033bb811142859503a02cfcefba21371c9080cbbdae7452049016eeb9be"
+    },
+    {
+      "source": "assets/textures/road.png",
+      "file": "assets/textures/road.webp",
+      "width": 439,
+      "height": 440,
+      "alpha": false,
+      "bytes": 101884,
+      "originalBytes": 513825,
+      "sha256": "9f05fefb58e42543dbf3ebcc66beaa7430eaab8c693bea225dae178b6320e31f"
+    },
+    {
+      "source": "assets/textures/rock.png",
+      "file": "assets/textures/rock.webp",
+      "width": 440,
+      "height": 440,
+      "alpha": false,
+      "bytes": 101438,
+      "originalBytes": 546930,
+      "sha256": "b2df8e2f550fd7e0a812181f8d504c0497ced990f67d5c972155d206b018a4a3"
+    },
+    {
+      "source": "assets/textures/sand.png",
+      "file": "assets/textures/sand.webp",
+      "width": 439,
+      "height": 439,
+      "alpha": false,
+      "bytes": 99876,
+      "originalBytes": 536691,
+      "sha256": "77fc1395685254561f4fb16a3dbbc5d588ed697e4a108ffa9c842de9f8d9dfc4"
+    },
+    {
+      "source": "assets/textures/snow.png",
+      "file": "assets/textures/snow.webp",
+      "width": 439,
+      "height": 440,
+      "alpha": false,
+      "bytes": 76536,
+      "originalBytes": 450055,
+      "sha256": "d212b3a50a80cd4495ebed228cad5e6b7217d1ea977c0e4a8dd2a6b3fc5b7ede"
+    },
+    {
+      "source": "assets/textures/water.png",
+      "file": "assets/textures/water.webp",
+      "width": 440,
+      "height": 440,
+      "alpha": false,
+      "bytes": 53012,
+      "originalBytes": 500969,
+      "sha256": "6381228186f6da9d93fca7546b5e0b1b36ad0ad819941da41f04429d0d2aea9c"
+    },
+    {
+      "source": "assets/textures/winterSnow.png",
+      "file": "assets/textures/winterSnow.webp",
+      "width": 627,
+      "height": 627,
+      "alpha": false,
+      "bytes": 110688,
+      "originalBytes": 903399,
+      "sha256": "0a960698c55dcff8804e0de353739f519b33c6e336ed9438f98671eb74742402"
+    }
+  ]
+}

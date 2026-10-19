@@ -1,6 +1,19 @@
 /* Add a game here to publish it in the library and use the shared launch page. */
 window.ARCADE_GAMES = Object.freeze([
   {
+    id: "republic-frontier",
+    title: "共和国之辉 · 黑潮危机",
+    en: "REPUBLIC FRONTIER",
+    category: "即时战略",
+    tags: ["8 张遭遇战地图", "双线 16 关战役", "基地经营"],
+    description: "经营基地、开采矿石，指挥陆海空部队跨越桥梁、雪原与山口；挑战八张遭遇战地图，以及盟军和中国各八关原创剧情战役。",
+    controls: "电脑键鼠 · 左键选择 / 下令 · D 展开基地 · A 攻击移动 · 滚轮缩放 · Esc 暂停",
+    mobileControls: "电脑键鼠游戏 · 请使用电脑浏览器游玩",
+    path: "game-arcade/games/republic-frontier/index.html",
+    sizeBytes: 14988,
+    cover: "game-arcade/games/republic-frontier/assets/command-keyart.webp"
+  },
+  {
     id: "contra-2026",
     title: "魂斗罗 2026",
     en: "CONTRA 2026 · RE: FRONTLINE",

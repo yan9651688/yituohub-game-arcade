@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#171c1a" />
+    <title>共和国之辉 · 黑潮危机</title>
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="src/ui.css?v=20261019-r2" />
+    <link rel="stylesheet" href="src/polish.css?v=20261019-r1" />
+  </head>
+  <body>
+    <main id="app">
+      <div
+        id="global-toast"
+        class="battle-toast"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+      <section id="menu" class="menu">
+        <header class="menu-header">
+          <a href="https://game.yituohub.com/games.html" target="_top" id="library-link"
+            >NEON ARCADE</a
+          ><span>网页独立重制 · 原创双线战役</span
+          ><button id="sound-menu" class="plain">声音 开</button>
+        </header>
+        <div class="menu-art" aria-hidden="true"></div>
+        <div class="menu-copy">
+          <p class="overline">COMMAND / REPUBLIC FRONTIER</p>
+          <h1>共和国之辉<span>黑潮危机</span></h1>
+          <p class="menu-intro">
+            部署基地。守住补给。<br />在海峡的硝烟中，找到通往黎明的路。
+          </p>
+          <div class="menu-actions">
+            <button id="campaign-menu" class="menu-action primary-action">
+              <span>新战役<small>盟军 · 中国 / 两条独立战线</small></span
+              ><b>→</b></button
+            ><button id="skirmish-menu" class="menu-action">
+              <span>遭遇战<small>基地建设 · 资源争夺 · 联合兵种</small></span
+              ><b>→</b></button
+            ><button id="continue-menu" class="menu-action" hidden>
+              <span
+                >继续行动<small id="continue-detail"
+                  >从最近存档继续</small
+                ></span
+              ><b>↗</b>
+            </button>
+          </div>
+          <p class="control-intro">
+            经典左键下令 · 右键取消 · Ctrl + 数字编队<br />建议使用电脑键盘与鼠标游玩
+          </p>
+        </div>
+        <footer class="menu-footer">
+          <span>16 场原创任务 · 8 张遭遇战地图</span
+          ><button id="help-menu" class="plain">指挥官手册 ↗</button>
+        </footer>
+      </section>
+
+      <section id="campaign-screen" class="screen" hidden>
+        <header class="screen-header">
+          <button data-back="menu" class="back-button">← 返回</button>
+          <div>
+            <p class="overline">BLACK TIDE / CAMPAIGN</p>
+            <h2>选择你的战线</h2>
+          </div>
+          <div class="faction-switch">
+            <button id="allied-campaign" class="active">盟军 · 破雾行动</button
+            ><button id="china-campaign">中国 · 山海防线</button>
+          </div>
+        </header>
+        <div class="campaign-layout">
+          <aside class="campaign-intro">
+            <p id="campaign-kicker" class="overline">ALLIED COMMAND</p>
+            <h3 id="campaign-title">破雾行动</h3>
+            <p id="campaign-description"></p>
+            <div class="difficulty-field">
+              <label for="campaign-difficulty">作战难度</label
+              ><select id="campaign-difficulty">
+                <option value="easy">简单 · 充足整备</option>
+                <option value="normal" selected>标准 · 战术挑战</option>
+                <option value="hard">困难 · 多线压力</option>
+              </select>
+            </div>
+            <p class="small-note">
+              关键阶段自动保存。支线影响战术机会，失败可以从存档重新集结。
+            </p>
+          </aside>
+          <div id="mission-list" class="mission-list"></div>
+        </div>
+      </section>
+
+      <section id="skirmish-screen" class="screen" hidden>
+        <header class="screen-header">
+          <button data-back="menu" class="back-button">← 返回</button>
+          <div>
+            <p class="overline">FIELD OPERATIONS</p>
+            <h2>部署遭遇战</h2>
+          </div>
+        </header>
+        <div class="skirmish-layout">
+          <div>
+            <h3>战场</h3>
+            <div id="map-list" class="map-list"></div>
+          </div>
+          <aside class="setup-panel">
+            <h3 id="selected-map-name">选择战场</h3>
+            <p id="selected-map-desc" class="small-note"></p>
+            <label
+              >所属阵营<select id="skirmish-faction">
+                <option value="allied">盟军</option>
+                <option value="china">中国</option>
+                <option value="soviet">苏军</option>
+              </select></label
+            ><label
+              >作战席位<select id="skirmish-players">
+                <option value="2">2 方 · 对决</option>
+                <option value="3">3 方 · 混战</option>
+                <option value="4">4 方 · 争夺</option>
+                <option value="6">6 方 · 大战场</option>
+                <option value="8">8 方 · 全面战争</option>
+              </select></label
+            ><label
+              >电脑难度<select id="skirmish-difficulty">
+                <option value="easy">简单</option>
+                <option value="normal" selected>标准</option>
+                <option value="hard">困难</option>
+              </select></label
+            ><label
+              >初始资金<select id="starting-credits">
+                <option value="10000">10,000</option>
+                <option value="15000">15,000</option>
+                <option value="20000">20,000</option>
+              </select></label
+            ><button id="launch-skirmish" class="gold-button">
+              展开行动 →
+            </button>
+            <p class="small-note">
+              先选中基地车，按 D
+              展开。建立发电厂、矿场与兵营，再组织你的第一支部队。
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="battle" hidden>
+        <div id="viewport">
+          <canvas id="world" tabindex="0" aria-label="即时战略战场"></canvas>
+          <div id="selection-marquee" hidden></div>
+          <div
+            id="battle-toast"
+            class="battle-toast"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></div>
+          <div id="mission-banner" class="mission-banner" hidden></div>
+          <div id="placement-hint" class="placement-hint" hidden></div>
+          <div id="objective-panel" class="objective-panel">
+            <button id="objectives-toggle">行动目标 <span>−</span></button>
+            <div id="objectives"></div>
+          </div>
+          <div id="radio" class="radio" hidden>
+            <strong id="radio-speaker"></strong>
+            <p id="radio-text"></p>
+          </div>
+          <div id="unit-detail" class="unit-detail" hidden></div>
+        </div>
+        <aside id="sidebar" class="sidebar">
+          <div class="sidebar-top">
+            <button id="pause-game" title="暂停 / Esc">选项</button
+            ><b id="faction-label">盟军指挥部</b><span id="clock">00:00</span>
+          </div>
+          <div class="resource-panel">
+            <div><span>资金</span><strong id="credits">10,000</strong></div>
+            <div class="power-status">
+              <span id="power-text">供电 0 / 0</span>
+              <div class="power-track"><i id="power-fill"></i></div>
+            </div>
+          </div>
+          <div class="radar">
+            <canvas
+              id="minimap"
+              width="256"
+              height="160"
+              aria-label="战场雷达"
+            ></canvas>
+            <p id="radar-offline">雷达离线</p>
+          </div>
+          <div class="field-actions">
+            <button id="repair-tool" title="选择后点击己方建筑进行修理">
+              修理</button
+            ><button id="sell-tool" title="选择后点击己方建筑出售">出售</button
+            ><button id="save-game" title="保存完整战场">保存</button>
+          </div>
+          <div class="production-tabs" role="tablist" aria-label="生产分类">
+            <button data-category="buildings" class="active" role="tab">
+              建筑</button
+            ><button data-category="defenses" role="tab">防御</button
+            ><button data-category="infantry" role="tab">步兵</button
+            ><button data-category="vehicles" role="tab">载具</button>
+          </div>
+          <div id="production" class="production"></div>
+          <div id="production-status" class="production-status">
+            选择基地车，按 D 展开基地。
+          </div>
+          <div id="command-panel" class="command-panel">
+            <button data-command="stop" title="停止 / S">停止</button
+            ><button data-command="attackMove" title="攻击移动 / A">突击</button
+            ><button data-command="deploy" title="展开 / D">展开</button
+            ><button data-command="unload" title="卸载乘员 / U">卸载</button>
+          </div>
+          <div class="sidebar-bottom">
+            <span id="save-state">尚未保存</span
+            ><button id="help-game" class="plain">操作 ?</button>
+          </div>
+        </aside>
+      </section>
+
+      <section
+        id="briefing"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="briefing-title"
+        hidden
+      >
+        <div class="dialog briefing-dialog">
+          <p class="overline" id="briefing-code">MISSION BRIEFING</p>
+          <h2 id="briefing-title"></h2>
+          <p id="briefing-story" class="briefing-story"></p>
+          <ol id="briefing-objectives"></ol>
+          <p class="small-note" id="briefing-hint"></p>
+          <div class="dialog-buttons">
+            <button id="start-mission" class="gold-button">
+              确认任务 · 出击 →</button
+            ><button id="close-briefing" class="secondary-button">
+              返回战役列表
+            </button>
+          </div>
+        </div>
+      </section>
+      <section
+        id="pause-screen"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="pause-title"
+        hidden
+      >
+        <div class="dialog">
+          <p class="overline">COMMAND SUSPENDED</p>
+          <h2 id="pause-title">行动暂停</h2>
+          <p class="small-note" id="pause-info">战场时间已暂停。</p>
+          <div class="pause-actions">
+            <button id="resume-game" class="gold-button">继续行动</button
+            ><button id="save-pause" class="secondary-button">
+              保存当前战场</button
+            ><button id="load-pause" class="secondary-button">
+              读取最近存档</button
+            ><button id="restart-game" class="secondary-button">
+              重新开始本局</button
+            ><button id="return-menu" class="secondary-button">
+              保存并返回标题
+            </button>
+          </div>
+          <label class="option-row"
+            >声音<input type="checkbox" id="sound-toggle" checked /></label
+          ><label class="option-row"
+            >现代右键下令<input type="checkbox" id="modern-controls" /></label
+          ><label class="option-row"
+            >游戏速度<select id="game-speed">
+              <option value="1">标准</option>
+              <option value="1.5">1.5 倍</option>
+              <option value="2">2 倍</option>
+            </select></label
+          >
+        </div>
+      </section>
+      <section
+        id="result-screen"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="result-title"
+        hidden
+      >
+        <div class="dialog">
+          <p id="result-kicker" class="overline">OPERATION COMPLETE</p>
+          <h2 id="result-title">行动完成</h2>
+          <p id="result-copy"></p>
+          <div id="result-stats" class="result-stats"></div>
+          <div class="dialog-buttons">
+            <button id="result-primary" class="gold-button">继续行动 →</button
+            ><button id="result-retry" class="secondary-button">重新挑战</button
+            ><button id="result-home" class="secondary-button">返回标题</button>
+          </div>
+        </div>
+      </section>
+      <section
+        id="help-screen"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="help-title"
+        hidden
+      >
+        <div class="dialog help-dialog">
+          <p class="overline">FIELD MANUAL</p>
+          <h2 id="help-title">指挥官手册</h2>
+          <div class="help-grid">
+            <p>
+              <b>选择与命令</b
+              >左键选择己方单位，拖动框选。选中部队后，左键空地移动、敌人进攻。右键取消当前操作。
+            </p>
+            <p>
+              <b>展开与生产</b>选中基地车按 D
+              展开。侧栏选择建筑后在基地附近放置；兵营、工厂建成后点击对应单位卡生产。
+            </p>
+            <p>
+              <b>资源与供电</b
+              >矿场和矿车维持收入。低电会拖慢生产。被堵住的矿车可以手动点选后重新下令。
+            </p>
+            <p>
+              <b>工程师与载具</b
+              >工程师选中后点击目标建筑占领。运输单位携带步兵；选中运输单位按 U
+              卸载。
+            </p>
+            <p>
+              <b>编队与战术</b>Ctrl + 1–9 建立编队，数字键选择编队。A
+              攻击移动，S 停止，D 展开，U 卸载。
+            </p>
+            <p>
+              <b>视角与存档</b
+              >方向键或靠近边缘滚屏，中键拖动，滚轮缩放。点击雷达定位。Esc
+              暂停，关键任务阶段自动保存。
+            </p>
+          </div>
+          <p class="small-note">
+            这是按经典 RTS
+            操作与视觉方向制作的独立网页重制，使用重绘美术、原创任务和独立规则实现，尚不等同原版逐像素、逐音效复刻。
+          </p>
+          <button id="close-help" class="gold-button">明白，继续 →</button>
+        </div>
+      </section>
+      <div id="boot">
+        <span class="boot-mark">R</span>
+        <h2>正在建立指挥连接</h2>
+        <p id="boot-message">载入战场与作战资料…</p>
+      </div>
+      <div id="fatal" hidden>
+        <h2>指挥连接暂时中断</h2>
+        <p id="fatal-message"></p>
+        <button onclick="location.reload()">重新加载</button>
+      </div>
+    </main>
+    <script type="module" src="src/main.js?v=20261018-r1"></script>
+  </body>
+</html>

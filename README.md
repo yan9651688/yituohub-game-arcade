@@ -6,11 +6,11 @@
 
 **打开网页，挑一款游戏，免费开玩。**
 
-6 款小游戏 · AI 放映厅 · PC 与手机 · 无需登录
+7 款小游戏 · AI 放映厅 · PC 与手机 · 无需登录
 
 [![在线游玩](https://img.shields.io/badge/在线游玩-game.yituohub.com-05d9e8)](https://game.yituohub.com/)
 [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![游戏](https://img.shields.io/badge/小游戏-6款-ff2a6d)](#-游戏库)
+[![游戏](https://img.shields.io/badge/小游戏-7款-ff2a6d)](#-游戏库)
 [![纯静态](https://img.shields.io/badge/部署-纯静态-success)](#-本地运行)
 [![欢迎贡献](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-一起加新游戏)
 
@@ -35,7 +35,7 @@
 <table>
 <tr>
 <td width="50%" align="center"><img src="docs/assets/home-preview.png" width="100%" alt="NEON ARCADE 首页实机预览"><br><sub><b>霓虹首页 · 游戏库与 AI 放映厅</b></sub></td>
-<td width="50%" align="center"><img src="docs/assets/library-preview.png" width="100%" alt="六款小游戏的游戏库实机预览"><br><sub><b>游戏库 · 游戏封面、分类筛选与搜索</b></sub></td>
+<td width="50%" align="center"><img src="docs/republic-frontier/library-preview.png" width="100%" alt="加入共和国之辉后的七款游戏库实机预览"><br><sub><b>游戏库 · 游戏封面、分类筛选与搜索</b></sub></td>
 </tr>
 </table>
 
@@ -43,6 +43,7 @@
 
 | 游戏 | 玩什么 |
 | --- | --- |
+| [共和国之辉 · 黑潮危机](https://game.yituohub.com/play.html?game=republic-frontier) | 电脑键鼠 RTS，三个阵营、八张遭遇战地图、双线十六关战役与完整战场存档 |
 | [魂斗罗 2026](https://game.yituohub.com/play.html?game=contra-2026) | 30 条命、八关战役、八向射击与双人同屏，支持手机触控 |
 | [星陨前线](https://game.yituohub.com/play.html?game=fallen-frontier) | 第三人称科幻占点战场，枪械与战甲作战 |
 | [智械前线](https://game.yituohub.com/play.html?game=iron-front) | 扩军、拾取军械与重装，突破机器人防线 |
@@ -51,6 +52,16 @@
 | [雷霆战翼](https://game.yituohub.com/play.html?game=thunderwing) | 驾驶战机穿越航线，拾取补给并升级火力 |
 
 游戏库与加载页共用 [游戏清单](public/assets/games.js)。新增游戏时，放入游戏文件与封面，再在 `ARCADE_GAMES` 中追加一条记录。具体步骤见 [添加游戏](docs/adding-game.md)。
+
+### 共和国之辉 · 黑潮危机
+
+![共和国之辉正式入口实际战场](docs/republic-frontier/online-battle.png)
+
+经营基地、开采矿石，指挥部队穿过桥梁、雪原和山口。盟军、中国、苏军三个阵营可在八张地图展开遭遇战，盟军和中国另有各八关原创剧情战役。左键选择与下令，D 展开基地车，A 攻击移动，Ctrl + 数字编队，Esc 暂停；保存后刷新页面可继续行动。
+
+本作使用生成美术、原创任务和独立规则，属于经典 RTS 风格的独立网页重制。请使用电脑键盘与鼠标游玩。此次已修复较矮窗口下侧栏截断，并将首页地图数量修正为八张。
+
+源码与素材在 [public/game-arcade/games/republic-frontier](public/game-arcade/games/republic-frontier/)。[开发与操作说明](docs/republic-frontier.md)和[验收记录](docs/republic-frontier/verification.md)分别列出运行方式、52 项自动回归与实际浏览器试玩范围。
 
 ### 魂斗罗 2026
 
@@ -109,7 +120,7 @@ public/
     covers/v2/         游戏封面
     mv/                放映厅封面
   game-arcade/
-    games/             六款游戏与独立模块
+    games/             七款游戏与独立模块
     film.html          千禧凝思影片
     vendor/three/      本地第三方库及其许可证
 design/
@@ -126,7 +137,7 @@ deploy/
   nginx.conf           Nginx 部署配置示例
 ```
 
-构建回归检查可运行 `python scripts/tests/test_build_release.py`。
+构建回归检查可运行 `python scripts/tests/test_build_release.py`。共和国之辉回归检查运行 `node --test scripts/tests/republic-frontier/*.test.mjs`。
 
 `scripts/optimize_assets.py`、`capture_previews.py` 与原有的游戏 smoke、资源 benchmark 脚本面向 v1.0.0 的目录结构。复现历史结果时请使用对应标签的独立副本；当前页面改版不要运行旧资源拆分工具。
 

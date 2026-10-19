@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-19",
+  "source": "actual browser UI input and separate Node regression",
+  "localCampaignWins": [
+    {
+      "id": "a1",
+      "difficulty": "normal",
+      "time": "01:40"
+    },
+    {
+      "id": "a2",
+      "difficulty": "normal",
+      "time": "00:56",
+      "transportsArrived": 4
+    }
+  ],
+  "localSkirmish": {
+    "map": "frost",
+    "faction": "china",
+    "difficulty": "normal",
+    "result": "lost",
+    "time": "04:21",
+    "saveRestoredAt": "03:28"
+  },
+  "nodeRegression": {
+    "passed": 52,
+    "failed": 0
+  },
+  "onlineSmoke": {
+    "map": "river",
+    "faction": "china",
+    "difficulty": "normal",
+    "passed": [
+      "deploy",
+      "build power plant",
+      "refinery construction",
+      "selection",
+      "grouping",
+      "move",
+      "manual save",
+      "reload restore",
+      "canonical launcher restore",
+      "launcher input",
+      "sidebar layout"
+    ],
+    "restored": {
+      "time": "00:21",
+      "credits": 9353,
+      "power": 150,
+      "demand": 0,
+      "refineryPercent": 2
+    }
+  },
+  "httpsChecks": {
+    "passed": 10,
+    "failed": 0,
+    "encodings": [
+      "identity",
+      "gzip",
+      "br"
+    ]
+  },
+  "limits": [
+    "Not all 16 campaigns or eight maps were completed through the browser",
+    "No audio listening acceptance",
+    "Browser automation timeouts are not performance measurements"
+  ],
+  "knownMinorHints": [
+    "Restored game can initially show 尚未保存",
+    "Base-free A3 shows the generic MCV deployment hint"
+  ],
+  "publicRepositoryIntegration": {
+    "repository": "yan9651688/yituohub-game-arcade",
+    "catalogueGames": 7,
+    "gameTestsPassed": 52,
+    "packagingTestsPassed": 2,
+    "buildSucceeded": true,
+    "buildFiles": 325,
+    "gzipAndBrotli": true,
+    "runtimeHashesMatched": 152,
+    "browserChecks": [
+      "seven game cards with RTS category",
+      "shared launcher starts the game",
+      "main menu shows eight skirmish maps"
+    ]
+  }
+}
