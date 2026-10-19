@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b090e">
+  <title data-i18n="afang.pageTitle">阿房宫 · AI放映厅</title>
+  <meta name="description" content="走入阿房宫的数字艺术图卷，在八处景点与三种光影之间自由漫游，聆听《盛世金钟》。" data-i18n-content="afang.description">
+  <link rel="canonical" href="https://game.yituohub.com/game-arcade/afang-palace/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="阿房宫 · AI放映厅" data-i18n-content="afang.pageTitle">
+  <meta property="og:description" content="走入阿房宫的数字艺术图卷，在八处景点与三种光影之间自由漫游，聆听《盛世金钟》。" data-i18n-content="afang.description">
+  <meta property="og:url" content="https://game.yituohub.com/game-arcade/afang-palace/index.html">
+  <meta property="og:image" content="https://game.yituohub.com/assets/mv/afang-palace-cover.webp">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../../assets/i18n.css">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Resolve an embedding shell's choice before shared i18n persists this page's URL preference.
+    try {
+      if (window.parent !== window && window.parent.SiteI18n) {
+        const languageURL = new URL(location.href);
+        languageURL.searchParams.set('lang', window.parent.SiteI18n.locale);
+        history.replaceState(history.state, '', languageURL.href);
+      }
+    } catch { /* A standalone or cross-origin exhibit resolves its own language. */ }
+  </script>
+  <script src="../../assets/i18n.js"></script>
+</head>
+<body class="scene-loading">
+  <div id="vignette" aria-hidden="true"></div>
+  <header id="brand-header">
+    <div class="seal-stamp" aria-hidden="true">秦<br>阿房</div>
+    <div class="title-block">
+      <h1 class="title-main" data-i18n="afang.title">阿房宫图卷</h1>
+      <div class="title-sub" data-i18n="afang.subtitle">覆压三百里 · 隔离天日 · 关中山水数字复原</div>
+    </div>
+  </header>
+  <div id="site-tools" class="hideable-group">
+    <a class="back-link" href="../../mv.html" data-i18n="afang.back">← AI放映厅</a>
+    <div data-language-switcher></div>
+    <details id="advanced-tools" class="hideable-group">
+      <summary class="tool-btn" data-i18n="afang.quality" data-i18n-title="afang.settings" data-i18n-aria-label="afang.settings" title="展陈设置" aria-label="展陈设置">画质</summary>
+      <div class="settings-panel">
+        <label for="quality-select" data-i18n="afang.quality">画质</label>
+        <select id="quality-select">
+          <option value="auto" data-i18n="afang.quality.auto">自动</option>
+          <option value="high" data-i18n="afang.quality.high">精细</option>
+          <option value="low" data-i18n="afang.quality.low">流畅</option>
+        </select>
+      </div>
+    </details>
+  </div>
+  <nav id="top-toolbar" data-i18n-aria-label="afang.controls" aria-label="展陈控制">
+    <div id="lighting-group" class="tool-group hideable-group">
+      <button id="btn-sunset" class="tool-btn active" aria-pressed="true" data-i18n="afang.sunset">夕照咸阳</button>
+      <button id="btn-noon" class="tool-btn" aria-pressed="false" data-i18n="afang.noon">盛世晴昼</button>
+      <button id="btn-night" class="tool-btn" aria-pressed="false" data-i18n="afang.night">星汉夜宴</button>
+    </div>
+    <div id="playback-group" class="tool-group hideable-group">
+      <button id="btn-bgm" class="tool-btn" aria-pressed="false" data-i18n-title="afang.music.title" title="盛世金钟">🎵 盛世金钟</button>
+      <button id="btn-rotate" class="tool-btn" aria-pressed="false" data-i18n="afang.orbit">🎥 环绕巡礼</button>
+      <button id="btn-export-obj" class="tool-btn" data-i18n="afang.export" data-i18n-title="afang.export.title">📦 导出</button>
+    </div>
+    <div class="tool-group immersion-group">
+      <button id="btn-toggle-ui" class="tool-btn" aria-pressed="false" data-i18n="afang.immerse">👁️ 沉浸</button>
+    </div>
+  </nav>
+  <div id="scene-loader" role="status" aria-live="polite">
+    <div class="loading-seal" aria-hidden="true">秦</div>
+    <h2 data-i18n="afang.loading.title">图卷徐启</h2>
+    <p id="loading-message" data-i18n="afang.loading.start">正在准备宫阙与山水…</p>
+    <div class="loading-track" aria-hidden="true"><span></span></div>
+    <button id="btn-retry" class="tool-btn" hidden data-i18n="afang.retry">重新载入</button>
+    <a href="../../mv.html" class="loading-back" data-i18n="afang.back">← AI放映厅</a>
+  </div>
+  <p id="music-status" role="status" aria-live="polite"></p>
+  <p id="scene-status" class="sr-only" role="status" aria-live="polite"></p>
+  <div id="touch-roam" class="hideable-group">
+    <button id="btn-roam" class="tool-btn" aria-expanded="false" aria-controls="roam-pad" data-i18n="afang.roam">漫游</button>
+    <div id="roam-pad" hidden>
+      <div class="direction-pad">
+        <button data-move="forward" data-i18n-aria-label="afang.forward" aria-label="前进">↑</button>
+        <button data-move="left" data-i18n-aria-label="afang.left" aria-label="左移">←</button>
+        <button data-move="backward" data-i18n-aria-label="afang.backward" aria-label="后退">↓</button>
+        <button data-move="right" data-i18n-aria-label="afang.right" aria-label="右移">→</button>
+      </div>
+      <div class="altitude-pad">
+        <button data-move="up" data-i18n-aria-label="afang.up" aria-label="升高">＋</button>
+        <button data-move="down" data-i18n-aria-label="afang.down" aria-label="降低">−</button>
+      </div>
+    </div>
+  </div>
+  <footer id="bottom-dock-wrapper">
+    <nav id="scenic-dock" data-i18n-aria-label="afang.scenes" aria-label="八大名景">
+      <button class="scenic-btn" data-cam="overview" data-i18n="afang.overview" aria-pressed="false">苍穹全览</button>
+      <button class="scenic-btn" data-cam="front" data-i18n="afang.front" aria-pressed="false">阿房前殿</button>
+      <button class="scenic-btn active" data-cam="colossi" data-i18n="afang.colossi" aria-pressed="true">十二金人</button>
+      <button class="scenic-btn" data-cam="water-west" data-i18n="afang.waterWest" aria-pressed="false">兰池水榭</button>
+      <button class="scenic-btn" data-cam="water-east" data-i18n="afang.waterEast" aria-pressed="false">沧池画舫</button>
+      <button class="scenic-btn" data-cam="stargaze" data-i18n="afang.stargaze" aria-pressed="false">太液摘星</button>
+      <button class="scenic-btn" data-cam="magnet" data-i18n="afang.magnet" aria-pressed="false">磁石雄关</button>
+      <button class="scenic-btn" data-cam="zhongnan" data-i18n="afang.zhongnan" aria-pressed="false">终南双阙</button>
+    </nav>
+    <div id="roam-hint">
+      <span class="desktop-hint" data-i18n="afang.hint">漫游指南：W A S D / 方向键移动 · E / 空格上升 · Q / C 下降 · Shift 加速 · 鼠标左键拖拽转向</span>
+      <span class="touch-hint" data-i18n="afang.touchHint">拖动画面转向 · 左右滑动选择景点 · 漫游键移动</span>
+    </div>
+  </footer>
+  <noscript><div class="no-script">此图卷需要启用 JavaScript。This exhibition requires JavaScript. <a href="../../mv.html">AI放映厅 / AI Cinema</a></div></noscript>
+  <script type="importmap">{"imports":{"three":"../vendor/three/build/three.module.js","three/addons/":"../vendor/three/examples/jsm/"}}</script>
+  <script type="module" src="page-ui.js"></script>
+  <script type="module" src="music.js"></script>
+</body>
+</html>

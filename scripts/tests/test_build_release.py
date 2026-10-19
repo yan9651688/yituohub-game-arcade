@@ -5,6 +5,7 @@ import contextlib
 import gzip
 import importlib.util
 import io
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -57,6 +58,33 @@ class BuildReleaseTests(unittest.TestCase):
                 self.write("assets/games.js", f'[{{id:"demo",path:"{path}",cover:"assets/covers/demo.png"}}]'.encode())
                 with self.assertRaises(ValueError):
                     builder.catalog_count()
+
+    def test_accepts_json_generated_keys_and_decodes_unicode_paths(self):
+        game = {"id": "demo", "path": "game-arcade/games/测试.html", "cover": "assets/covers/demo.png"}
+        self.write(game["path"], b"playable")
+        self.write("assets/games.js", ("window.ARCADE_GAMES = " + json.dumps([game]) + ";").encode())
+        self.assertEqual(builder.catalog_count(), 1)
+
+    def test_rejects_duplicates_and_quoted_escaping_paths(self):
+        game = {"id": "demo", "path": "game-arcade/games/demo.html", "cover": "assets/covers/demo.png"}
+        for games in [[game, game], [{**game, "path": "../outside.html"}], [{**game, "id": "bad id"}]]:
+            with self.subTest(games=games):
+                self.write("assets/games.js", ("window.ARCADE_GAMES = " + json.dumps(games) + ";").encode())
+                with self.assertRaises(ValueError):
+                    builder.catalog_count()
+
+    def test_counts_and_validates_the_classic_catalogue(self):
+        self.write("classics/link.html", b"classic game")
+        self.write("assets/classics.js", b'window.CLASSIC_GAMES = [{"id":"link","path":"classics/link.html","cover":"assets/covers/demo.png"}];')
+        with contextlib.redirect_stdout(io.StringIO()):
+            report = builder.build("test")
+        self.assertEqual(report["games"], 1)
+        self.assertEqual(report["classics"], 1)
+        self.assertEqual(report["totalGames"], 2)
+        self.assertEqual(json.loads((self.root / "dist/version.json").read_text())["totalGames"], 2)
+        self.write("assets/classics.js", b'[{"id":"broken","path":"classics/missing.html","cover":"assets/covers/demo.png"}]')
+        with self.assertRaises(ValueError):
+            builder.build("invalid")
 
 
 if __name__ == "__main__":

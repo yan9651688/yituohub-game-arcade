@@ -2,6 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
+<script src="../../assets/game-locales/iron-front.js?v=20261011-games1"></script>
+<script src="../../assets/game-i18n.js?v=20261011-games1"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#131e24">
 <title>智械前线 3.6 · 重装突围</title>
@@ -55,6 +57,30 @@ body.photo-mode .topbar,body.photo-mode #hud,body.photo-mode #toast,body.photo-m
 @media(max-width:700px){.mission .mode-chip{display:none}.mission h2{margin-bottom:9px}.mission .statline{margin-top:8px;padding-top:6px}.bossbar{top:218px}.center-status{top:218px}}
 @media(max-width:700px) and (max-height:760px){.bossbar{top:216px;padding:5px 10px}.boss-title{font-size:9px;margin-bottom:3px}.boss-track{height:5px}.boss-hp{display:none}.center-status{top:216px}}
 
+/* Touch layouts keep menus reachable in landscape and give tools a full tap target. */
+@media(pointer:coarse){
+ .topbar{padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right));padding-top:env(safe-area-inset-top);height:calc(54px + env(safe-area-inset-top))}
+ .tool{min-height:44px;min-width:44px;padding:7px}.tools{gap:4px}.buildtag{display:none}
+ .home{overflow-y:auto;overscroll-behavior:contain;padding-bottom:max(65px,env(safe-area-inset-bottom));scrollbar-width:thin}
+ .modebar button,.endless-entry{min-height:44px}.bottomhud{bottom:max(27px,env(safe-area-inset-bottom))}
+ .mission,.arsenal{top:calc(65px + env(safe-area-inset-top))}.home{padding-top:calc(78px + env(safe-area-inset-top))}
+ .skill{touch-action:none}.controls-tip{bottom:max(10px,env(safe-area-inset-bottom))}
+}
+@media(pointer:coarse) and (max-width:520px){.brand-mark{display:none}.brand{font-size:9px;letter-spacing:.5px}.brand small{font-size:6px}.tools{gap:3px}.tool{font-size:9px;padding:6px}.topbar{gap:7px}}
+@media(pointer:coarse) and (orientation:landscape) and (max-height:560px){
+ .home{padding:calc(65px + env(safe-area-inset-top)) max(24px,env(safe-area-inset-left)) 25px;align-items:flex-start}.home-content{width:52%;max-width:470px}
+ .home h1{font-size:40px;line-height:1.05;letter-spacing:-1px}.home h1 br{display:none}.home .eyebrow{font-size:7px;margin-bottom:7px}
+ .home .engtitle{font-size:8px!important;letter-spacing:3px!important;margin:6px 0!important}.home .lede{font-size:10px;line-height:1.5;margin:8px 0}
+ .modebar{width:100%;margin-bottom:8px;padding:3px}.modebar button{min-height:44px;padding:7px;font-size:10px}
+ .home-actions{gap:8px}.home .primary{min-width:0;flex:1;padding:11px 14px;font-size:12px}.home .secondary{padding:11px 13px;min-height:44px}
+ .endless-entry{min-height:40px;margin-top:8px;padding:7px 11px}.home-features,.home-bottom,.live-caption{display:none}
+ .mission,.arsenal{top:calc(61px + env(safe-area-inset-top));padding:8px 11px;width:155px;opacity:.9}.mission{left:max(12px,env(safe-area-inset-left))}.arsenal{right:max(12px,env(safe-area-inset-right))}
+ .mission h2,.weapon-name{font-size:12px;margin:4px 0 6px}.mission .tiny,.arsenal .tiny{font-size:7px}.mission .mode-chip,.mission .subrow,.arsenal .weapon-art,.arsenal .weapon-desc,.arsenal .subrow,.dps-line,.support-badge,.field-note{display:none}
+ .mission .statline{gap:18px;margin-top:6px;padding-top:5px}.statline .num{font-size:18px}.statline label{font-size:7px}.weapon-track i{height:4px}
+ .center-status{top:calc(65px + env(safe-area-inset-top));font-size:8px;max-width:calc(100% - 350px);white-space:normal;text-align:center;padding:5px 8px}.bossbar{top:calc(60px + env(safe-area-inset-top));width:calc(100% - 350px);padding:6px 8px}
+ .bottomhud{left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:max(15px,env(safe-area-inset-bottom));gap:8px}.bottomhud .health-panel{width:155px;max-width:155px;padding:9px 11px}.bottomhud .skill{width:58px;min-width:58px;height:58px}.skill .keycap{display:none}.bottomhud .skill svg{width:20px;height:20px}.bottomhud .skill span{font-size:8px}.controls-tip{display:none}
+ .modal{max-height:calc(100dvh - 28px);padding:20px}.toast{top:auto;bottom:84px;font-size:10px}.banner{padding:12px}.banner strong{font-size:22px}
+}
 </style>
 </head>
 <body>
@@ -267,7 +293,7 @@ function beginStage(capture=true){
  Object.assign(G,{t:0,dist:0,phase:'run',x:0,airCd:0,overCd:0,over:0,boss:null,bossTimer:0,bossAttack:2.6,bossAdds:7,clearTimer:0,stageKills:0,eventIndex:0,row:0,rowsPassed:new Set(),hitFlash:0,invulnerable:0,fireTimer:.2,combo:0,comboTime:0,joinTime:0,joinFrom:G.squad,tankTimer:.8,mechTimer:.6,mechMissile:3,ultimateCd:0,ultimateDrops:0,lootChoices:0,missedLoot:0,wave:0,nextWave:0,supplyTimer:17,reinforceTimer:5,feederRefill:4,deploy:0,tankFlash:0,mechFlash:0});
  G.mode=G.endless?'hold':MAPS[G.stage].mode==='hybrid'?'advance':MAPS[G.stage].mode;
  for(const k of ['enemies','objects','bullets','particles','floats','rockets','explosions','hazards','enemyShots','remains','deliveries'])G[k]=[];
- targetX=0;keys={};pointerActive=false;shake=0;seed=(1597+G.stage*9987+G.diff*19)>>>0;G.events=G.endless?[]:stageTimeline(G.stage);updateWeapon(true);if(capture)captureCheckpoint();
+ targetX=0;keys={};pointerActive=false;dragPointer=null;shake=0;seed=(1597+G.stage*9987+G.diff*19)>>>0;G.events=G.endless?[]:stageTimeline(G.stage);updateWeapon(true);if(capture)captureCheckpoint();
  showBanner(G.endless?'无尽守线':MAPS[G.stage].name,G.endless?'兵力与军械不重置 · 坚守更多波次':`${MODE_NAMES[MAPS[G.stage].mode]} / ${G.practice?'独立试打':'全新智械战役'}`,2.0);$('bossBar').classList.add('hidden');$('centerStatus').classList.remove('hidden');hudTimer=1;updateHUD();
 }
 function isStationary(){return G&&(G.endless||G.mode==='hold'||G.mode==='siege'||G.phase==='boss'||G.phase==='mopup')}
@@ -514,7 +540,7 @@ function updateHUD(){if(!G)return;const map=MAPS[G.stage],wp=weaponStats();$('se
 function showToast(text,seconds=2.5){$('toast').textContent=text;$('toast').classList.add('show');toastUntil=realTime+seconds}
 function showBanner(title,sub,seconds=2){$('banner').querySelector('strong').textContent=title;$('banner').querySelector('span').textContent=sub;$('banner').classList.remove('hidden');bannerUntil=realTime+seconds}
 function hideModal(){$('modalBackdrop').classList.add('hidden');document.body.classList.remove('paused-blur')}
-function showModal(html){$('modal').innerHTML=html;$('modalBackdrop').classList.remove('hidden');document.body.classList.add('paused-blur');keys={};setTimeout(()=>{$('modal').querySelector('button')?.focus()},30)}
+function showModal(html){dragPointer=null;pointerActive=false;if(G)targetX=G.x;$('modal').innerHTML=html;$('modalBackdrop').classList.remove('hidden');document.body.classList.add('paused-blur');keys={};setTimeout(()=>{$('modal').querySelector('button')?.focus()},30)}
 function pause(){if(state!=='playing')return;state='paused';showModal(`<div class="tiny">MISSION PAUSED</div><h2>暂时休整</h2><p>战场已暂停。调整呼吸，准备下一轮火力。</p><div class="modal-actions"><button class="primary" id="resumeBtn">继续突围 <span>↗</span></button><button class="secondary" id="retryBtn">重试本关</button><button class="secondary" id="quitBtn">返回主菜单</button></div><div class="notice">重试会恢复到本关开始时的兵力、军械与强化。</div>`);$('resumeBtn').onclick=resume;$('retryBtn').onclick=()=>restoreCheckpoint();$('quitBtn').onclick=home}
 function resume(){if(state!=='paused')return;state='playing';hideModal();keys={};accumulator=0}
 function home(){state='home';$('home').classList.remove('hidden');$('hud').classList.add('hidden');$('pauseBtn').classList.add('hidden');$('banner').classList.add('hidden');$('toast').classList.remove('show');document.body.classList.remove('playing');hideModal();keys={};G=null;shake=0}
@@ -1263,11 +1289,15 @@ addEventListener('keydown',e=>{
  keys[e.code]=true;if(e.code==='Space'&&!e.repeat){e.preventDefault();launchSkill('air')}if(e.code==='KeyE'&&!e.repeat)launchSkill('over');if(e.code==='KeyR'&&!e.repeat)launchSkill('ultimate');
 });addEventListener('keyup',e=>{keys[e.code]=false});addEventListener('blur',()=>{keys={};pointerActive=false});
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='playing'&&!manual)pause()});
-let dragOrigin=0,dragWorld=0;
+let dragOrigin=0,dragWorld=0,dragPointer=null;
 function mouseToWorld(px){const a=project(-6.6,0,PLAYER_Z),b=project(6.6,0,PLAYER_Z);return clamp((px-a.x)/(b.x-a.x)*13.2-6.6,-6.6,6.6)}
-canvas.addEventListener('pointerdown',e=>{if(state!=='playing')return;audio.init();pointerActive=true;dragOrigin=e.clientX;dragWorld=G.x;try{canvas.setPointerCapture(e.pointerId)}catch(_){}if(e.pointerType==='mouse')targetX=mouseToWorld(e.clientX);e.preventDefault()});
-canvas.addEventListener('pointermove',e=>{if(state!=='playing')return;if(e.pointerType==='mouse'){targetX=mouseToWorld(e.clientX);lastInput='mouse'}else if(pointerActive){const a=project(-6.6,0,PLAYER_Z),b=project(6.6,0,PLAYER_Z);targetX=clamp(dragWorld+(e.clientX-dragOrigin)*13.2/(b.x-a.x),-6.6,6.6);lastInput='touch'}if(pointerActive)e.preventDefault()});
-for(const name of['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(name,()=>{pointerActive=false});
+canvas.addEventListener('pointerdown',e=>{if(state!=='playing'||dragPointer!==null)return;audio.init();dragPointer=e.pointerId;pointerActive=true;dragOrigin=e.clientX;dragWorld=G.x;try{canvas.setPointerCapture(e.pointerId)}catch(_){}if(e.pointerType==='mouse')targetX=mouseToWorld(e.clientX);e.preventDefault()});
+canvas.addEventListener('pointermove',e=>{if(state!=='playing')return;if(e.pointerType==='mouse'){targetX=mouseToWorld(e.clientX);lastInput='mouse'}else if(pointerActive&&e.pointerId===dragPointer){const a=project(-6.6,0,PLAYER_Z),b=project(6.6,0,PLAYER_Z);targetX=clamp(dragWorld+(e.clientX-dragOrigin)*13.2/(b.x-a.x),-6.6,6.6);lastInput='touch'}if(pointerActive)e.preventDefault()});
+for(const name of['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(name,e=>{if(e.pointerId!==dragPointer)return;dragPointer=null;pointerActive=false;if(e.pointerType!=='mouse'&&G)targetX=G.x});
+addEventListener('blur',()=>{dragPointer=null;if(G)targetX=G.x});
+for(const [id,skill] of [['airstrikeBtn','air'],['overdriveBtn','over'],['ultimateBtn','ultimate']]){
+ const button=$(id);button.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;e.preventDefault();launchSkill(skill);button.blur()});
+}
 let contextLost=false;
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();contextLost=true;if(state==='playing')pause();showToast('图形上下文丢失，请刷新页面重新进入。',30)});
 function renderFrame(){if(contextLost)return;if(realTime>toastUntil)$('toast').classList.remove('show');if(realTime>bannerUntil)$('banner').classList.add('hidden');camera(state==='home');resetBatches();if(G&&state!=='home')renderGame(G.totalTime);else renderHome(homeTime)}

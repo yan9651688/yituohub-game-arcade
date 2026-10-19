@@ -38,7 +38,7 @@ export const LEVELS = [
     ],
     hazards: [h(65, 0, 1.15, 1.05, 'spike', 4.2), h(132, 0, 1.4, 2.25, 'flame', 4.8, 2.0)],
     pickups: [item(10, 1.25, 'M'), item(47, 5.5, 'S'), item(91, 1.3, 'B'), item(121, 1.3, 'S'), item(159, 5.5, 'life'), item(177, 1.3, 'R')],
-    checkpoints: [{ x: 3, y: 0 }, { x: 91, y: 0 }, { x: 170, y: 0 }],
+    checkpoints: [{ x: 3, y: 0 }, { x: 24, y: 0 }, { x: 32, y: 0 }, { x: 60, y: 0 }, { x: 92, y: 0 }, { x: 119, y: 0 }, { x: 141, y: 0 }, { x: 171, y: 0 }, { x: 185, y: 0, boss: true }],
     boss: { x: 209, y: 0, type: 'gate', name: '装甲防壁 · GATEKEEPER', hp: 100, w: 6, h: 7 },
   },
   {
@@ -88,7 +88,7 @@ export const LEVELS = [
     ],
     hazards: [h(20.5, 17.6, 1.1, 1.0, 'spike', 4), h(2.3, 39.6, 1.05, 1.0, 'spike', 4), h(27, 59.4, 1.2, 2.25, 'flame', 4.7, 1.8)],
     pickups: [item(6, 3.5, 'S'), item(28, 12.3, 'life'), item(14, 23.3, 'L'), item(3, 34.3, 'B'), item(15, 45.3, 'M'), item(28, 56.3, 'life'), item(11, 67.3, 'S'), item(16, 76.1, 'R')],
-    checkpoints: [{ x: 4, y: 0 }, { x: 15, y: 22 }, { x: 17, y: 44 }, { x: 7, y: 66 }],
+    checkpoints: [{ x: 4, y: 0 }, { x: 15, y: 8.8 }, { x: 15, y: 17.6 }, { x: 8, y: 26.4 }, { x: 15, y: 35.2 }, { x: 17, y: 44 }, { x: 8, y: 52.8 }, { x: 17, y: 61.6 }, { x: 16, y: 70.4, boss: true }, { x: 9, y: 77, boss: true }],
     boss: { x: 24, y: 77, type: 'hydra', name: '瀑布巨像 · HYDRA', hp: 165, w: 7, h: 8 },
   },
   {
@@ -133,7 +133,7 @@ export const LEVELS = [
     ],
     hazards: [h(54, 0, 1.3, 1.0, 'spike', 4), h(144, 0, 1.4, 2.4, 'flame', 4.6, 1.5), h(180, 0, 1.3, 1.0, 'spike', 4)],
     pickups: [item(10, 1.3, 'M'), item(43, 3.4, 'F'), item(80, 5.5, 'life'), item(100, 3.4, 'S'), item(125, 1.3, 'B'), item(141, 5.5, 'L'), item(173, 1.3, 'R'), item(202, 5.5, 'S')],
-    checkpoints: [{ x: 3, y: 0 }, { x: 95, y: 0 }, { x: 188, y: 0 }],
+    checkpoints: [{ x: 3, y: 0 }, { x: 26, y: 0 }, { x: 35, y: 0 }, { x: 63, y: 0 }, { x: 95, y: 0 }, { x: 122, y: 0 }, { x: 156, y: 0 }, { x: 188, y: 0 }, { x: 197, y: 0, boss: true }],
     boss: { x: 221, y: 0, type: 'hover', name: '极地浮空舰 · WHITEOUT', hp: 210, w: 8, h: 6 },
   },
   {
@@ -169,7 +169,7 @@ export const LEVELS = [
       h(178, 0, 1.35, 2.5, 'flame', 4.7, 2.2), h(184, 4.2, 1.1, 1.5, 'electric', 3.8, 1.4),
     ],
     pickups: [item(10, 1.3, 'F'), item(39, 3.4, 'B'), item(70, 5.5, 'L'), item(95, 5.5, 'life'), item(113, 3.4, 'S'), item(152, 5.5, 'M'), item(169, 1.3, 'B'), item(186, 5.5, 'R')],
-    checkpoints: [{ x: 3, y: 0 }, { x: 79, y: 0 }, { x: 162, y: 0 }],
+    checkpoints: [{ x: 3, y: 0 }, { x: 21, y: 0 }, { x: 32, y: 0 }, { x: 57, y: 0 }, { x: 80, y: 0 }, { x: 113, y: 0 }, { x: 138, y: 0 }, { x: 163, y: 0 }, { x: 181, y: 0, boss: true }],
     boss: { x: 204, y: 0, type: 'titan', name: '熔炉巨兵 · TITAN', hp: 240, w: 5, h: 8 },
   },
   {
@@ -206,7 +206,7 @@ export const LEVELS = [
       h(184, 0, 1.5, 2.2, 'electric', 4.4, 1.0), h(198, 0, 1.7, 3.6, 'crusher', 5.0, 0),
     ],
     pickups: [item(10, 1.3, 'M'), item(43, 3.4, 'L'), item(75, 5.5, 'B'), item(103, 5.5, 'life'), item(116, 1.3, 'S'), item(159, 5.5, 'F'), item(172, 1.3, 'B'), item(190, 5.5, 'R')],
-    checkpoints: [{ x: 3, y: 0 }, { x: 89, y: 0 }, { x: 170, y: 0 }],
+    checkpoints: [{ x: 3, y: 0 }, { x: 20, y: 0 }, { x: 35, y: 0 }, { x: 61, y: 0 }, { x: 90, y: 0 }, { x: 116, y: 0 }, { x: 145, y: 0 }, { x: 171, y: 0 }, { x: 193, y: 0, boss: true }],
     boss: { x: 216, y: 0, type: 'fortress', name: '最终防壁 · BASTION', hp: 275, w: 8, h: 8 },
   },
   {
@@ -240,7 +240,7 @@ export const LEVELS = [
       h(184, 0, 1.3, 1.05, 'spike', 4),
     ],
     pickups: [item(10, 1.3, 'S'), item(40, 3.4, 'F'), item(74, 5.5, 'life'), item(88, 1.3, 'B'), item(102, 5.5, 'L'), item(117, 1.3, 'S'), item(158, 5.5, 'life'), item(172, 1.3, 'B'), item(189, 5.5, 'R')],
-    checkpoints: [{ x: 3, y: 0 }, { x: 86, y: 0 }, { x: 169, y: 0 }],
+    checkpoints: [{ x: 3, y: 0 }, { x: 21, y: 0 }, { x: 33, y: 0 }, { x: 60, y: 0 }, { x: 87, y: 0 }, { x: 117, y: 0 }, { x: 144, y: 0 }, { x: 170, y: 0 }, { x: 187, y: 0, boss: true }],
     boss: { x: 209, y: 0, type: 'heart', name: '脉冲之心 · RED FALCON', hp: 330, w: 7, h: 7 },
   },
 ];

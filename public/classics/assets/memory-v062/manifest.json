@@ -1,0 +1,252 @@
+{
+  "tool": "built-in image_gen",
+  "source": "collectibles-source.png",
+  "prompt": "prompt.txt",
+  "grid": {
+    "columns": 5,
+    "rows": 4
+  },
+  "preparation": "Individually bounded object extraction avoids adjacent-cell fragments. Each crop is centered with aspect ratio preserved in a 280px square (max art footprint 260px), WebP quality 90. No semantic art changes. Each identity owns a separate image, and both cards in a pair share the identical src.",
+  "cards": [
+    {
+      "id": 0,
+      "key": "sun",
+      "label": "太阳",
+      "asset": "sun.webp",
+      "crop_box": [
+        10,
+        8,
+        276,
+        273
+      ]
+    },
+    {
+      "id": 1,
+      "key": "moon",
+      "label": "月亮",
+      "asset": "moon.webp",
+      "crop_box": [
+        308,
+        14,
+        541,
+        270
+      ]
+    },
+    {
+      "id": 2,
+      "key": "key",
+      "label": "钥匙",
+      "asset": "key.webp",
+      "crop_box": [
+        565,
+        10,
+        815,
+        267
+      ]
+    },
+    {
+      "id": 3,
+      "key": "butterfly",
+      "label": "蝴蝶",
+      "asset": "butterfly.webp",
+      "crop_box": [
+        823,
+        28,
+        1105,
+        260
+      ]
+    },
+    {
+      "id": 4,
+      "key": "book",
+      "label": "书本",
+      "asset": "book.webp",
+      "crop_box": [
+        1110,
+        47,
+        1395,
+        242
+      ]
+    },
+    {
+      "id": 5,
+      "key": "cat",
+      "label": "猫咪",
+      "asset": "cat.webp",
+      "crop_box": [
+        50,
+        275,
+        256,
+        545
+      ]
+    },
+    {
+      "id": 6,
+      "key": "lantern",
+      "label": "提灯",
+      "asset": "lantern.webp",
+      "crop_box": [
+        340,
+        273,
+        496,
+        547
+      ]
+    },
+    {
+      "id": 7,
+      "key": "shell",
+      "label": "贝壳",
+      "asset": "shell.webp",
+      "crop_box": [
+        559,
+        288,
+        823,
+        537
+      ]
+    },
+    {
+      "id": 8,
+      "key": "feather",
+      "label": "羽毛",
+      "asset": "feather.webp",
+      "crop_box": [
+        842,
+        282,
+        1090,
+        548
+      ]
+    },
+    {
+      "id": 9,
+      "key": "crown",
+      "label": "王冠",
+      "asset": "crown.webp",
+      "crop_box": [
+        1115,
+        297,
+        1396,
+        528
+      ]
+    },
+    {
+      "id": 10,
+      "key": "hat",
+      "label": "巫师帽",
+      "asset": "hat.webp",
+      "crop_box": [
+        9,
+        562,
+        281,
+        806
+      ]
+    },
+    {
+      "id": 11,
+      "key": "hourglass",
+      "label": "沙漏",
+      "asset": "hourglass.webp",
+      "crop_box": [
+        340,
+        552,
+        504,
+        812
+      ]
+    },
+    {
+      "id": 12,
+      "key": "telescope",
+      "label": "望远镜",
+      "asset": "telescope.webp",
+      "crop_box": [
+        561,
+        548,
+        815,
+        812
+      ]
+    },
+    {
+      "id": 13,
+      "key": "swan",
+      "label": "天鹅",
+      "asset": "swan.webp",
+      "crop_box": [
+        840,
+        552,
+        1107,
+        809
+      ]
+    },
+    {
+      "id": 14,
+      "key": "mushroom",
+      "label": "蘑菇",
+      "asset": "mushroom.webp",
+      "crop_box": [
+        1125,
+        561,
+        1386,
+        808
+      ]
+    },
+    {
+      "id": 15,
+      "key": "tree",
+      "label": "松树",
+      "asset": "tree.webp",
+      "crop_box": [
+        17,
+        815,
+        273,
+        1101
+      ]
+    },
+    {
+      "id": 16,
+      "key": "sailboat",
+      "label": "帆船",
+      "asset": "sailboat.webp",
+      "crop_box": [
+        286,
+        815,
+        555,
+        1093
+      ]
+    },
+    {
+      "id": 17,
+      "key": "harp",
+      "label": "竖琴",
+      "asset": "harp.webp",
+      "crop_box": [
+        584,
+        815,
+        800,
+        1105
+      ]
+    },
+    {
+      "id": 18,
+      "key": "teacup",
+      "label": "茶杯",
+      "asset": "teacup.webp",
+      "crop_box": [
+        809,
+        865,
+        1110,
+        1081
+      ]
+    },
+    {
+      "id": 19,
+      "key": "bow",
+      "label": "弓箭",
+      "asset": "bow.webp",
+      "crop_box": [
+        1124,
+        813,
+        1388,
+        1088
+      ]
+    }
+  ]
+}

@@ -1,0 +1,382 @@
+{
+  "version": 1,
+  "method": "Built-in image_gen.imagegen",
+  "generatedDate": "2026-10-11",
+  "artworkType": "Original AI-generated raster illustrations; not extracted game assets",
+  "layout": {
+    "columns": 5,
+    "rows": 2,
+    "cellOrder": "row-major",
+    "gutter": 0,
+    "background": "pale yellow-green",
+    "recommendedCellInset": 0.015
+  },
+  "notes": [
+    "Artwork identifies the canonical 40 Adventure plants; names, costs and cooldowns are rendered by HTML UI, not baked into the image.",
+    "Atlas 03 contains thin cell lines. The UI's 1.5% inset hides them without changing source pixels.",
+    "Generated PNGs were copied unmodified from tool-returned paths to these project assets.",
+    "All four atlases visually inspected for expected species and cell order.",
+    "Atlas 05 adds eight upgrade plants and Imitater for 49 total plant portraits; its bottom-right cell is intentionally blank. Generated on 2026-10-12 and copied unmodified from the built-in image tool result after tool-only layout refinement.",
+    "The deployment converts each original PNG to pixel-verified lossless WebP under the site assets/media content hash cache. Original PNG metadata above describes the preserved source distribution; deployment fields identify runtime files."
+  ],
+  "atlases": [
+    {
+      "file": "plants-atlas-01.png",
+      "prompt": "Use case: stylized-concept. Asset: single plant portrait sprite atlas for a Plants vs. Zombies classic-style browser game. Create a landscape 5:2 image, exactly FIVE equal-width columns and TWO equal-height rows, ten square cells covering the entire image edge-to-edge, no outer margin or gutters. Each cell is flat pale cream-green with exactly one complete recognizable Plants vs. Zombies plant, centered with 12% safe margins. Cohesive professional cartoon game art: thick dark olive/brown outlines, expressive eyes, vibrant flat colors, subtle cel shading, 2D hand-illustrated seed packet portrait feel, not 3D. NO text, labels, numbers, lettering, price, logos, card frames, or watermark. Subjects MUST occur in this exact row-major order. TOP ROW left to right: 1 Peashooter, green pea head with single broad tubular trumpet snout facing right and two base leaves; 2 Sunflower, smiling brown circular face surrounded by golden petals on short green stem and leaves; 3 Cherry Bomb, two angry round bright red cherries connected with joined green stems; 4 Wall-nut, squat oval brown textured walnut with large worried friendly eyes; 5 Potato Mine, low lumpy tan potato with tiny eyes and red glowing detonator on top. BOTTOM ROW left to right: 6 Snow Pea, icy cyan peashooter with dark blue snout opening and crystalline icy leaf crown; 7 Chomper, large purple carnivorous plant head with wide open mouth and prominent triangular white teeth, green stem and leaves; 8 Repeater, green peashooter with stern eyebrows and distinct ridged green leaf crest behind head; 9 Puff-shroom, tiny beige mushroom with squat round purple spotted cap and little projecting spore mouth; 10 Sun-shroom, tiny yellow-beige mushroom with broad golden orange spotted cap and sleepy friendly eyes. All subjects fully within own equal square cells. Preserve requested order and distinct species silhouettes.",
+      "sourceAsset": "exec-9af7fa86-a969-4f90-857d-930f48690736.png",
+      "width": 1983,
+      "height": 793,
+      "sha256": "509ac9564d1741052354b1b7237807fdf1e4b1db02959a16cfda677aa6cc1825",
+      "plants": [
+        {
+          "id": "peashooter",
+          "col": 0,
+          "row": 0
+        },
+        {
+          "id": "sunflower",
+          "col": 1,
+          "row": 0
+        },
+        {
+          "id": "cherry-bomb",
+          "col": 2,
+          "row": 0
+        },
+        {
+          "id": "wall-nut",
+          "col": 3,
+          "row": 0
+        },
+        {
+          "id": "potato-mine",
+          "col": 4,
+          "row": 0
+        },
+        {
+          "id": "snow-pea",
+          "col": 0,
+          "row": 1
+        },
+        {
+          "id": "chomper",
+          "col": 1,
+          "row": 1
+        },
+        {
+          "id": "repeater",
+          "col": 2,
+          "row": 1
+        },
+        {
+          "id": "puff-shroom",
+          "col": 3,
+          "row": 1
+        },
+        {
+          "id": "sun-shroom",
+          "col": 4,
+          "row": 1
+        }
+      ],
+      "deployment": {
+        "file": "../../../assets/media/3c44aec589cc7a1a2e8c1bea114e6a87a01c6ea412365397d6c1225a471bf20f.webp",
+        "format": "lossless WebP",
+        "sha256": "3c44aec589cc7a1a2e8c1bea114e6a87a01c6ea412365397d6c1225a471bf20f",
+        "decodedRGBAIdenticalToSourcePNG": true
+      }
+    },
+    {
+      "file": "plants-atlas-02.png",
+      "prompt": "Use case: stylized-concept. Asset: single plant portrait sprite atlas for a Plants vs. Zombies classic-style browser game. Create landscape aspect ratio 5:2, exactly FIVE equal-width columns and TWO equal-height rows, ten square cells covering the image edge-to-edge, no outer margin or gutters. Each cell is flat pale cream yellow-green with exactly one complete recognizable Plants vs. Zombies plant, centered with 12% safe margins. Cohesive professional cartoon game art: thick dark olive/brown outlines, expressive eyes, vibrant flat colors, subtle cel shading, 2D hand-illustrated seed packet portrait feel, not 3D. NO text, labels, numbers, lettering, price, logos, card frames, or watermark. Subjects MUST occur in this exact row-major order. TOP ROW left to right: 1 Fume-shroom, large squat purple mushroom with broad deep purple spotted cap, beige stalk face and broad protruding purple tube snout; 2 Grave Buster, shaggy dark brown angular mass of roots and bark with large furious white eyes and a jagged open mouth, little green moss on head, NO gravestone; 3 Hypno-shroom, cream stalk with dazed eyes under a psychedelic multicolor swirled cap with broad pink purple rim, green and yellow whorls; 4 Scaredy-shroom, distinctly very tall thin cream stalk, round timid eyes and tiny right-facing tubular mouth underneath small orange-brown spotted mushroom cap; 5 Ice-shroom, squat ice blue mushroom, translucent blue crystal spikes forming its jagged broad cap, stern sleepy eyes. BOTTOM ROW left to right: 6 Doom-shroom, enormous dark charcoal-purple mushroom cap, small pale stalk with angry eyes, ominous rounded silhouette; 7 Lily Pad, single flat round bright green lily pad with a notch and tiny friendly face, NO other plant on it; 8 Squash, stocky pear-shaped light green squash with thick furrowed brow, grumpy eyes and broad mouth; 9 Threepeater, exactly THREE green pea heads on three separate connected branching stems and broad base leaves, each head has a trumpet snout facing right; 10 Tangle Kelp, creature made of three tall curling dark green kelp fronds rising from a small rippling water base, angry eyes hidden among fronds. All subjects within own equal square cells. Preserve exact order and distinct species silhouettes.",
+      "sourceAsset": "exec-22c8fb14-145e-4eb9-9183-34a8793c2117.png",
+      "width": 1983,
+      "height": 793,
+      "sha256": "c5396d05186ae8d7668cfd2d2c717414d43f1846957d9382ce086053435262d3",
+      "plants": [
+        {
+          "id": "fume-shroom",
+          "col": 0,
+          "row": 0
+        },
+        {
+          "id": "grave-buster",
+          "col": 1,
+          "row": 0
+        },
+        {
+          "id": "hypno-shroom",
+          "col": 2,
+          "row": 0
+        },
+        {
+          "id": "scaredy-shroom",
+          "col": 3,
+          "row": 0
+        },
+        {
+          "id": "ice-shroom",
+          "col": 4,
+          "row": 0
+        },
+        {
+          "id": "doom-shroom",
+          "col": 0,
+          "row": 1
+        },
+        {
+          "id": "lily-pad",
+          "col": 1,
+          "row": 1
+        },
+        {
+          "id": "squash",
+          "col": 2,
+          "row": 1
+        },
+        {
+          "id": "threepeater",
+          "col": 3,
+          "row": 1
+        },
+        {
+          "id": "tangle-kelp",
+          "col": 4,
+          "row": 1
+        }
+      ],
+      "deployment": {
+        "file": "../../../assets/media/8656d412b082a33dd0d88fa6a8464c04ebe9f8a1f8e9ddc6fc213f1f0c0ecda2.webp",
+        "format": "lossless WebP",
+        "sha256": "8656d412b082a33dd0d88fa6a8464c04ebe9f8a1f8e9ddc6fc213f1f0c0ecda2",
+        "decodedRGBAIdenticalToSourcePNG": true
+      }
+    },
+    {
+      "file": "plants-atlas-03.png",
+      "prompt": "Use case: stylized-concept. Asset: single plant portrait sprite atlas for a Plants vs. Zombies classic-style browser game. Create landscape aspect ratio 5:2, exactly FIVE equal-width columns and TWO equal-height rows, ten square cells covering the image edge-to-edge, no outer margin or gutters. Each cell is flat pale cream yellow-green with exactly one complete recognizable Plants vs. Zombies plant, centered with 10% safe margins. Cohesive professional cartoon game art: thick dark olive/brown outlines, expressive eyes, vibrant flat colors, subtle cel shading, 2D hand-illustrated seed packet portrait feel, not 3D. NO text, labels, numbers, lettering, price, logos, card frames, or watermark. Subjects MUST occur in this exact row-major order. TOP ROW left to right: 1 Jalapeno, long upright curved red hot chili pepper with furious eyes, clenched white teeth and curled green stem; 2 Spikeweed, low flat tangled patch of dark green thorny grass with big sharp tan spikes and tiny eyes near center, very low horizontal silhouette; 3 Torchwood, cylindrical brown wooden tree stump with angry eyes and open mouth, orange-yellow fire burning from hollow top, root feet; 4 Tall-nut, very tall rectangular rounded-top brown walnut barrier with stern sad eyes and coarse walnut surface, distinctly tall block shape; 5 Sea-shroom, small aquatic mushroom with blue seaweed-fringed cap, short pale blue stalk and tiny tubular spore mouth, a small ripple at base. BOTTOM ROW left to right: 6 Plantern, green leafy plant supporting a luminous warm yellow lantern-shaped head with little friendly face, green angular leaf hood and leafy feet; 7 Cactus, tall green cactus plant with prickles, large eyes, right-facing tubular mouth, arm-like side stems and bright pink flower on top; 8 Blover, four broad bright green clover leaves arranged as a pinwheel fan around a central small round green face with puffed cheeks and round blowing mouth, short stem and leaves; 9 Split Pea, exactly two opposed pea heads connected back-to-back: larger stern head facing LEFT and smaller round head facing RIGHT, green stem and base leaves, two tubular snouts point opposite directions; 10 Starfruit, bright golden yellow five-pointed star-shaped fruit with two eyes and tiny smile, no stem, no leaves. All subjects fully within own equal square cells. Preserve requested order and distinct species silhouettes.",
+      "sourceAsset": "exec-1d0591f3-f191-4fb6-91ab-b3ebaa2b3ecf.png",
+      "width": 1983,
+      "height": 793,
+      "sha256": "b10602eca1b68fb0e6f0aa435423dd32928a262ad266b94f7fdd20a97da43773",
+      "plants": [
+        {
+          "id": "jalapeno",
+          "col": 0,
+          "row": 0
+        },
+        {
+          "id": "spikeweed",
+          "col": 1,
+          "row": 0
+        },
+        {
+          "id": "torchwood",
+          "col": 2,
+          "row": 0
+        },
+        {
+          "id": "tall-nut",
+          "col": 3,
+          "row": 0
+        },
+        {
+          "id": "sea-shroom",
+          "col": 4,
+          "row": 0
+        },
+        {
+          "id": "plantern",
+          "col": 0,
+          "row": 1
+        },
+        {
+          "id": "cactus",
+          "col": 1,
+          "row": 1
+        },
+        {
+          "id": "blover",
+          "col": 2,
+          "row": 1
+        },
+        {
+          "id": "split-pea",
+          "col": 3,
+          "row": 1
+        },
+        {
+          "id": "starfruit",
+          "col": 4,
+          "row": 1
+        }
+      ],
+      "deployment": {
+        "file": "../../../assets/media/22e7749849e01fdcb49d33af84b03a825fd5a1ca5d9c70063ba7de077eff26b1.webp",
+        "format": "lossless WebP",
+        "sha256": "22e7749849e01fdcb49d33af84b03a825fd5a1ca5d9c70063ba7de077eff26b1",
+        "decodedRGBAIdenticalToSourcePNG": true
+      }
+    },
+    {
+      "file": "plants-atlas-04.png",
+      "prompt": "Use case: stylized-concept. Asset: single plant portrait sprite atlas for a Plants vs. Zombies classic-style browser game. Create landscape aspect ratio 5:2, exactly FIVE equal-width columns and TWO equal-height rows, ten square cells covering the image edge-to-edge, no outer margin or gutters, NO grid lines or cell borders. Each cell is flat pale cream yellow-green with exactly one complete recognizable Plants vs. Zombies plant, centered with 10% safe margins. Cohesive professional cartoon game art: thick dark olive/brown outlines, expressive eyes, vibrant flat colors, subtle cel shading, 2D hand-illustrated seed packet portrait feel, not 3D. NO text, labels, numbers, lettering, price, logos, card frames, or watermark. Subjects MUST occur in this exact row-major order. TOP ROW left to right: 1 Pumpkin, hollow orange jack-o-lantern protective shell with open empty top, triangular dark eyes and broad carved toothy grin, squat wide shape; 2 Magnet-shroom, little pale mushroom stalk with stern eyes and short red cap, a big red horseshoe magnet with silver tips rises upright above the cap; 3 Cabbage-pult, squat leafy green cabbage body with determined eyes, long curved green stem catapult rising behind and arching over head ending in a broad leaf cradle holding a small round cabbage, NO wheels; 4 Flower Pot, empty terracotta flower pot with broad lip and dark visible soil, two tiny round eyes and smiling mouth on front, NO plant inside; 5 Kernel-pult, yellow corn cob body with expressive eyes and green husk leaf feet, long arched green stalk catapult ending in a husk scoop containing a square of yellow butter, clearly CORN not cabbage. BOTTOM ROW left to right: 6 Coffee Bean, small upright glossy brown coffee bean character with central seam, big alert eyes and energetic grin, NO cup; 7 Garlic, ivory white bulbous garlic with vertical clove ridges, tapered tuft at top and scrunched unhappy face with small blunt teeth; 8 Umbrella Leaf, umbrella-shaped very broad layered green leaf canopy over tiny stem face and leafy feet, hanging leaf edges and central peaked tip, NO flower; 9 Marigold, bright golden-orange double flower with numerous layered rounded petals encircling small orange friendly face, green stem and leaves; 10 Melon-pult, stocky dark green striped watermelon body with determined eyes and leaf feet, strong green curved catapult stalk arching above head ending in broad leaf cradle holding a round striped watermelon, NO wheels. All subjects fully inside own equal square cells. Distinct lobbing catapult plant identities cabbage vs corn vs watermelon. Preserve exact order.",
+      "sourceAsset": "exec-5aec8e20-5858-4904-822c-9b7eab54b764.png",
+      "width": 1983,
+      "height": 793,
+      "sha256": "56d2cdb71893b3146fa6d7af284ce965f20a2c4a112bdaabe04991d388e925dc",
+      "plants": [
+        {
+          "id": "pumpkin",
+          "col": 0,
+          "row": 0
+        },
+        {
+          "id": "magnet-shroom",
+          "col": 1,
+          "row": 0
+        },
+        {
+          "id": "cabbage-pult",
+          "col": 2,
+          "row": 0
+        },
+        {
+          "id": "flower-pot",
+          "col": 3,
+          "row": 0
+        },
+        {
+          "id": "kernel-pult",
+          "col": 4,
+          "row": 0
+        },
+        {
+          "id": "coffee-bean",
+          "col": 0,
+          "row": 1
+        },
+        {
+          "id": "garlic",
+          "col": 1,
+          "row": 1
+        },
+        {
+          "id": "umbrella-leaf",
+          "col": 2,
+          "row": 1
+        },
+        {
+          "id": "marigold",
+          "col": 3,
+          "row": 1
+        },
+        {
+          "id": "melon-pult",
+          "col": 4,
+          "row": 1
+        }
+      ],
+      "deployment": {
+        "file": "../../../assets/media/b9de846aab6d7192c1eec6cf014d80fa4281b3c9e25ee1e7b4dcf41d0d946ca5.webp",
+        "format": "lossless WebP",
+        "sha256": "b9de846aab6d7192c1eec6cf014d80fa4281b3c9e25ee1e7b4dcf41d0d946ca5",
+        "decodedRGBAIdenticalToSourcePNG": true
+      }
+    },
+    {
+      "file": "plants-atlas-05.png",
+      "generatedDate": "2026-10-12",
+      "prompt": "Use case: stylized-concept. Asset: original raster plant portrait sprite atlas for a Plants vs. Zombies classic-style browser game. The provided image is a STYLE AND LAYOUT REFERENCE ONLY; create an entirely new fifth atlas with different species. Match its thick dark brown/olive outlines, expressive oval eyes, vibrant colors and polished cel shading, pale yellow-green background, overall scale and uniform grid alignment. Create landscape aspect ratio EXACTLY 5:2, FIVE equal-width columns and TWO equal-height rows, ten square cells covering the whole image edge-to-edge, no outer margin/gutters, NO visible grid lines or cell borders. Nine plants, each centered in its own cell with 8% safe margins; tenth cell completely empty background. NO text, labels, numbers, lettering, prices, logos, card frames or watermark. Subjects in EXACT row-major order. TOP ROW left to right: 1 GATLING PEA, green pea head wearing dark green military helmet, stern eyes, FOUR clearly separate circular green pea gun barrels bundled in a 2 by 2 cluster aiming right, short stem and green leaf feet; 2 TWIN SUNFLOWER, exactly TWO smiling brown sunflower faces with golden petals side by side on two branching green stems from shared leaves; 3 GLOOM-SHROOM, very squat broad purple mushroom with bulbous dark-purple cap, numerous dark circular spore vent holes around its sides, small angry eyes on pale short stalk beneath, rounded radial puffing silhouette, not a single tube snout; 4 CATTAIL, adorable brown catlike cattail plant with triangular cat ears, pink nose and whiskers, sitting on a wide green lily pad with a long curved tail rising behind ending in dark brown fuzzy cattail seed head; 5 WINTER MELON, stocky icy blue striped frozen watermelon body with determined eyes, icy blue leaf feet, strong curved blue stalk catapult arching above and behind, ending in leaf cradle holding a second icy blue watermelon with small frost crystals. BOTTOM ROW left to right: 6 GOLD MAGNET, short golden mushroom character with tiny eyes under orange-gold cap, enormous upright shiny GOLDEN horseshoe magnet above cap, both magnet tips bright pale gold, no red; 7 SPIKEROCK, low horizontal rugged gray rock mound with many large sharp angular stone spikes pointing upward/outward and tiny angry eyes in front, ground-hugging silhouette, no stem; 8 COB CANNON, enormous elongated golden yellow corn cob lying horizontally like an artillery cannon pointing right, rows of kernels, open broad green husk at back, leaf-supported sturdy artillery base with two little brown wheels, determined eyes near rear, clearly a corn cannon and NOT a catapult or upright cob; 9 IMITATER, monochrome gray lumpy potato-shaped theatrical mime plant with black French beret tilted on top, white face with large expressive eyes and small downturned mouth, little gray feet, no weapon, no colorful accents; 10 blank pale yellow-green square, no icon, no text, no subject, no shadow. All nine complete plants must remain wholly inside their own square cells; never overlap neighboring cells. The four-barrel gun, double sunflower heads, multi-vent mushroom, cat on lily pad, ice catapult, golden horseshoe magnet, stone spikes, horizontal corn cannon and gray beret mime must all be instantly recognizable and distinct.",
+      "sourceAsset": "exec-4edd8780-8cac-48a4-bd2a-eb74442bec53.png",
+      "sourcePath": "/workspace/scratch/2650d1d6963b/generated_images/exec-4edd8780-8cac-48a4-bd2a-eb74442bec53.png",
+      "method": "Built-in image_gen.imagegen",
+      "referenceAssets": [
+        "plants-atlas-04.png"
+      ],
+      "generationHistory": [
+        {
+          "stage": "initial-generation",
+          "prompt": "Use case: stylized-concept. Asset: original raster plant portrait sprite atlas for a Plants vs. Zombies classic-style browser game. The provided image is a STYLE AND LAYOUT REFERENCE ONLY; create an entirely new fifth atlas with different species. Match its thick dark brown/olive outlines, expressive oval eyes, vibrant colors and polished cel shading, pale yellow-green background, overall scale and uniform grid alignment. Create landscape aspect ratio EXACTLY 5:2, FIVE equal-width columns and TWO equal-height rows, ten square cells covering the whole image edge-to-edge, no outer margin/gutters, NO visible grid lines or cell borders. Nine plants, each centered in its own cell with 8% safe margins; tenth cell completely empty background. NO text, labels, numbers, lettering, prices, logos, card frames or watermark. Subjects in EXACT row-major order. TOP ROW left to right: 1 GATLING PEA, green pea head wearing dark green military helmet, stern eyes, FOUR clearly separate circular green pea gun barrels bundled in a 2 by 2 cluster aiming right, short stem and green leaf feet; 2 TWIN SUNFLOWER, exactly TWO smiling brown sunflower faces with golden petals side by side on two branching green stems from shared leaves; 3 GLOOM-SHROOM, very squat broad purple mushroom with bulbous dark-purple cap, numerous dark circular spore vent holes around its sides, small angry eyes on pale short stalk beneath, rounded radial puffing silhouette, not a single tube snout; 4 CATTAIL, adorable brown catlike cattail plant with triangular cat ears, pink nose and whiskers, sitting on a wide green lily pad with a long curved tail rising behind ending in dark brown fuzzy cattail seed head; 5 WINTER MELON, stocky icy blue striped frozen watermelon body with determined eyes, icy blue leaf feet, strong curved blue stalk catapult arching above and behind, ending in leaf cradle holding a second icy blue watermelon with small frost crystals. BOTTOM ROW left to right: 6 GOLD MAGNET, short golden mushroom character with tiny eyes under orange-gold cap, enormous upright shiny GOLDEN horseshoe magnet above cap, both magnet tips bright pale gold, no red; 7 SPIKEROCK, low horizontal rugged gray rock mound with many large sharp angular stone spikes pointing upward/outward and tiny angry eyes in front, ground-hugging silhouette, no stem; 8 COB CANNON, enormous elongated golden yellow corn cob lying horizontally like an artillery cannon pointing right, rows of kernels, open broad green husk at back, leaf-supported sturdy artillery base with two little brown wheels, determined eyes near rear, clearly a corn cannon and NOT a catapult or upright cob; 9 IMITATER, monochrome gray lumpy potato-shaped theatrical mime plant with black French beret tilted on top, white face with large expressive eyes and small downturned mouth, little gray feet, no weapon, no colorful accents; 10 blank pale yellow-green square, no icon, no text, no subject, no shadow. All nine complete plants must remain wholly inside their own square cells; never overlap neighboring cells. The four-barrel gun, double sunflower heads, multi-vent mushroom, cat on lily pad, ice catapult, golden horseshoe magnet, stone spikes, horizontal corn cannon and gray beret mime must all be instantly recognizable and distinct.",
+          "sourceAsset": "exec-9b0fd401-6d75-4c28-b83b-c955cb61e3ee.png",
+          "toolResultMetadata": {
+            "output_hint": "Generated images are saved to /workspace/scratch/2650d1d6963b/generated_images as /workspace/scratch/2650d1d6963b/generated_images/exec-9b0fd401-6d75-4c28-b83b-c955cb61e3ee.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+          },
+          "assessment": "All nine species present in correct order; oversized Spikerock and Cob Cannon crossed cell boundaries, requiring a tool-based layout correction."
+        },
+        {
+          "stage": "layout-refinement",
+          "prompt": "Precise layout correction of this existing 5-column, 2-row plant atlas. Keep all nine subjects, exact plant identities, row-major order, colors, dark outlines, cel shading, pale yellow-green background and blank bottom-right cell. Output exact same landscape 5:2 aspect ratio. Every subject MUST fit fully within its own equal square grid cell with at least 7% of cell width empty on every side. The bottom row SPIKEROCK in column 2 and COB CANNON in column 3 are too wide and spill outside their cells: scale those two entire illustrations DOWN by 25% around their own cell centers, without changing anatomy. Also reduce TWIN SUNFLOWER in top row column 2 and GLOOM-SHROOM in top row column 3 by 10% around their centers to give safe side margins. Keep the other subjects unchanged. Invisible cell boundaries x=0%,20%,40%,60%,80%,100%; row boundary y=50%. Subject centers are x=10%,30%,50%,70%,90% and y=25%,75%. No subject can cross these boundaries. No text, numbers, cell dividers, borders or watermark. Bottom-right cell stays entirely empty pale yellow-green.",
+          "sourceAsset": "exec-4edd8780-8cac-48a4-bd2a-eb74442bec53.png",
+          "toolResultMetadata": {
+            "output_hint": "Generated images are saved to /workspace/scratch/2650d1d6963b/generated_images as /workspace/scratch/2650d1d6963b/generated_images/exec-4edd8780-8cac-48a4-bd2a-eb74442bec53.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+          },
+          "assessment": "Inspected actual pixels: all nine distinct species retained, contained in expected equal cells, blank bottom-right cell, no labels or grid lines."
+        }
+      ],
+      "plants": [
+        {
+          "id": "gatling-pea",
+          "col": 0,
+          "row": 0
+        },
+        {
+          "id": "twin-sunflower",
+          "col": 1,
+          "row": 0
+        },
+        {
+          "id": "gloom-shroom",
+          "col": 2,
+          "row": 0
+        },
+        {
+          "id": "cattail",
+          "col": 3,
+          "row": 0
+        },
+        {
+          "id": "winter-melon",
+          "col": 4,
+          "row": 0
+        },
+        {
+          "id": "gold-magnet",
+          "col": 0,
+          "row": 1
+        },
+        {
+          "id": "spikerock",
+          "col": 1,
+          "row": 1
+        },
+        {
+          "id": "cob-cannon",
+          "col": 2,
+          "row": 1
+        },
+        {
+          "id": "imitater",
+          "col": 3,
+          "row": 1
+        }
+      ],
+      "unusedCells": [
+        {
+          "col": 4,
+          "row": 1,
+          "content": "blank pale yellow-green background"
+        }
+      ],
+      "width": 1983,
+      "height": 793,
+      "sha256": "4a6afc4037595961411916d3d9b755525ea7277da5a4ee2bbb7e246b179f16a5",
+      "deployment": {
+        "file": "../../../assets/media/36b57c693f83ccdb23399a3e1c9dd6e39a4e0db8025b63847c87982d4db6a272.webp",
+        "format": "lossless WebP",
+        "sha256": "36b57c693f83ccdb23399a3e1c9dd6e39a4e0db8025b63847c87982d4db6a272",
+        "decodedRGBAIdenticalToSourcePNG": true
+      }
+    }
+  ]
+}

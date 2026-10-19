@@ -3,9 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NEON ARCADE · AI 小游戏站</title>
-<meta name="description" content="由 AI 创造的小游戏宇宙。" />
+<title data-i18n="seo.home.title">AI 小游戏在线玩 · NEON ARCADE 人工智能游戏宇宙</title>
+<meta data-i18n-content="seo.home.metaDescription" name="description" content="29 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。无需下载，支持手机与电脑。" />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="assets/i18n.css">
+<script src="assets/i18n.js"></script>
+<script src="assets/i18n-pages.js"></script>
+<script src="assets/i18n-seo.js?v=20261019-republic-03"></script>
+<script src="assets/analytics.js" async fetchpriority="low"></script>
+<!-- SEO-AUTO-START -->
+  <link rel="canonical" href="https://game.yituohub.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NEON ARCADE">
+  <meta property="og:locale" content="zh_CN">
+  <meta data-i18n-content="seo.home.title" property="og:title" content="AI 小游戏在线玩 · NEON ARCADE 人工智能游戏宇宙">
+  <meta data-i18n-content="seo.home.socialDescription" property="og:description" content="29 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。">
+  <meta property="og:url" content="https://game.yituohub.com/">
+  <meta property="og:image" content="https://game.yituohub.com/assets/covers/og-cover.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta data-i18n-content="seo.home.title" name="twitter:title" content="AI 小游戏在线玩 · NEON ARCADE 人工智能游戏宇宙">
+  <meta data-i18n-content="seo.home.socialDescription" name="twitter:description" content="29 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。">
+  <meta name="twitter:image" content="https://game.yituohub.com/assets/covers/og-cover.webp">
+  <script type="application/ld+json" data-i18n-schema-alternate-name="seo.home.siteName" data-i18n-schema-description="seo.home.schemaDescription">{"@context":"https://schema.org","@type":"WebSite","name":"NEON ARCADE","alternateName":"AI 小游戏站","url":"https://game.yituohub.com/","description":"由 AI 创造的小游戏宇宙，29 款免费在线小游戏。","inLanguage":"zh-CN"}</script>
+  <!-- SEO-AUTO-END -->
 <style>
   :root {
     --bg: #03040a;
@@ -104,8 +124,8 @@
   .hint kbd { font-family: inherit; border: 1px solid rgba(125,138,168,.4); padding: 1px 6px; margin: 0 2px; }
 
   @media (max-width: 900px) {
-    header { padding: 22px 24px; }
-    nav { display: none; }
+    header { padding: 22px 24px; flex-wrap: wrap; gap: 22px; }
+    nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 12px; letter-spacing: .04em; }
     .copy { left: 24px; right: 24px; bottom: 40px; }
     .sub { font-size: 14px; }
     .forms { right: auto; left: 50%; top: auto; bottom: auto; top: 58%; transform: translateX(-50%); flex-direction: row; gap: 10px; }
@@ -113,14 +133,40 @@
     .form-item .cn, .form-item .en, .form-item .idx { display: none; }
     .form-item .bar { height: 3px; margin: 0; background: rgba(125,138,168,.3); }
     .form-item.on { border: none; background: none; }
-    .caption { left: 50%; top: 10%; }
+    .caption { left: 50%; top: 145px; }
     .caption .name { font-size: 15px; }
     .readout, .hint { display: none; }
   }
+  @media (max-width: 600px) {
+    header { gap: 20px; }
+    header nav { width: 100%; justify-content: space-between; gap: 12px; }
+    header nav a { padding: 8px 0; white-space: nowrap; }
+    .logo { font-size: 13px; }
+    .caption { top: 152px; }
+  }
+
+  header { gap: 24px; }
+  header nav { margin-left: auto; align-items: center; }
+  header .site-language { flex-shrink: 0; }
+  html[lang="en"] h1 { font-size: clamp(44px, 6vw, 88px); }
+  html[lang="en"] .hint { font-size: 10px; letter-spacing: .06em; }
+  html[lang="en"] .form-item .en { display: none; }
+  html[lang="en"] .form-item .idx { grid-row: auto; }
+  .form-item:focus-visible { outline: 1px solid var(--cyan); outline-offset: 4px; }
+  @media(max-width:1100px) { header { padding: 24px; gap: 18px; } header nav { gap: 20px; letter-spacing: .04em; } .caption { top: 110px; } }
+  @media(max-width:900px) { header { gap: 14px; } header .logo { order: 0; } header .site-language { order: 1; margin-left: auto; } header nav { order: 2; width: 100%; margin-left: 0; justify-content: space-between; gap: 10px; } .caption { top: 156px; } }
+  @media(max-width:600px) { header { padding: 20px 24px 12px; } .logo { gap: 9px; font-size: 11px; letter-spacing: .12em; } .logo-mark { width: 20px; height: 20px; } header .site-language select[data-site-language] { width: 120px; } .tag { font-size: 9px; letter-spacing: .18em; } html[lang="en"] h1 { font-size: clamp(40px, 10.5vw, 60px); } .btn { padding: 15px 20px; font-size: 12px; letter-spacing: .06em; } .actions { gap: 10px; } .copy { bottom: 32px; } }
+  @media(max-width:380px) { header { padding-inline: 18px; } header .site-language select[data-site-language] { width: 120px; } .copy { left: 18px; right: 18px; } .actions { gap: 8px; } .btn { padding-inline: 15px; } .caption .name { font-size: 12px; } }
+  @media(max-height:620px) and (max-width:900px) { .copy { bottom: 24px; } .copy h1 { font-size: 38px; } html[lang="en"] .copy h1 { font-size: 34px; } .copy .sub { margin-top: 12px; font-size: 12px; } .copy .tag { margin-bottom: 12px; font-size: 9px; } .actions { margin-top: 16px; } .caption { top: 140px; } .forms { top: 49%; } }
+  @media(max-height:500px) and (min-width:600px) { header { padding: 14px 24px; flex-wrap: nowrap; } header .logo { font-size: 10px; } header nav { width: auto; order: 1; margin-left: auto; font-size: 11px; } header .site-language { order: 2; margin-left: 0; } header .site-language select[data-site-language] { width: 120px; } .caption { left: 70%; top: 100px; } .copy { max-width: 350px; bottom: 24px; } .copy h1 { font-size: 40px; } .copy .sub { margin-top: 10px; } .copy .actions { margin-top: 14px; } .forms { left: 72%; top: auto; bottom: 36px; } .tag { display: none; } }
 </style>
 </head>
 <body>
-
+  <!-- SEO-AUTO-START -->
+    <h1 data-i18n="seo.home.hiddenTitle" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">NEON ARCADE · AI 小游戏在线免费玩</h1>
+    <p style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0"><span data-i18n="seo.home.intro">NEON ARCADE 是 AI 创造的小游戏宇宙：共和国之辉 · 黑潮危机、蔬菜忍者、植物大战僵尸、吞城漫游、学园都市、魂斗罗 2026、星陨前线、霓潮等 11 款精选游戏，加 18 款经典小游戏，全部免费在线玩，无需下载。</span> <a href="games.html" data-i18n="home.library">游戏库</a> <a href="classics.html" data-i18n="home.classics">经典小游戏</a> <a href="mv.html" data-i18n="home.mv">AI 放映厅</a></p>
+    <!-- SEO-AUTO-END -->
+  
 <canvas id="stage"></canvas>
 <div class="fx scanlines"></div>
 <div class="fx vignette"></div>
@@ -128,11 +174,12 @@
 
 <header class="ui">
   <a href="./" class="logo"><span class="logo-mark"></span>NEON ARCADE</a>
-  <nav>
-    <a href="games.html">游戏库</a>
-    <a href="mv.html">AI放映厅</a>
-    <a href="games.html">作品更新</a>
+  <nav aria-label="主导航" data-i18n-aria-label="home.nav">
+    <a href="games.html" data-i18n="home.library">游戏库</a>
+    <a href="classics.html" data-i18n="home.classics">经典小游戏</a>
+    <a href="mv.html" data-i18n="home.mv">AI放映厅</a>
   </nav>
+  <div class="site-language" data-language-switcher></div>
 </header>
 
 <div class="ui caption">
@@ -142,22 +189,22 @@
 
 <section class="ui copy">
   <div class="tag"><span class="dot"></span>AI-GENERATED GAME UNIVERSE</div>
-  <h1><span class="l1" data-text="AI 造梦">AI 造梦</span><span class="l2">游戏宇宙</span></h1>
-  <p class="sub">每一款游戏都由 <b>AI 参与创造</b>。<br />不用下载，点开就玩。</p>
+  <h1><span class="l1" data-i18n="home.heading1" data-i18n-data-text="home.heading1" data-text="AI 造梦">AI 造梦</span><span class="l2" data-i18n="home.heading2">游戏宇宙</span></h1>
+  <p class="sub" data-i18n-html="home.subtitle">每一款游戏都由 <b>AI 参与创造</b>。<br />不用下载，点开就玩。</p>
   <div class="actions">
-    <a href="games.html" class="btn btn-primary">进入游戏库 <span class="arrow">→</span></a>
-    <button class="btn btn-ghost" id="nextBtn">切换形态 ⟳</button>
+    <a href="games.html" class="btn btn-primary"><span data-i18n="home.enter">进入游戏库</span> <span class="arrow">→</span></a>
+    <button class="btn btn-ghost" id="nextBtn" data-i18n="home.next">切换形态 ⟳</button>
   </div>
 </section>
 
-<aside class="ui forms" id="forms"></aside>
+<aside class="ui forms" id="forms" data-i18n-aria-label="home.forms"></aside>
 
 <div class="ui readout">
   <div>VOXELS <b id="rTris">0</b></div>
   <div>POINTS <b id="rPts">0</b></div>
   <div>FPS <b id="rFps">60</b></div>
 </div>
-<div class="ui hint">拖拽旋转 · 点击变形 · <kbd>←</kbd><kbd>→</kbd> / <kbd>1</kbd>–<kbd>6</kbd> 切换</div>
+<div class="ui hint" data-i18n-html="home.hint">拖拽旋转 · 点击变形 · <kbd>←</kbd><kbd>→</kbd> / <kbd>1</kbd>–<kbd>6</kbd> 切换</div>
 
 <script>
 /* ================================================================
@@ -690,6 +737,7 @@ for (let i = 0; i < NP; i++) {
   px[i] = d[0] * r; py[i] = d[1] * r; pz[i] = d[2] * r;
 }
 const dust = Array.from({ length: 260 }, () => [(R0() - .5) * 5, (R0() - .5) * 3.4, (R0() - .5) * 4, R0()]);
+let dustCol = [1, 1, 1];
 
 /* ================================================================
  *  状态 & 切换
@@ -720,8 +768,32 @@ const bloomA = document.createElement("canvas"), ba = bloomA.getContext("2d");
 const bloomB = document.createElement("canvas"), bb = bloomB.getContext("2d");
 const refl = document.createElement("canvas"), rc = refl.getContext("2d");
 let W, H, DPR, CX, CY, FOC, DIST = 4, mobile;
+/* ---- perf: 量化颜色缓存(每帧数千次字符串分配 -> 查表) ---- */
+const _cqCache = new Map();
+function cq(r, g, b, a) {
+  const al = a < 0 ? 0 : a > 1 ? 1 : a;
+  const key = ((Math.round(r * 31) << 10) | (Math.round(g * 31) << 5) | Math.round(b * 31)) * 16 + Math.round(al * 15);
+  let v = _cqCache.get(key);
+  if (v === undefined) {
+    v = "rgba(" + Math.round(r * 255) + "," + Math.round(g * 255) + "," + Math.round(b * 255) + "," + (Math.round(al * 15) / 15).toFixed(3).slice(1) + ")";
+    _cqCache.set(key, v);
+  }
+  return v;
+}
+/* ---- perf: FPS 自适应降档 0=满配 1=省电(关泛光/降DPR) 2=极省(粒子步进) ---- */
+let tier = 0;
+try { tier = Math.min(2, Math.max(0, +localStorage.getItem("naTier") || 0)); } catch (e) {}
+if (matchMedia("(prefers-reduced-motion: reduce)").matches && tier < 1) tier = 1;
+let lowStreak = 0, lastAccKey = "";
+const rFpsEl = document.getElementById("rFps"), rTrisEl = document.getElementById("rTris");
+let lastTris = -1;
+function applyTier() {
+  try { localStorage.setItem("naTier", tier); } catch (e) {}
+  resize();
+}
+
 function resize() {
-  DPR = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; mobile = W < 900;
+  DPR = Math.min(devicePixelRatio || 1, tier >= 1 ? 1 : 2); W = innerWidth; H = innerHeight; mobile = W < 900;
   for (const c of [stage, scene]) { c.width = W * DPR; c.height = H * DPR; }
   bloomA.width = refl.width = Math.ceil(W / 4); bloomA.height = refl.height = Math.ceil(H / 4);
   bloomB.width = Math.ceil(W / 8); bloomB.height = Math.ceil(H / 8);
@@ -748,6 +820,7 @@ addEventListener("pointerup", () => {
 });
 document.addEventListener("pointerleave", () => { pointer.x = pointer.y = -1e4; });
 addEventListener("keydown", e => {
+  if (e.target.closest("select,input,textarea,button,a,[contenteditable]")) return;
   if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); goTo(cur + 1); }
   else if (e.key === "ArrowLeft") goTo(cur - 1);
   else if (/^[1-6]$/.test(e.key)) goTo(+e.key - 1);
@@ -761,8 +834,10 @@ const formsEl = document.getElementById("forms");
 FORMS.forEach((f, i) => {
   const el = document.createElement("div");
   el.className = "form-item";
-  el.innerHTML = `<span class="idx">0${i + 1}</span><span class="cn">${f.cn}</span><span class="en">${f.en}</span><span class="bar"><i></i></span>`;
+  el.setAttribute("role", "button"); el.tabIndex = 0;
+  el.innerHTML = `<span class="idx">0${i + 1}</span><span class="cn">${SiteI18n.t("home.form" + i)}</span><span class="en">${f.en}</span><span class="bar"><i></i></span>`;
   el.onclick = () => goTo(i);
+  el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); goTo(i); } };
   formsEl.appendChild(el);
 });
 const bars = [...formsEl.querySelectorAll(".bar i")];
@@ -780,6 +855,15 @@ function updateUI() {
     if (k < 1) requestAnimationFrame(tick);
   })();
 }
+function localizeForms() {
+  [...formsEl.children].forEach((el, i) => {
+    const name = SiteI18n.t('home.form' + i);
+    el.querySelector('.cn').textContent = name;
+    el.setAttribute('aria-label', SiteI18n.t('home.form', { name }));
+  });
+}
+localizeForms();
+addEventListener('site:languagechange', localizeForms);
 document.getElementById("rPts").textContent = NP.toLocaleString();
 
 /* ================================================================
@@ -795,6 +879,7 @@ const view = (x, y, z) => { const x1 = x * cyw + z * syw, z1 = -x * syw + z * cy
 const proj = v => { const f = FOC / (v[2] + DIST); return [CX + v[0] * f, CY - v[1] * f, f]; };
 
 const order = new Int32Array(B), depthArr = new Float32Array(B);
+const ordArr = new Array(B);
 const corners = Array.from({ length: 8 }, () => [0, 0, 0]), scr = Array.from({ length: 8 }, () => [0, 0]);
 
 function drawBox(i) {
@@ -1075,7 +1160,13 @@ let fpsAcc = 0, fpsN = 0, lastFrame = performance.now();
 function frame() {
   const nowMs = performance.now(), dt = Math.min(50, nowMs - lastFrame); lastFrame = nowMs;
   fpsAcc += dt; fpsN++;
-  if (fpsAcc > 500) { document.getElementById("rFps").textContent = Math.round(1000 / (fpsAcc / fpsN)); fpsAcc = fpsN = 0; }
+  if (fpsAcc > 500) {
+    const fNow = Math.round(1000 / (fpsAcc / fpsN)); fpsAcc = fpsN = 0;
+    if (rFpsEl) rFpsEl.textContent = fNow;
+    if (tier < 2) {
+      if (fNow < 45) { if (++lowStreak >= 3) { tier++; lowStreak = 0; applyTier(); } } else lowStreak = 0;
+    }
+  }
 
   const t = now(), f = FORMS[cur];
   if (t - holdStart > HOLD) goTo(cur + 1);
@@ -1127,8 +1218,10 @@ function frame() {
   }
 
   accent = mix(accent, f.accent, 0.04);
+  dustCol = mix(accent, C.white, 0.5);
   spread += (f.spread(t) - spread) * 0.05;
-  document.documentElement.style.setProperty("--accent", rgba(accent, 1));
+  const accKey = Math.round(accent[0] * 63) + "," + Math.round(accent[1] * 63) + "," + Math.round(accent[2] * 63);
+  if (accKey !== lastAccKey) { lastAccKey = accKey; document.documentElement.style.setProperty("--accent", rgba(accent, 1)); }
 
   /* ---------- 背景 ---------- */
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
@@ -1148,11 +1241,12 @@ function frame() {
 
   // 环境尘埃
   sx.globalCompositeOperation = "lighter";
-  for (const d of dust) {
+  const dStep = tier >= 2 ? 2 : 1;
+  for (let di = 0; di < dust.length; di += dStep) { const d = dust[di];
     const v = view(d[0] + Math.sin(t * 0.1 + d[3] * 9) * 0.1, d[1] + Math.sin(t * 0.13 + d[3] * 7) * 0.1, d[2]);
     if (v[2] + DIST < 0.5) continue;
     const s = proj(v);
-    sx.fillStyle = rgba(mix(accent, C.white, 0.5), (0.2 + 0.5 * Math.sin(t * 1.5 + d[3] * 20) ** 2) * clamp(s[2] / 300));
+    sx.fillStyle = cq(dustCol[0], dustCol[1], dustCol[2], (0.2 + 0.5 * Math.sin(t * 1.5 + d[3] * 20) ** 2) * clamp(s[2] / 300));
     sx.fillRect(s[0], s[1], 1.3, 1.3);
   }
 
@@ -1169,14 +1263,15 @@ function frame() {
     depthArr[i] = view(pc[i * 3], pc[i * 3 + 1], pc[i * 3 + 2])[2];
     order[cnt++] = i;
   }
-  const ord = Array.from(order.subarray(0, cnt)).sort((a, b) => depthArr[b] - depthArr[a]);
-  for (const i of ord) drawBox(i);
+  for (let q = 0; q < cnt; q++) ordArr[q] = order[q];
+  ordArr.length = cnt; ordArr.sort((a, b) => depthArr[b] - depthArr[a]);
+  for (const i of ordArr) drawBox(i);
   flushPolyEdges();
-  document.getElementById("rTris").textContent = cnt;
+  if (cnt !== lastTris) { lastTris = cnt; if (rTrisEl) rTrisEl.textContent = cnt; }
 
   // 点云粒子
   sx.globalCompositeOperation = "lighter";
-  for (let p = 0; p < NP; p++) {
+  for (let p = 0; p < NP; p += tier >= 2 ? 3 : 1) {
     const i = pbox[p], u = pu[p * 3], v = pu[p * 3 + 1], w = pu[p * 3 + 2];
     const s0 = ps[i * 3], s1 = ps[i * 3 + 1], s2 = ps[i * 3 + 2], r = i * 9;
     let x = pc[i * 3] + pR[r] * s0 * u + pR[r + 3] * s1 * v + pR[r + 6] * s2 * w;
@@ -1191,13 +1286,23 @@ function frame() {
     const dx = X - pointer.x, dy = Y - pointer.y, d2 = dx * dx + dy * dy;
     if (d2 < 10000) { const d = Math.sqrt(d2) || 1, m = (1 - d2 / 10000) * 24; X += dx / d * m; Y += dy / d * m; }
     const al = Math.max(pa[i], 0.12) * clamp((1.8 - V[2]) / 3, 0.1, 1) * (0.35 + po[p] * 0.5);
-    const col = pk[p] > 0.75 ? C.white : mix([pcol[i * 3], pcol[i * 3 + 1], pcol[i * 3 + 2]], C.white, 0.35);
-    sx.fillStyle = rgba(col, al);
+    let cr, cg, cb;
+    if (pk[p] > 0.75) { cr = C.white[0]; cg = C.white[1]; cb = C.white[2]; }
+    else { cr = pcol[i * 3] * 0.65 + C.white[0] * 0.35; cg = pcol[i * 3 + 1] * 0.65 + C.white[1] * 0.35; cb = pcol[i * 3 + 2] * 0.65 + C.white[2] * 0.35; }
+    sx.fillStyle = cq(cr, cg, cb, al);
     const sz = Math.max(0.8, S[2] * 0.0028) * (pk[p] > 0.95 ? 1.8 : 1);
     sx.fillRect(X - sz / 2, Y - sz / 2, sz, sz);
   }
 
   /* ---------- 泛光 + 地面倒影 ---------- */
+  if (tier >= 1) {
+    /* 省电档：跳过 bloom/refl 多 pass，场景直接上屏 */
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+    ctx.drawImage(scene, 0, 0);
+    requestAnimationFrame(frame);
+    return;
+  }
   ba.clearRect(0, 0, bloomA.width, bloomA.height); ba.drawImage(scene, 0, 0, bloomA.width, bloomA.height);
   bb.clearRect(0, 0, bloomB.width, bloomB.height); bb.drawImage(bloomA, 0, 0, bloomB.width, bloomB.height);
 
@@ -1217,7 +1322,7 @@ function frame() {
   rc.globalCompositeOperation = "destination-out"; rc.fillStyle = "#000"; rc.fillRect(0, 0, rw, fy);
 
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "low";
   // 地面光带
   const fl = ctx.createLinearGradient(0, floorY * DPR, 0, H * DPR);
   fl.addColorStop(0, rgba(accent, 0.07)); fl.addColorStop(1, "rgba(0,0,0,0)");
@@ -1239,11 +1344,20 @@ function drawHUD(t, R) {
   ctx.strokeStyle = rgba(accent, 0.1); ctx.lineWidth = 1;
   ctx.beginPath(); ctx.arc(0, 0, R * 1.22, 0, TAU); ctx.stroke();
   ctx.rotate(t * 0.04);
-  for (let i = 0; i < 120; i++) {
-    const a = i / 120 * TAU, long = i % 10 === 0, r1 = R * 1.26, r2 = r1 + (long ? 10 : 4);
-    ctx.strokeStyle = rgba(accent, long ? 0.3 : 0.1);
-    ctx.beginPath(); ctx.moveTo(Math.cos(a) * r1, Math.sin(a) * r1); ctx.lineTo(Math.cos(a) * r2, Math.sin(a) * r2); ctx.stroke();
+  const rBase = R * 1.26;
+  ctx.beginPath();
+  for (let i = 0; i < 120; i += 10) {
+    const a = i / 120 * TAU;
+    ctx.moveTo(Math.cos(a) * rBase, Math.sin(a) * rBase); ctx.lineTo(Math.cos(a) * (rBase + 10), Math.sin(a) * (rBase + 10));
   }
+  ctx.strokeStyle = rgba(accent, 0.3); ctx.stroke();
+  ctx.beginPath();
+  for (let i = 0; i < 120; i++) {
+    if (i % 10 === 0) continue;
+    const a = i / 120 * TAU;
+    ctx.moveTo(Math.cos(a) * rBase, Math.sin(a) * rBase); ctx.lineTo(Math.cos(a) * (rBase + 4), Math.sin(a) * (rBase + 4));
+  }
+  ctx.strokeStyle = rgba(accent, 0.1); ctx.stroke();
   ctx.rotate(-t * 0.04);
   ctx.lineWidth = 1.5;
   for (let k = 0; k < 2; k++) {

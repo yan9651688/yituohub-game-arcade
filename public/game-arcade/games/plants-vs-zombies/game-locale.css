@@ -1,0 +1,16 @@
+/* Longer English copy wraps without changing gameplay geometry. */
+html[lang="en"] .brand>span:last-child{font-size:clamp(12px,1.8vw,19px);line-height:1.15;white-space:normal}
+html[lang="en"] .brand small{letter-spacing:.05em;line-height:1.3}
+html[lang="en"] .modal h1{letter-spacing:-.04em}
+html[lang="en"] .modal .button{white-space:normal;line-height:1.3}
+html[lang="en"] .seed-name,html[lang="en"] .seed-card strong{font-size:10px;line-height:1.1;white-space:normal;overflow-wrap:anywhere}
+html[lang="en"] .almanac-entry strong{font-size:13px;line-height:1.25;white-space:normal}
+html[lang="en"] .field-footer{gap:8px}
+html[lang="en"] #objective{line-height:1.3}
+html[lang="en"] .training-fields label{min-width:0;line-height:1.3}
+html[lang="en"] .training-fields .button{white-space:normal}
+html[lang="en"] .wave-status{flex-shrink:0}
+.garden-language{display:inline-flex;align-items:center;gap:7px;font:11px system-ui;color:#9ad9c2}
+.garden-language strong{font-size:10px;letter-spacing:.09em;color:#74f7e4}
+.garden-language select{font:inherit;color:#eefcf4;background:#153b30;border:1px solid #538b77;border-radius:6px;padding:5px;max-width:115px;min-height:30px}
+@media(max-width:600px){html[lang="en"] .brand>span:last-child{font-size:12px}html[lang="en"] .brand small{font-size:7px;max-width:165px}html[lang="en"] .page-footer{font-size:10px;line-height:1.4}html[lang="en"] .almanac-entry strong{font-size:11px}html[lang="en"] .field-footer{font-size:10px}.garden-language{margin-top:6px}}

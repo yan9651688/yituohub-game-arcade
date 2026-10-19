@@ -6,3 +6,6 @@
 
 # Preserve the supplied originals and their byte-level provenance hashes
 design/** -text
+
+# Keep the live source snapshot byte-identical, including mixed upstream line endings.
+public/** -text

@@ -39,6 +39,7 @@ export class GameEngine {
   }
   start(index = 0, options = {}) {
     this.options = { difficulty: 'classic', players: 1, training: false, ...options };
+    this.options.players = this.options.players === 2 ? 2 : 1;
     this.seed = 2026 + index; this.load(index, false); this.state.mode = 'playing';
     this.emit('start', { index, ...this.options });
   }
@@ -53,7 +54,7 @@ export class GameEngine {
       platforms: (level.platforms || []).map((p, i) => ({ ...p, id: i, originX: p.x, originY: p.y, dx: 0, dy: 0, standing: 0, gone: 0 })),
       hazards: (level.hazards || []).map((h, i) => ({ ...h, id: i, active: false, warning: false })),
       camera: { x: level.mode === 'vertical' ? 15 : 10, y: level.mode === 'vertical' ? 5.4 : 3.5 }, checkpoint: { ...level.spawn }, checkpointIndex: level.checkpoints?.[0]?.x === level.spawn.x && level.checkpoints?.[0]?.y === level.spawn.y ? 0 : -1,
-      boss: null, baseRoom: 0, roomTransition: 0, progress: 0, shake: 0, flash: 0, cleared: false, quality: 'high', training: this.options.training, difficulty: this.options.difficulty };
+      boss: null, baseRoom: 0, roomTransition: 0, progress: 0, continues: carry ? old.continues : 0, shake: 0, flash: 0, cleared: false, quality: 'high', training: this.options.training, difficulty: this.options.difficulty };
     const s = this.state;
     if (level.mode === 'base') { this.setupRoom(0); s.players.forEach((p, i) => { p.x = i ? 2 : -2; p.y = 0; p.grounded = true; }); }
     else {
@@ -70,13 +71,77 @@ export class GameEngine {
   }
   setupRoom(index) {
     const s = this.state, rooms = s.level.baseRooms || [], room = rooms[index] || {};
-    s.baseRoom = index; s.bullets = []; s.enemies = [];
+    s.baseRoom = index; s.checkpoint = { ...s.level.spawn, room: index }; s.checkpointIndex = index; s.bullets = []; s.enemies = []; s.roomTransition = 0;
     if (index < rooms.length - 1) s.enemies.push(...(room.cores || [{ x: 0, y: 1.3, hp: 10 }]).map(c => this.enemy({ ...c, kind: 'core', z: -14 })));
     s.enemies.push(...(room.enemies || []).map(e => this.enemy({ ...e, y: 0, z: e.z ?? -7 })));
     s.pickups = [{ id: ++this.serial, x: index % 2 ? 4 : -4, y: .6, z: 12, type: ['S', 'M', 'L', 'F', 'B', 'S'][index % 6], collected: false }];
     s.players.forEach(p => { p.invuln = Math.max(1.5, p.invuln); p.z = 12; });
     if (index === rooms.length - 1) this.spawnBoss();
     this.emit('room', { index, name: room.name || '前进闸门' });
+  }
+  // JSON-safe campaign state. Store this on checkpoint/room/pause and periodically.
+  // Positions always restore to a validated checkpoint; never to a saved mid-air fall.
+  checkpointSnapshot() {
+    const s = this.state;
+    if (!s || s.mode === 'menu' || s.cleared || ['clear', 'victory'].includes(s.mode)) return null;
+    return { version: 2, index: s.index, levelId: s.level.id,
+      options: { players: s.players.length, difficulty: s.difficulty, training: !!s.training },
+      checkpointIndex: s.checkpointIndex, baseRoom: s.baseRoom, lives: s.lives,
+      score: s.score, kills: s.kills, deaths: s.deaths, elapsed: s.elapsed, continues: s.continues || 0,
+      playerLoadouts: s.players.map(p => ({ weapon: p.weapon, rapid: !!p.rapid })),
+      enemies: s.enemies.map(e => ({ hp: Math.max(0, e.hp), dead: !!e.dead })),
+      collected: s.pickups.map(p => !!p.collected),
+      boss: s.boss ? { hp: Math.max(0, s.boss.hp), dead: !!s.boss.dead } : null };
+  }
+  restoreCheckpoint(data) {
+    if (!data || data.version !== 2 || !Number.isInteger(data.index)) return false;
+    const level = this.levels[data.index], options = data.options;
+    if (!level || data.levelId !== level.id || !options || ![1, 2].includes(options.players) ||
+      !['assist', 'classic', 'veteran'].includes(options.difficulty)) return false;
+    const base = level.mode === 'base';
+    if (!Number.isInteger(data.checkpointIndex) || (base
+      ? !Number.isInteger(data.baseRoom) || data.baseRoom < 0 || data.baseRoom >= level.baseRooms.length || data.checkpointIndex !== data.baseRoom
+      : data.checkpointIndex < 0 || data.checkpointIndex >= level.checkpoints.length)) return false;
+    const nonnegative = v => Number.isFinite(v) && v >= 0;
+    if (!['lives', 'score', 'kills', 'deaths', 'elapsed'].every(key => nonnegative(data[key])) || data.lives > 99 ||
+      !Array.isArray(data.playerLoadouts) || data.playerLoadouts.length !== options.players ||
+      !data.playerLoadouts.every(p => p && Object.hasOwn(WEAPONS, p.weapon)) ||
+      !Array.isArray(data.enemies) || data.enemies.length > 240 || !data.enemies.every(e => e && nonnegative(e.hp)) ||
+      !Array.isArray(data.collected) || data.collected.length > 240 ||
+      (data.boss && (!nonnegative(data.boss.hp) || data.boss.dead || data.boss.hp <= 0))) return false;
+    this.options = { players: options.players, difficulty: options.difficulty, training: !!options.training };
+    this.seed = 2026 + data.index; this.load(data.index, false);
+    const s = this.state;
+    if (base && data.baseRoom !== 0) this.setupRoom(data.baseRoom);
+    if (!base) { s.checkpointIndex = data.checkpointIndex; s.checkpoint = { ...level.checkpoints[s.checkpointIndex] }; }
+    for (const key of ['lives', 'score', 'kills', 'deaths', 'elapsed']) s[key] = data[key];
+    s.continues = nonnegative(data.continues) ? data.continues : 0;
+    s.enemies.forEach((e, i) => { const saved = data.enemies[i]; if (saved) { e.hp = clamp(saved.hp, 0, e.maxHp); e.dead = !!saved.dead || e.hp <= 0; } });
+    s.pickups.forEach((p, i) => { p.collected = !!data.collected[i]; });
+    if (data.boss) { this.spawnBoss(); s.boss.hp = clamp(data.boss.hp, .01, s.boss.maxHp); }
+    s.players.forEach((p, i) => { p.weapon = data.playerLoadouts[i].weapon; p.rapid = !!data.playerLoadouts[i].rapid; p.dead = true; p.respawn = 0; });
+    // A depleted save resumes at its checkpoint with a new squad, not stage zero.
+    if (s.lives <= 0) { s.lives = 30; s.continues++; }
+    s.players.forEach(p => this.revive(p));
+    this.updateCheckpointProgress();
+    this.emit('restored', { index: s.index, checkpointIndex: s.checkpointIndex, room: s.baseRoom });
+    return true;
+  }
+  continueFromCheckpoint() {
+    const s = this.state;
+    if (!s || !['playing', 'paused', 'gameover'].includes(s.mode) || s.cleared) return false;
+    if (s.lives <= 0) { s.lives = 30; s.continues++; }
+    s.mode = 'playing'; s.bullets = []; s.flash = 0;
+    s.players.forEach(p => { p.dead = true; p.respawn = 0; });
+    s.players.forEach(p => this.revive(p));
+    this.updateCheckpointProgress();
+    this.emit('continue', { index: s.index, checkpointIndex: s.checkpointIndex, room: s.baseRoom });
+    return true;
+  }
+  updateCheckpointProgress() {
+    const s = this.state;
+    s.progress = s.level.mode === 'base' ? s.baseRoom / s.level.baseRooms.length
+      : (s.level.mode === 'vertical' ? s.checkpoint.y / s.level.height : s.checkpoint.x / s.level.length);
   }
   next() {
     if (this.state.mode !== 'clear') return;
@@ -153,23 +218,58 @@ export class GameEngine {
     p.hp -= lethal ? p.maxHp : 1; s.flash = .2; s.shake = .2;
     this.particle(p.x, p.y + .8, '#a3f9ec', 15, p.z);
     if (p.hp > 0) { p.invuln = 1.7; this.emit('hit'); return; }
-    s.deaths++; p.dead = true; p.respawn = 1.1; p.weapon = 'N'; p.rapid = false;
+    s.deaths++; p.dead = true; p.respawn = 1.1;
     if (!s.training) s.lives = Math.max(0, s.lives - 1);
     this.emit('death');
   }
   revive(p) {
     const s = this.state;
     if (s.lives <= 0 && !s.training) return;
-    const partner = s.players.find(a => a !== p && !a.dead && a.grounded);
+    const vertical = s.level.mode === 'vertical';
+    const partner = s.players.find(a => a !== p && !a.dead && a.grounded && this.isSafeSpawn(a) &&
+      (vertical ? a.y >= s.checkpoint.y - .1 : a.x >= s.checkpoint.x));
     const checkpoint = partner && s.level.mode !== 'base' ? partner : s.checkpoint;
-    const replacement = this.makePlayer(p.id, checkpoint); replacement.invuln = 3.2;
-    if (s.level.mode === 'base') { replacement.x = p.id ? 2 : -2; replacement.y = 0; replacement.z = 12; }
+    const safe = this.safeSpawn(checkpoint, p.id), weapon = p.weapon, rapid = p.rapid;
+    const replacement = this.makePlayer(p.id, safe);
+    Object.assign(replacement, { x: safe.x, y: safe.y + .04, invuln: 3.2, weapon, rapid, grounded: true });
+    replacement.platformId = s.platforms.find(q => Math.abs(q.y - safe.y) < .15 && safe.x > q.x && safe.x < q.x + q.w)?.id;
+    if (s.level.mode === 'base') { replacement.y = 0; replacement.z = 12; }
     Object.assign(p, replacement);
+    // Clear only nearby enemy fire. Distant threats and enemy/Boss health remain.
+    s.bullets = s.bullets.filter(b => b.friendly || Math.abs(b.x - p.x) > 8 || Math.abs(b.y - p.y) > 6 ||
+      (s.level.mode === 'base' && Math.abs(b.z - p.z) > 12));
+    for (const e of s.enemies) if (!e.dead && Math.abs(e.x - p.x) < 7 && Math.abs(e.y - p.y) < 5) e.shot = Math.max(e.shot, 1.2);
     if (!partner && s.level.mode !== 'base') {
       const half = Math.min((s.viewWidth || 31) / 2, s.level.length / 2);
       s.camera.x = clamp(p.x + (s.level.mode === 'vertical' ? 0 : Math.min(5, half * .4)), half, s.level.length - half);
       s.camera.y = Math.max(s.level.mode === 'vertical' ? 5.4 : 3.5, p.y + 2.4);
     }
+    this.emit('respawn', { player: p.id, checkpointIndex: s.checkpointIndex, room: s.baseRoom });
+  }
+  isSafeSpawn(point) {
+    const s = this.state;
+    if (s.level.mode === 'base') return true;
+    if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return false;
+    const supported = s.platforms.some(q => q.gone <= 0 && !['moving', 'crumble'].includes(q.kind) &&
+      Math.abs(point.y - q.y) < .16 && point.x >= q.x + .6 && point.x <= q.x + q.w - .6);
+    if (!supported) return false;
+    const body = { x: point.x, y: point.y, w: 1.2, h: 1.8 };
+    return !s.hazards.some(h => overlap(body, { x: h.x + h.w / 2, y: h.y, w: h.w + .5, h: h.h })) &&
+      !(s.boss && !s.boss.dead && overlap(body, { ...s.boss, w: s.boss.w + 1 }));
+  }
+  safeSpawn(preferred, id = 0) {
+    const s = this.state;
+    if (s.level.mode === 'base') return { x: id ? 2 : -2, y: 0 };
+    for (const origin of [preferred, s.checkpoint, s.level.spawn]) {
+      const candidates = [id * 1.15, 0, -1.15, 1.15, -2.3, 2.3, -3.45, 3.45, -4.6, 4.6]
+        .map(offset => ({ x: origin.x + offset, y: origin.y })).filter(point => this.isSafeSpawn(point));
+      if (candidates.length) {
+        const cost = point => Math.abs(point.x - origin.x - id * 1.15) + s.enemies.reduce((n, e) => n +
+          (!e.dead && Math.abs(e.y - point.y) < 1.8 && Math.abs(e.x - point.x) < 2 ? 5 : 0), 0);
+        return candidates.sort((a, b) => cost(a) - cost(b))[0];
+      }
+    }
+    return { ...s.checkpoint };
   }
   playerStep(p, input, dt) {
     const s = this.state;
@@ -348,9 +448,15 @@ export class GameEngine {
         s.camera.y += (ty - s.camera.y) * Math.min(1, dt * 5);
         for (let i = 0; i < (s.level.checkpoints || []).length; i++) {
           const c = s.level.checkpoints[i];
-          if (i > s.checkpointIndex && (vertical ? frontY >= c.y : frontX >= c.x)) { s.checkpoint = { ...c }; s.checkpointIndex = i; this.emit('checkpoint'); }
+          // A jump past a ledge is not a landing. Vertical saves require a safe foothold.
+          const reached = vertical ? alive.some(p => p.grounded && p.y >= c.y - .12 && this.isSafeSpawn(p)) : frontX >= c.x;
+          if (i > s.checkpointIndex && reached) { s.checkpoint = { ...c }; s.checkpointIndex = i; this.emit('checkpoint', { index: i, boss: !!c.boss }); }
         }
-        if (!s.boss && (vertical ? frontY > s.level.boss.y - 9 : frontX > s.level.boss.x - 21)) this.spawnBoss();
+        const approachCheckpoint = vertical ? (s.level.checkpoints || []).findIndex(c => c.boss) : -1;
+        // Do not wake the waterfall Boss while the player is still jumping toward
+        // its approach ledge. The landing checkpoint must be durable first.
+        if (!s.boss && (vertical ? approachCheckpoint >= 0 ? s.checkpointIndex >= approachCheckpoint : frontY > s.level.boss.y - 9
+          : frontX > s.level.boss.x - 21)) this.spawnBoss();
         if (s.players.length > 1 && Math.abs(alive[0]?.x - (alive[1]?.x ?? alive[0]?.x)) > 25) { const back = alive.sort((a, b) => a.x - b.x)[0]; back.x = frontX - 22; back.invuln = Math.max(back.invuln, 1); }
       }
     }

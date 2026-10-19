@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#132722"><title>植物大战僵尸 · Canvas 2.5D</title><link rel="stylesheet" href="style.css?v=13-original-roof-1"><link rel="stylesheet" href="game-locale.css?v=20261013"><script src="game-locale.js?v=20261013"></script><script src="../../../assets/game-i18n.js?v=20261011-games1"></script><script src="game-language-controls.js?v=20261013" defer></script></head>
+<body><main id="app">
+<header class="masthead"><a class="brand" href="#" id="home-button" aria-label="返回主菜单"><span class="brand-icon">✿</span><span>植物大战僵尸<small>v1.3 CANVAS 2.5D · 完整冒险</small></span></a><div class="level-heading"><span id="chapter-label">白天 · 前院</span><strong id="level-label">冒险 1-1</strong></div><nav class="header-tools" aria-label="游戏工具"><button id="almanac-button" class="button secondary compact">图鉴</button><button id="settings-button" class="button secondary compact settings-button" aria-label="游戏设置" title="游戏设置">⚙</button></nav><button id="pause-button" class="button compact" aria-label="暂停游戏">Ⅱ <span>暂停</span></button></header>
+<div id="save-status" class="save-note" role="status" hidden></div>
+<section class="game-shell" aria-label="游戏区">
+<div class="toolbar"><div class="sun-bank" aria-label="阳光数量"><span>☀</span><strong id="sun-count">50</strong></div><div id="seed-tray" class="seed-tray" tabindex="0" aria-label="种子卡片，可左右滚动；数字 1 至 9 和 0 选择前十张"></div><button id="shovel-button" class="shovel" title="铲子 · 移除植物" aria-label="铲子">♠<small>铲子</small></button></div>
+<div id="debug-catalog-bar" hidden><span id="debug-catalog-count"></span><button id="catalog-button" class="button compact">全部植物 · 打开目录</button></div><div id="debug-status" hidden role="status">DEBUG · 独立沙盒 · 不写入冒险存档</div><div id="board-viewport"><canvas id="game-canvas" aria-label="Canvas 2.5D 庭院棋盘：选择种子后点击格子种植，点击阳光收集" tabindex="0"></canvas><div id="cannon-aim" hidden aria-hidden="true">⊕ 选择落点 · Esc 取消</div><div id="wave-warning" role="status" aria-live="assertive"></div><div id="renderer-status" role="status">正在加载 Canvas 2.5D 精灵资源…</div><div id="renderer-error" role="alert" hidden></div></div>
+<div class="field-footer"><div id="objective">保护房屋，不让僵尸进入庭院</div><div class="wave-status"><span id="wave-label">准备庭院</span><div class="wave-track"><div id="wave-fill"></div><span>⚑</span></div></div></div>
+<details id="training-panel" class="training-panel" hidden open aria-label="训练场实时控制">
+<summary class="training-heading"><strong>训练控制 · 展开 / 收起</strong><span id="training-readiness" role="status"></span></summary><div class="training-body">
+<div class="training-fields">
+<label>地形<select id="training-terrain"><option value="day">白天草坪</option><option value="night">夜晚草坪</option><option value="pool">白天泳池</option><option value="fog">浓雾泳池</option><option value="roof">屋顶</option></select></label>
+<button id="training-switch" class="button secondary compact">切换地形并清空棋盘</button>
+<label>木桩预设<select id="training-state"><option value="ground">地面木桩</option><option value="air">空中木桩</option><option value="submerged">水下木桩（仅水路）</option><option value="armor">护甲木桩（1100 护甲）</option></select></label>
+<label>路线<select id="training-row"><option value="all">所有可用路线</option></select></label>
+<label>每路数量<input id="training-count" type="number" min="1" max="20" value="5" inputmode="numeric"></label>
+<label>位置（列）<select id="training-col"><option value="2">第 3 列 · 近距离</option><option value="4">第 5 列 · 中距离</option><option value="6" selected>第 7 列 · 远距离</option><option value="8">第 9 列 · 最右侧</option></select></label>
+<label>本体 HP<input id="training-hp" type="number" min="1" max="1000000" value="10000" inputmode="numeric"></label>
+<button id="training-example" class="button secondary compact">一键放置示例木桩</button>
+<button id="training-spawn" class="button compact">批量放置木桩</button>
+</div>
+<p class="training-help">每路最多 20 个，全场最多 120 个。水下预设在“所有路线”时只放水路。木桩不会移动或攻击；原有攻击、护甲、射程和地形限制仍然生效。切换地形会清空植物与木桩。</p>
+<div class="training-actions"><button id="training-pause" class="button secondary compact">暂停实测</button><button id="training-reset" class="button secondary compact">木桩回满血 · 统计归零</button><button id="training-clear" class="button secondary compact">清除木桩 · 保留植物</button><span id="training-stats" role="status" aria-live="off"></span></div>
+<details id="training-target-details" class="target-details"><summary>查看全部木桩 HP / 命中 / 伤害（实时更新）</summary><div id="training-targets" class="training-targets" tabindex="0" aria-label="每个训练木桩的实时状态"></div></details>
+</div></details><details id="performance-panel" class="performance-panel"><summary>性能实测 · Canvas 2D</summary><p id="performance-readout">展开后显示实际绘制频率与模拟、绘制耗时</p><p>本机约一秒采样；菜单和暂停主动限帧。耗时不含浏览器合成，不代表其他设备性能。</p></details></section><footer class="page-footer"><span id="action-hint">点击种子卡 → 点击草坪种植 · 点击阳光收集</span><span class="portrait-tip">横屏体验更佳</span><span class="edition">50 关冒险 · 本地存档</span></footer>
+<div id="toast" role="status" aria-live="polite"></div><div id="modal-root"></div>
+</main><script src="content.js?v=13-original-roof-1"></script><script src="skills.js"></script><script src="engine.js?v=13-original-roof-1"></script><script src="assets/sprites/plants/manifest-plants.js?v=13-original-roof-1"></script><script src="assets/sprites/zombies/manifest-zombies.js"></script><script src="scene-art.js?v=13-original-roof-1"></script><script src="canvas-renderer.js?v=13-original-roof-1"></script><script src="card-art.js"></script><script src="app.js?v=13-original-roof-1"></script></body></html>

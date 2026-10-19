@@ -2,6 +2,8 @@
 
 游戏库与统一加载页共用 `public/assets/games.js` 中的 `window.ARCADE_GAMES`。清单里的 `path` 和 `cover` 相对 `public/` 根目录。
 
+经典游戏区使用 `public/assets/classics.js` 中的 `window.CLASSIC_GAMES`，对应 `classics.html`、`classics-play.html` 和 `public/classics/games/`；字段约定相同。构建会同时校验两份清单。站点三语文案还需同步相应的 `assets/i18n-*.js` 与游戏自己的翻译资源。
+
 1. 将可独立运行的游戏放到 `public/game-arcade/games/your-game.html`，检查它的相对资源路径。使用本地资源或 HTTPS 地址，保持无需登录、免费游玩。
 2. 将游戏封面放到 `public/assets/covers/v2/your-game.png`。说明素材来源，不使用其他游戏画面冒充作品。
 3. 在 `games.js` 的数组中追加以下记录，保留外层 `Object.freeze([...].map(Object.freeze))`。`id` 使用唯一的小写英文、数字和连字符，`sizeBytes` 填游戏 HTML 的实际字节数。
@@ -25,6 +27,7 @@
 5. 用 `python -m http.server 8080 --directory public` 本地检查。确认新条目、搜索与分类正常，加载页能进入游戏；电脑与触屏视口能开始、暂停，并通过右侧「游戏库」返回。鼠标锁定时先按 Esc。还要检查网络中断时的重试、取消，以及直接访问原游戏文件时的资源路径。
 6. 运行 `python scripts/build_release.py --version 1.2.0`，版本号按实际发布调整。构建检查 ID 唯一及游戏、封面文件存在，保持全部源文件路径与内容，生成 gzip 和可选 Brotli。Brotli 使用 Node.js 内置模块；未安装 Node 时仍可生成 gzip 包。
 7. 将 `dist/` 发布到静态服务器，先检查新版本再切换；保留上一版目录便于回滚。构建不会自动创建 GitHub 标签或发布线上服务。
+8. 按 [项目协作规则](../agent.md)，将完成且验证过的代码、资源与文档提交到项目 Git。已获用户授权同步 GitHub 时，推送到指定仓库、分支并核对远端提交，不能只更新服务器。
 
 当前封面、JS、CSS 和第三方库使用固定路径。发布时使用可重验证的缓存策略，详见 [Nginx 部署说明](nginx.md)。如果以后引入内容指纹与长期缓存，需要同时更新所有资源引用。
 
@@ -34,4 +37,4 @@
 
 作品清单在 `public/assets/mv-hub.js` 的 `videos` 数组中。加入独立播放页与海报后，追加 `title`、`en`、`type`、`meta`、`duration`、`description`、`cover` 和 `href`；`cover`、`href` 同样相对 `public/` 根目录。当前《千禧凝思》的页面是 `game-arcade/film.html`，返回链接指向 `../mv.html`。
 
-检查海报与播放页能打开、声音在用户操作后启动、影片可返回放映厅。游戏构建检查只覆盖 `ARCADE_GAMES`，不会代替影片的浏览器检查。
+检查海报与播放页能打开、声音在用户操作后启动、影片可返回放映厅。游戏构建检查覆盖 `ARCADE_GAMES` 与 `CLASSIC_GAMES`，不会代替影片的浏览器检查。当前另有 `game-arcade/afang-palace/index.html` 交互场景，文案使用 `assets/i18n-mv-archive.js` 中的翻译键。

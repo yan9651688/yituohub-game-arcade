@@ -1,22 +1,37 @@
-import { LEVELS } from './levels.js';
-import { GameEngine, WEAPONS } from './engine.js';
-import { GameRenderer } from './render.js';
+import { LEVELS } from './levels.js?v=20261018-r1';
+import { GameEngine, WEAPONS } from './engine.js?v=20261018-r1';
+import { GameRenderer } from './render.js?v=20261018-r1';
 import { GameAudio } from './audio.js';
 
 const $ = id => document.getElementById(id);
 const SAVE_KEY = 'neon.contra2026.v1';
-const freshSave = { best: 0, unlocked: 0, resume: 0, completed: false, muted: false, quality: 'high', difficulty: 'classic' };
+const freshSave = { best: 0, unlocked: 0, resume: 0, completed: false, muted: false, quality: 'high', difficulty: 'assist', checkpoint: null };
 let save = { ...freshSave };
 try {
   const raw = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
-  if (raw && typeof raw === 'object') save = { ...freshSave, best: Math.max(0, Number(raw.best) || 0), unlocked: Math.max(0, Math.min(7, Number(raw.unlocked) || 0)), resume: Math.max(0, Math.min(7, Number(raw.resume) || 0)), completed: !!raw.completed, muted: !!raw.muted, quality: raw.quality === 'low' ? 'low' : 'high', difficulty: ['assist', 'classic', 'veteran'].includes(raw.difficulty) ? raw.difficulty : 'classic' };
+  if (raw && typeof raw === 'object') save = { ...freshSave, best: Math.max(0, Number(raw.best) || 0), unlocked: Math.max(0, Math.min(7, Math.floor(Number(raw.unlocked) || 0))), resume: Math.max(0, Math.min(7, Math.floor(Number(raw.resume) || 0))), completed: !!raw.completed, muted: !!raw.muted, quality: raw.quality === 'low' ? 'low' : 'high', difficulty: ['assist', 'classic', 'veteran'].includes(raw.difficulty) ? raw.difficulty : 'classic' };
 } catch { /* Private browsing can disable persistent storage. */ }
 const persist = () => { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch { /* Playing does not require storage. */ } };
 let touch = matchMedia('(pointer: coarse)').matches;
 document.body.classList.toggle('touch', touch);
 const keys = new Set(), touchInput = { x: 0, y: 0, jump: false, shoot: false };
 const audio = new GameAudio(); audio.setMuted(save.muted);
-let renderer, players = 1, difficulty = save.difficulty, toastTime = 0, displayedMode = '', resultMode = '', lastTime = performance.now(), accumulator = 0, lastHud = 0, padPaused = false, fps = 60;
+let renderer, engine, restoring = false, lastSave = 0, players = 1, difficulty = save.difficulty, toastTime = 0, displayedMode = '', resultMode = '', lastTime = performance.now(), accumulator = 0, lastHud = 0, padPaused = false, fps = 60;
+try { const old = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); if (old?.checkpoint?.version === 2 && Number.isInteger(old.checkpoint.index) && old.checkpoint.index >= 0 && old.checkpoint.index < LEVELS.length) save.checkpoint = old.checkpoint; } catch { /* Corrupt saves never prevent play. */ }
+function commitClear(s) {
+  if (s.training) return;
+  const final = s.index === LEVELS.length - 1;
+  save.checkpoint = null; save.best = Math.max(save.best, s.score);
+  save.unlocked = Math.max(save.unlocked, Math.min(7, s.index + 1));
+  save.resume = final ? 0 : s.index + 1; save.completed ||= final; persist();
+}
+function saveBattle() {
+  if (restoring || !engine || engine.state.training) return;
+  if (engine.state.cleared) { commitClear(engine.state); return; }
+  const snapshot = engine.checkpointSnapshot();
+  if (!snapshot) return;
+  save.checkpoint = snapshot; save.resume = snapshot.index; persist();
+}
 
 function toast(text, kicker = 'FIELD UPDATE', seconds = 2.3) {
   $('toast-text').textContent = text; $('toast-kicker').textContent = kicker; $('toast').hidden = false; toastTime = seconds;
@@ -31,24 +46,27 @@ function event(type, data) {
   } else if (type === 'start') {
     audio.setPaused(false); if (!data.training) { save.resume = data.index; save.difficulty = difficulty; persist(); }
   } else if (type === 'pickup') { audio.play('pickup'); toast(data.name, `${data.type} / SUPPLY ACQUIRED`, 1.8); }
-  else if (type === 'checkpoint') { audio.play('ui'); toast('检查点已激活', 'CHECKPOINT', 1.5); }
+  else if (type === 'checkpoint') { audio.play('ui'); toast(data.boss ? 'Boss 前检查点已保存' : '检查点已保存 · 倒下从这里继续', 'CHECKPOINT SAVED', 1.8); }
   else if (type === 'room') { $('mission-objective').textContent = `闸门 ${data.index + 1} / 6 · ${data.name}`; toast(data.name, `ROOM ${data.index + 1} / 06`, 1.7); }
   else if (type === 'gate') { audio.play('clear'); toast('防线解除 · 前进', 'GATE OPEN', 1.3); }
   else if (type === 'boss') { audio.play('boss'); toast(data.name.split(' · ')[0], 'WARNING / BOSS APPROACHING', 2.5); }
   else if (type === 'clear') {
     audio.play('clear');
-    if (!data.training) { save.best = Math.max(save.best, data.score); save.unlocked = Math.max(save.unlocked, Math.min(7, data.index + 1)); save.resume = data.final ? 0 : data.index + 1; save.completed ||= data.final; persist(); }
+    commitClear(data);
   } else if (type === 'gameover') { if (!engine.state.training) { save.best = Math.max(save.best, engine.state.score); persist(); } }
   else if (type === 'pause') audio.setPaused(true);
   else if (type === 'resume') audio.setPaused(false);
+  else if (type === 'respawn') toast('已在安全点集结 · 武器保留', 'BACK IN ACTION', 1.3);
+  else if (type === 'restored' || type === 'continue') toast('继续推进 · 战场进度已恢复', 'CHECKPOINT RESTORED', 1.8);
   else audio.play(type, data?.large ? 1.2 : 1);
+  if (['checkpoint', 'room', 'pickup', 'pause', 'gameover', 'respawn', 'continue'].includes(type)) saveBattle();
 }
-const engine = new GameEngine(LEVELS, event);
+engine = new GameEngine(LEVELS, event);
 
 function setDifficulty(value) {
   difficulty = value;
   document.querySelectorAll('[data-difficulty]').forEach(button => { const selected = button.dataset.difficulty === value; button.classList.toggle('selected', selected); button.setAttribute('aria-pressed', selected); });
-  $('difficulty-note').textContent = { assist: '3 格装甲 · 30 条生命 · 更缓和的敌弹', classic: '一击倒下 · 30 条生命 · 检查点继续', veteran: '一击倒下 · 30 条生命 · 更密集的交火' }[value];
+  $('difficulty-note').textContent = { assist: '推荐初玩 · 3 格装甲 · 保留武器与检查点', classic: '一击倒下 · 30 条生命 · 检查点继续', veteran: '一击倒下 · 30 条生命 · 更密集的交火' }[value];
 }
 function setPlayers(value) {
   players = value;
@@ -59,21 +77,35 @@ function updateButtons() {
   $('sound-btn').textContent = `声音 ${save.muted ? '关' : '开'}`; $('sound-btn').setAttribute('aria-pressed', !save.muted);
   $('quality-btn').textContent = `画质 ${save.quality === 'low' ? '流畅' : '高'}`;
   $('best-label').textContent = `BEST ${String(save.best).padStart(6, '0')}`;
-  $('continue-btn').hidden = save.resume === 0;
-  $('continue-btn').innerHTML = `继续第 ${save.resume + 1} 关 · ${LEVELS[save.resume].name} <span>→</span>`;
+  $('continue-btn').hidden = save.resume === 0 && !save.checkpoint;
+  $('continue-btn').textContent = `继续第 ${save.resume + 1} 关 · ${LEVELS[save.resume].name}${save.checkpoint ? ' · 已存检查点' : ''} →`;
 }
-async function start(index = 0, training = false) {
+async function start(index = 0, training = false, checkpoint = null) {
   audio.unlock().catch(() => {}); audio.setPaused(false);
   keys.clear(); touchInput.jump = false; touchInput.shoot = false; touchInput.x = 0; touchInput.y = 0;
   $('stage-select').hidden = true; $('pause-screen').hidden = true; $('result-screen').hidden = true;
-  engine.start(index, { difficulty, players, training }); engine.state.quality = save.quality;
+  restoring = true;
+  let restored = false;
+  try {
+    if (checkpoint) restored = engine.restoreCheckpoint(checkpoint);
+    if (!restored) engine.start(index, { difficulty, players, training });
+  } finally { restoring = false; }
+  if (restored) { setDifficulty(engine.state.difficulty); setPlayers(engine.state.players.length); }
+  engine.state.quality = save.quality;
   const width = renderer.camera.right - renderer.camera.left, s = engine.state;
   s.viewWidth = width;
   const half = Math.min(width / 2, s.level.length / 2);
-  if (s.level.mode !== 'base') s.camera.x = Math.max(half, Math.min(s.level.length - half, s.level.spawn.x + (s.level.mode === 'vertical' ? 0 : Math.min(5, half * .4))));
+  if (!restored && s.level.mode !== 'base') s.camera.x = Math.max(half, Math.min(s.level.length - half, s.level.spawn.x + (s.level.mode === 'vertical' ? 0 : Math.min(5, half * .4))));
+  if (!training) { save.difficulty = difficulty; saveBattle(); }
+  if (checkpoint && !restored) toast('旧存档无法读取，已回到本关起点', 'SAVE RECOVERY', 3);
   displayedMode = ''; syncMode(); $('world').focus?.();
 }
+function regroup() {
+  keys.clear(); resetTouch(); audio.unlock().catch(() => {}); audio.setPaused(false);
+  if (engine.continueFromCheckpoint()) { saveBattle(); displayedMode = ''; syncMode(); }
+}
 function home() {
+  saveBattle();
   keys.clear(); audio.setPaused(true); engine.preview(0); engine.state.quality = save.quality;
   engine.state.players[0].x = 23; engine.state.players[0].invuln = 0;
   engine.state.players[0].grounded = true; engine.state.players[0].y = 0; engine.state.camera.x = 16;
@@ -88,11 +120,12 @@ function closeStages() { $('stage-select').hidden = true; if (engine.state.mode 
 function pauseToggle() {
   if (engine.state.mode === 'playing') engine.pause();
   else if (engine.state.mode === 'paused' && $('stage-select').hidden) engine.resume();
-  keys.clear(); touchInput.shoot = false; touchInput.jump = false;
+  keys.clear(); resetTouch();
   syncMode();
 }
 function syncMode() {
   const s = engine.state; if (displayedMode === s.mode) return; displayedMode = s.mode;
+  if (s.mode !== 'playing') resetTouch();
   document.body.dataset.mode = s.mode;
   $('home').hidden = s.mode !== 'menu'; $('hud').hidden = s.mode === 'menu';
   $('pause-btn').hidden = s.mode !== 'playing' && s.mode !== 'paused';
@@ -106,7 +139,7 @@ function showResult(mode) {
   const s = engine.state; resultMode = mode; keys.clear(); audio.setPaused(true);
   const info = mode === 'victory' ? ['ALL SECTORS SECURED', '回家吧，英雄。', '八道防线已经突破。硝烟散尽，这一次，世界等到了黎明。', '再次出击']
     : mode === 'clear' ? [`SECTOR ${String(s.index + 1).padStart(2, '0')} SECURED`, '防线，已突破。', `剩余 ${s.lives} 条命 · 下一站：${LEVELS[s.index + 1].name}。武器与剩余命数将带入下一关。`, '进入下一关']
-    : ['MISSION INTERRUPTED', '战斗，还没结束。', `在${s.level.name}重新集结。30 条命，准备再来一次。`, '30 条命 · 再次挑战'];
+    : ['REINFORCEMENTS READY', '增援抵达，继续推进。', '从最近检查点集结。保留武器、已突破的闸门与 Boss 战进度。', '补充 30 条命 · 检查点继续'];
   $('result-eyebrow').textContent = info[0]; $('result-title').textContent = info[1]; $('result-copy').textContent = info[2]; $('result-action').innerHTML = `${info[3]} <b>→</b>`;
   $('result-score').textContent = s.score.toLocaleString(); $('result-kills').textContent = s.kills;
   $('result-time').textContent = `${String(Math.floor(s.elapsed / 60)).padStart(2, '0')}:${String(Math.floor(s.elapsed % 60)).padStart(2, '0')}`;
@@ -115,6 +148,7 @@ function hud() {
   const s = engine.state, p = s.players.find(p => !p.dead) || s.players[0];
   $('score').textContent = String(s.score).padStart(6, '0'); $('lives').textContent = s.training ? '演练 · 无限续战' : `余命 × ${String(s.lives).padStart(2, '0')}`;
   $('mission-progress').style.width = `${Math.min(100, s.progress * 100)}%`;
+  $('checkpoint-status').textContent = s.level.mode === 'base' ? `闸门 ${s.baseRoom + 1} / ${s.level.baseRooms.length} · 已存点` : s.checkpointIndex > 0 ? `检查点 ${s.checkpointIndex} · 已存点` : '起始集结点';
   $('weapon-letter').textContent = p.weapon; $('weapon-name').textContent = WEAPONS[p.weapon]?.name || '制式步枪';
   $('player-status').innerHTML = s.players.map(p => `<div class="status-chip"><b>${p.id + 1}P</b><span class="hearts">${p.dead ? '等待增援' : '◆'.repeat(Math.max(0, p.hp)) + '◇'.repeat(Math.max(0, p.maxHp - p.hp))}</span>${p.invuln > 4 ? '<span>屏障</span>' : ''}</div>`).join('');
   const b = s.boss; $('boss-hud').hidden = !b || b.dead;
@@ -144,14 +178,15 @@ function readInput() {
 
 document.querySelectorAll('[data-difficulty]').forEach(button => button.addEventListener('click', () => { setDifficulty(button.dataset.difficulty); audio.play('ui'); }));
 document.querySelectorAll('[data-players]').forEach(button => button.addEventListener('click', () => setPlayers(Number(button.dataset.players))));
-for (const [id, handler] of Object.entries({ 'start-btn': () => start(0), 'continue-btn': () => start(save.resume), 'stages-btn': stageSelect, 'stage-close': closeStages, 'pause-btn': pauseToggle, 'resume-btn': pauseToggle,
-  'retry-pause': () => start(engine.state.index, engine.state.training), 'home-pause': home, 'result-home': home, 'result-stages': stageSelect,
-  'result-action': () => { if (resultMode === 'clear') { audio.setPaused(false); engine.next(); displayedMode = ''; syncMode(); } else start(resultMode === 'victory' ? 0 : engine.state.index, engine.state.training); } })) $(id).addEventListener('click', handler);
+for (const [id, handler] of Object.entries({ 'start-btn': () => start(0), 'continue-btn': () => start(save.resume, false, save.checkpoint), 'stages-btn': stageSelect, 'stage-close': closeStages, 'pause-btn': pauseToggle, 'resume-btn': pauseToggle,
+  'retry-pause': regroup, 'home-pause': home, 'result-home': home, 'result-stages': stageSelect,
+  'result-action': () => { if (resultMode === 'clear') { audio.setPaused(false); engine.next(); saveBattle(); displayedMode = ''; syncMode(); } else if (resultMode === 'gameover') regroup(); else start(0); } })) $(id).addEventListener('click', handler);
 $('sound-btn').addEventListener('click', () => { save.muted = !save.muted; audio.setMuted(save.muted); audio.unlock().catch(() => {}); persist(); updateButtons(); });
 $('quality-btn').addEventListener('click', () => { save.quality = save.quality === 'high' ? 'low' : 'high'; engine.state.quality = save.quality; persist(); updateButtons(); toast(save.quality === 'high' ? '高画质 · 柔和阴影' : '流畅模式 · 降低渲染负载', 'GRAPHICS'); });
 $('fullscreen-btn').addEventListener('click', async () => { try { if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen(); } catch { toast('浏览器暂不支持全屏，横屏同样可以游玩', 'DISPLAY'); } });
 for (const [index, level] of LEVELS.entries()) {
   const card = document.createElement('button'); card.className = 'stage-card'; card.dataset.stage = index; card.style.setProperty('--stage-color', level.palette.accent);
+  card.style.setProperty('--stage-image', `url('${new URL(`./art/previews/stage-${index + 1}.webp`, import.meta.url).href}')`);
   card.innerHTML = `<span>SECTOR ${String(index + 1).padStart(2, '0')} / ${level.en}</span><b>${level.name}</b><small>${level.mode === 'base' ? '纵深基地 · 六道闸门' : level.mode === 'vertical' ? '瀑布攀登 · 垂直推进' : '横版突击 · 跑跳射击'}<br>${level.boss.name.split(' · ')[0]}</small><i>↗</i>`;
   card.addEventListener('click', () => start(index, true)); $('stage-grid').appendChild(card);
 }
@@ -162,13 +197,20 @@ addEventListener('keydown', e => {
   keys.add(e.code);
 });
 addEventListener('keyup', e => keys.delete(e.code));
-addEventListener('blur', () => { keys.clear(); touchInput.jump = false; touchInput.shoot = false; });
-document.addEventListener('visibilitychange', () => { if (document.hidden) { engine.pause(); keys.clear(); syncMode(); } });
+addEventListener('blur', () => { keys.clear(); resetTouch(); engine.pause(); syncMode(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) { engine.pause(); keys.clear(); resetTouch(); syncMode(); } });
 addEventListener('contextmenu', e => { if (engine.state.mode === 'playing') e.preventDefault(); });
 addEventListener('pointerdown', e => {
   if (e.pointerType === 'touch' && !touch) { touch = true; document.body.classList.add('touch'); displayedMode = ''; syncMode(); }
 }, { passive: true });
 let joystickPointer = null;
+const actionPointers = new Map();
+function resetTouch() {
+  joystickPointer = null; actionPointers.clear();
+  Object.assign(touchInput, { x: 0, y: 0, jump: false, shoot: false });
+  $('joy-stick').style.transform = '';
+  for (const id of ['touch-jump', 'touch-fire']) $(id).classList.remove('pressed');
+}
 function joystickMove(e) {
   const box = $('joystick').getBoundingClientRect(), radius = box.width * .35;
   const dx = e.clientX - box.left - box.width / 2, dy = e.clientY - box.top - box.height / 2;
@@ -176,13 +218,13 @@ function joystickMove(e) {
   touchInput.x = dx * scale / radius; touchInput.y = dy * scale / radius;
   $('joy-stick').style.transform = `translate(${dx * scale}px,${dy * scale}px)`;
 }
-$('joystick').addEventListener('pointerdown', e => { e.preventDefault(); joystickPointer = e.pointerId; $('joystick').setPointerCapture(e.pointerId); joystickMove(e); });
+$('joystick').addEventListener('pointerdown', e => { e.preventDefault(); if (joystickPointer !== null || engine.state.mode !== 'playing') return; joystickPointer = e.pointerId; $('joystick').setPointerCapture(e.pointerId); joystickMove(e); });
 $('joystick').addEventListener('pointermove', e => { if (e.pointerId === joystickPointer) joystickMove(e); });
 for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) $('joystick').addEventListener(type, e => { if (e.pointerId === joystickPointer) { joystickPointer = null; touchInput.x = 0; touchInput.y = 0; $('joy-stick').style.transform = ''; } });
 for (const [id, action] of [['touch-jump', 'jump'], ['touch-fire', 'shoot']]) {
-  const button = $(id); let pointer = null;
-  button.addEventListener('pointerdown', e => { e.preventDefault(); pointer = e.pointerId; button.setPointerCapture(pointer); touchInput[action] = true; button.classList.add('pressed'); audio.unlock().catch(() => {}); });
-  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) button.addEventListener(type, e => { if (pointer === e.pointerId) { pointer = null; touchInput[action] = false; button.classList.remove('pressed'); } });
+  const button = $(id);
+  button.addEventListener('pointerdown', e => { e.preventDefault(); if (actionPointers.has(action) || engine.state.mode !== 'playing') return; actionPointers.set(action, e.pointerId); button.setPointerCapture(e.pointerId); touchInput[action] = true; button.classList.add('pressed'); audio.unlock().catch(() => {}); });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) button.addEventListener(type, e => { if (actionPointers.get(action) === e.pointerId) { actionPointers.delete(action); touchInput[action] = false; button.classList.remove('pressed'); } });
 }
 
 function fail(error) {
@@ -202,15 +244,16 @@ try {
       while (accumulator >= 1 / 60) { engine.step(1 / 60, input); accumulator -= 1 / 60; }
       audio.update(dt, engine.state); renderer.render(engine.state, dt); syncMode();
       if (now - lastHud > 80) { hud(); lastHud = now; }
+      if (now - lastSave > 2000 && engine.state.mode === 'playing') { saveBattle(); lastSave = now; }
       if (toastTime > 0) { toastTime -= dt; if (toastTime <= 0) $('toast').hidden = true; }
       requestAnimationFrame(frame);
     } catch (error) { fail(error); }
   };
   requestAnimationFrame(frame);
-  window.Contra2026 = Object.freeze({ version: '1.0.0', snapshot: () => ({ ...engine.snapshot(), fps: Math.round(fps) }) });
+  window.Contra2026 = Object.freeze({ version: '2.0.0', snapshot: () => ({ ...engine.snapshot(), fps: Math.round(fps) }) });
   if (new URLSearchParams(location.search).get('qa') === '1') {
     window.__CONTRA_TEST__ = { engine, renderer, start, home, input: touchInput, snapshot: () => engine.snapshot() };
   }
 } catch (error) { fail(error); }
-addEventListener('pagehide', () => { audio.dispose(); renderer?.dispose(); });
+addEventListener('pagehide', () => { saveBattle(); audio.dispose(); renderer?.dispose(); });
 addEventListener('pageshow', e => { if (e.persisted) location.reload(); });

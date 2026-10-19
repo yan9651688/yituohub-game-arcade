@@ -1,0 +1,18 @@
+{
+  "species": 26,
+  "frames": 788,
+  "actionsIncludingAttackAliases": 191,
+  "decodedAtlasBytes": 88702976,
+  "allFramesTransparent": true,
+  "allFramesUnclipped": true,
+  "everyActionHasMotion": true,
+  "allContentKindsCovered": true,
+  "cameraOffset": [
+    4.4,
+    12.8,
+    14.8
+  ],
+  "pngBytes": 8599042,
+  "webpBytes": 4367862,
+  "productionRendererSha256": "4803465979cf4b8464cb084689a90eaee9f9deae9063d77a8f6f2d6f4e380f4d"
+}

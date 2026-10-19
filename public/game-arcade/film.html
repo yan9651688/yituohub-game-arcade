@@ -4,9 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0d0618">
-<meta name="description" content="千禧凝思 · LANTERNS STILL BURN：一场关于记忆、灯笼与千禧年夜的 AI 音乐视觉演出。">
+<meta data-i18n-content="film.description" name="description" content="千禧凝思 · LANTERNS STILL BURN：一场关于记忆、灯笼与千禧年夜的 AI 音乐视觉演出。">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-<title>千禧凝思 · AI 音乐视觉演出</title>
+<title data-i18n="film.title">千禧凝思 · AI 音乐视觉演出</title>
+<link rel="stylesheet" href="../assets/i18n.css">
+<script src="../assets/i18n.js"></script>
+<script src="../assets/i18n-pages.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--ink:#162D30;--paper:#F2EBDD;--jade:#8BCBB6;--enamel:#315F56;--red:#A04B45}
@@ -65,30 +68,68 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--ink);color:var
 #mvBadge span{color:#FF4FD8;font-weight:700}
 #mvBadge b{font-weight:400;color:#7FEAFF;font-size:9px}
 @media (max-width:700px){#hubBack{top:2.4vh;right:4vw;font-size:9px;padding:8px 10px;letter-spacing:.08em}#mvBadge{left:4vw;bottom:2.5vh;font-size:9px}#mvBadge b{font-size:8px}}
+
+.film-language { position: absolute; z-index: 3; top: 3vh; left: 9vw; }
+#start .hud.tl { top: 12vh; }
+#hubBack b { font: inherit; }
+#start .l { max-width: 88vw; }
+#start .l > p { max-width: 650px; line-height: 1.8; }
+#start h1 { max-width: 100%; }
+html[lang="en"] #start h1 { max-width: 730px; width: auto; font-size: clamp(38px, 6.8vw, 92px); line-height: 1.06; }
+html[lang="en"] #start h2 { font-size: clamp(16px, 2.5vw, 32px); -webkit-text-stroke-width: .65px; letter-spacing: .04em; }
+#fv { top: 11vh; max-width: min(350px, 92vw); max-height: 83vh; }
+#fv .tip { max-width: 100%; line-height: 1.8; }
+@media(max-width:700px) {
+  .film-language { left: 4vw; top: 2.4vh; }
+  .film-language select[data-site-language] { width: 120px; }
+  #hubBack { max-width: 58vw; flex-wrap: wrap; gap: 5px; line-height: 1.4; }
+  #start .l { max-width: 92vw; padding-left: 6vw; gap: 16px; }
+  #start h1 { font-size: clamp(42px, 10.5vw, 65px); }
+  #start h2 { font-size: clamp(19px, 5vw, 30px); }
+  #start .l > p { font-size: 10px; letter-spacing: .08em; }
+  #start .vbtn { max-width: 100%; font-size: 18px; padding: 13px 30px; }
+  #start .vbtn.alt { font-size: 12px; padding: 12px 17px; letter-spacing: .04em; }
+  #start #load { width: min(420px, 80vw); }
+  #start .hud { font-size: 9px; }
+  #start .hud.tl { left: 6vw; top: 13vh; }
+  #start .hud.br { bottom: 9vh; }
+}
+@media(max-height:500px) {
+  #start .l { justify-content: flex-start; top: 20vh; bottom: 10vh; overflow-y: auto; gap: 10px; padding-right: 12px; }
+  #start .hud.tl { display: none; }
+  #start .hud.br { bottom: 4vh; font-size: 9px; }
+  #start h1, html[lang="en"] #start h1 { font-size: 38px; }
+  #start h2, html[lang="en"] #start h2 { font-size: 20px; }
+  #start .vbtn { font-size: 15px; padding: 10px 22px; }
+  #start .vbtn.alt { font-size: 12px; padding: 10px 18px; }
+  #start .l > p { font-size: 10px; line-height: 1.5; }
+}
 </style>
 </head>
 <body>
 <canvas id="c"></canvas>
 <canvas id="grain" width="240" height="140"></canvas>
 <canvas id="fx"></canvas>
-<button class="vbtn" id="again">REPLAY ↺</button>
+<button class="vbtn" id="again" data-i18n="film.replay">REPLAY ↺</button>
 <div id="fv"></div>
-<a id="hubBack" href="../mv.html" aria-label="返回 NEON ARCADE AI 放映厅"><span aria-hidden="true">←</span> NEON ARCADE / AI 放映厅</a>
-<div id="mvBadge" aria-label="AI 音乐视觉演出"><span>AI MUSIC VIDEO</span><b>VISUAL PERFORMANCE · 03:10</b></div>
+<a id="hubBack" href="../mv.html" aria-label="返回 NEON ARCADE AI 放映厅" data-i18n-aria-label="film.backLabel"><span aria-hidden="true">←</span> NEON ARCADE / <b data-i18n="film.back">AI放映厅</b></a>
+<div id="mvBadge" aria-label="AI 音乐视觉演出" data-i18n-aria-label="film.badge"><span>AI MUSIC VIDEO</span><b>VISUAL PERFORMANCE · 03:10</b></div>
 <div id="start">
+  <div class="site-language film-language" data-language-switcher></div>
   <div class="l">
     <p>A Y2K MEMOIR · 1998 — 2000 · LYRIC FILM v3</p>
-    <h1>千禧凝思</h1>
-    <h2>LANTERNS STILL BURN</h2>
-    <button class="vbtn" id="go" disabled>▶ PLAY</button>
-    <p>请打开声音 · 约 3 分 10 秒 · 空格暂停 · ←/→ 跳 5 秒</p>
-    <button class="vbtn alt" id="free" disabled>◎ 自由视角播放</button>
+    <h1 data-i18n="mv.filmTitle">千禧凝思</h1>
+    <h2 data-i18n="mv.filmSubtitle">LANTERNS STILL BURN</h2>
+    <button class="vbtn" id="go" data-i18n="film.play" disabled>▶ PLAY</button>
+    <p data-i18n="film.help">请打开声音 · 约 3 分 10 秒 · 空格暂停 · ←/→ 跳 5 秒</p>
+    <button class="vbtn alt" id="free" data-i18n="film.freePlay" disabled>◎ 自由视角播放</button>
     <div id="load"><b></b></div>
     <p id="mstat">加载中…</p>
   </div>
   <div class="hud tl"><span class="rec">● REC</span>&nbsp;&nbsp;1999.12.31&nbsp;23:59:59</div>
   <div class="hud br">小霸王 · 其乐无穷 &nbsp;▸ PRESS ENTER</div>
 </div>
+<script>SiteI18n.apply(); document.getElementById("mstat").textContent = SiteI18n.t("film.loading");</script>
 <script type="importmap">
 { "imports": {
   "three": "./vendor/three/build/three.module.js",
@@ -3567,10 +3608,11 @@ function togglePause() {
   if (clk.run) { clk.base = songTime(); clk.run = false; } else { clk.at = now(); clk.run = true; }
 }
 const songEl = new Audio(); songEl.preload = 'auto';
-const mstat = t => $('mstat').textContent = t;
-const onReady = name => () => { if (song === songEl) return; song = songEl; mstatReady = '配乐：' + name.slice(0, 40) + ' · ' + MUSIC.bpm + ' BPM'; LOAD.song = true; loadUI(); };
+const tr = (key, vars) => SiteI18n.t(key, vars);
+const mstat = text => $('mstat').textContent = text;
+const onReady = name => () => { if (song === songEl) return; song = songEl; mstatReady = 'film.musicReady'; LOAD.song = true; loadUI(); };
 songEl.oncanplaythrough = onReady(MUSIC.file);
-songEl.onerror = () => { song = null; mstatReady = '配乐加载失败：将静音播放'; LOAD.song = true; loadUI(); };
+songEl.onerror = () => { song = null; mstatReady = 'film.musicFailed'; LOAD.song = true; loadUI(); };
 // 配乐已内置在页面里（base64）；URL 带 ?music= 时改用外部文件
 const SONG_EL = document.getElementById('song-data');
 if (SONG_EL && !QS.has('music')) {
@@ -3590,23 +3632,23 @@ const ACTS = [
   [101.28, '拨号上网'], [103.89, '千禧电子'], [114.89, '闪闪发光的未来'], [119.81, '除夕 · 雪'], [124.73, '鞭炮'],
   [129.07, '牵手 · 倒计时'], [140.65, '2000 · 烟花'], [151.35, '回忆闪回'], [165.24, '平房没了'], [171.9, '灯笼还亮着']];
 function buildFV() {
-  const fv = $('fv'); fv.innerHTML = '<div class="hd">FREE VIEW · 选一幕</div>';
+  const fv = $('fv'); fv.innerHTML = '<div class="hd">' + tr('film.chooseAct') + '</div>';
   ACTS.forEach(([t, name], i) => {
     const b = document.createElement('button');
-    b.innerHTML = '<i>' + String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(Math.floor(t % 60)).padStart(2, '0') + '</i>' + name;
+    b.innerHTML = '<i>' + String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(Math.floor(t % 60)).padStart(2, '0') + '</i>' + tr('film.act' + i);
     b.onclick = () => { seek(t + .01); FREE.scn = null; if (song && song.paused) song.play(); if (!song && !clk.run) togglePause(); };
     b.dataset.i = i; fv.appendChild(b);
   });
   const tg = document.createElement('button'); tg.className = 'tg'; tg.id = 'fvcam';
   tg.onclick = () => setFreeCam(!FREE.cam); fv.appendChild(tg);
-  const ex = document.createElement('button'); ex.className = 'tg'; ex.textContent = '退出 · 回首页'; ex.onclick = exitFree; fv.appendChild(ex);
+  const ex = document.createElement('button'); ex.className = 'tg'; ex.textContent = tr('film.exit'); ex.onclick = exitFree; fv.appendChild(ex);
   const tip = document.createElement('div'); tip.className = 'tip';
-  tip.innerHTML = '左键拖动 旋转 · 右键拖动 平移<br>滚轮 推拉 · C 切换镜头<br>空格 暂停 · ←/→ 跳 5 秒'; fv.appendChild(tip);
+  tip.innerHTML = tr('film.controls'); fv.appendChild(tip);
   setFreeCam(true);
 }
 function setFreeCam(v) {
   FREE.cam = v; FREE.scn = null; controls.enabled = FREE.on && v;
-  const b = $('fvcam'); if (b) b.textContent = v ? '切到导演镜头 [C]' : '切回自由镜头 [C]';
+  const b = $('fvcam'); if (b) b.textContent = tr(v ? 'film.director' : 'film.freeCamera');
 }
 let fvCur = -1;
 function markAct(ts) {
@@ -3633,6 +3675,7 @@ $('go').onclick = () => { if (LOAD.ready) start(false); };
 $('free').onclick = () => { if (LOAD.ready) start(true); };
 $('again').onclick = () => start(FREE.on);
 addEventListener('keydown', e => {
+  if (e.target.closest('select,input,textarea,button,a,[contenteditable]')) return;
   if (!playing) { if (e.key === 'Enter' && LOAD.ready) start(false); return; }
   if (FREE.on && (e.key === 'c' || e.key === 'C')) setFreeCam(!FREE.cam);
   if (e.key === ' ') { e.preventDefault(); togglePause(); }
@@ -3765,8 +3808,10 @@ function loadUI() {
   $('load').firstChild.style.width = (done ? 100 : d / n * 100) + '%';
   if (done && !LOAD.ready) {
     LOAD.ready = true; $('load').classList.add('done');
-    $('go').disabled = false; $('free').disabled = false; mstat(mstatReady || '准备好了');
-  } else if (!done) mstat(warmOn ? '准备场景 ' + warmI + ' / ' + warmList.length + ' …' : !LOAD.song ? '载入配乐…' : '载入字体…');
+    $('go').disabled = false; $('free').disabled = false;
+  }
+  if (done) mstat(tr(mstatReady || 'film.ready', { bpm: MUSIC.bpm }));
+  else mstat(warmOn ? tr('film.warm', { current: warmI, total: warmList.length }) : tr(!LOAD.song ? 'film.musicLoading' : 'film.fontLoading'));
 }
 function stopWarm() { if (!warmOn) return; warmOn = false; curShot = null; Object.values(SCN).forEach(x => x.g.visible = false); }
 function warmStep() {
@@ -3786,6 +3831,11 @@ function warmStep() {
   requestAnimationFrame(warmStep);
 }
 let mstatReady = '';
+mstat(tr('film.loading'));
+addEventListener('site:languagechange', () => {
+  loadUI();
+  if (FREE.on) { const cam = FREE.cam; buildFV(); setFreeCam(cam); fvCur = -1; markAct(songTime()); }
+});
 tick();
 requestAnimationFrame(warmStep);
 

@@ -8,6 +8,7 @@
 | 影片配乐、游戏纹理与其他非代码素材 | 由项目提供者随作品提供，权利由各自作者保留；代码 MIT 许可不额外授予这些素材的独立转载或商业使用权 |
 | 颜与蓝梦的微信二维码 | 复用 [yituo-hub-studio](https://github.com/yan9651688/yituo-hub-studio) 已公开的联系素材，用于本项目联系与交流 |
 | 共和国之辉运行美术 | 本项目使用内置 ImageGen 生成并裁切、编码的场景与单位素材；未提取原版游戏精灵。属于非代码视觉素材，使用范围同上；详见 [美术来源](docs/republic-frontier/art-provenance.md) |
+| 植物大战僵尸同人重制 | 随线上源码保留其 [第三方声明](public/game-arcade/games/plants-vs-zombies/THIRD-PARTY-NOTICES.md)、[Three.js 许可](public/game-arcade/games/plants-vs-zombies/vendor/THREE-LICENSE.txt)以及程序化精灵、生成卡面来源记录；游戏名称和角色权利仍归各自权利人 |
 | README 产品预览图 | 通过浏览器拍摄本项目实际页面 |
 | 游戏库封面与放映厅海报 | 随本次页面改版提供，属于非代码视觉素材，其使用范围同上 |
 

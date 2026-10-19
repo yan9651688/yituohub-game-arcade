@@ -138,3 +138,22 @@ h1 em { color: var(--mv-pink); font-style: normal; text-shadow: 0 0 26px #ff4fd8
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }
 }
+
+/* Catalogue navigation remains visible after adding the classic collection. */
+@media(max-width:800px){.site-header{flex-wrap:wrap;gap:12px;padding-block:22px}.site-header nav{width:100%;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px}.site-header nav a{white-space:nowrap;min-height:40px}}
+
+/* Keep navigation and language selection usable in all three locales. */
+.site-header nav { margin-left: auto; gap: 24px; }
+.site-header .site-language { flex-shrink: 0; }
+.mv-card-heading h3 { overflow-wrap: anywhere; }
+.mv-card-no { flex-shrink: 0; padding-top: 7px; }
+@media(max-width:1100px) { .site-header { flex-wrap: wrap; padding-block: 22px; gap: 16px; } .site-header .brand { order: 0; } .site-header .site-language { order: 1; margin-left: auto; } .site-header nav { order: 2; width: 100%; justify-content: space-between; margin-left: 0; flex-wrap: wrap; gap: 12px; } }
+@media(max-width:700px) { .site-header .site-language select { width: 120px; } .site-header nav { font-size: 12px; gap: 10px; } .mv-card-heading { flex-wrap: wrap; gap: 5px; } .mv-card-no { padding-top: 0; } html[lang="en"] .hero-stat span { letter-spacing: .04em; } }
+@media(max-width:360px) { .brand { gap: 8px; font-size: 10px; letter-spacing: .08em; } .brand small { font-size: 7px; letter-spacing: .04em; } .site-header .site-language select { width: 120px; } .site-header nav { font-size: 11px; gap: 8px; } .hero-stat .stat-meta { font-size: 8px; letter-spacing: 0; } }
+
+/* Two published works share a responsive catalogue row. */
+.mv-layout{grid-template-columns:minmax(0,1fr)}
+.mv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px;align-items:start}
+.mv-card{min-width:0}.mv-card-heading{flex-wrap:wrap;gap:6px 16px}.mv-card-no{padding-top:0;line-height:1.6}
+.archive-note{min-height:0;flex-direction:row;gap:40px}.archive-note .note-mark{display:none}.archive-note .note-bottom{align-self:end;max-width:240px;border-top:0}
+@media(max-width:700px){.mv-grid{grid-template-columns:1fr;gap:20px}.archive-note{flex-direction:column;gap:8px}.archive-note .note-bottom{align-self:start;max-width:none}}

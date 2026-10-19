@@ -19,14 +19,21 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def catalog_count() -> int:
-    # Read the registry's literal fields without executing its JavaScript.
-    source = (PUBLIC / "assets/games.js").read_text(encoding="utf-8")
-    ids = re.findall(r'\bid\s*:\s*"([a-z0-9-]+)"', source)
-    paths = re.findall(r'\bpath\s*:\s*"([^"]+)"', source)
-    covers = re.findall(r'\bcover\s*:\s*"([^"]+)"', source)
-    if not ids or len(ids) != len(set(ids)) or len(ids) != len(paths) or len(ids) != len(covers):
-        raise ValueError("games.js must have unique ids and a path and cover for every game")
+def catalog_count(catalog: str = "assets/games.js") -> int:
+    # Both handwritten JS objects and JSON-generated registries use string values.
+    # Parse those literals without executing the catalogue's JavaScript.
+    source = (PUBLIC / catalog).read_text(encoding="utf-8")
+
+    def values(field: str) -> list[str]:
+        key = rf'(?:"{field}"|{field})'
+        return [json.loads(value) for value in re.findall(
+            rf'(?<![\w$]){key}\s*:\s*("(?:[^"\\]|\\.)*")', source
+        )]
+
+    ids, paths, covers = values("id"), values("path"), values("cover")
+    if (not ids or any(not re.fullmatch(r"[a-z0-9-]+", value) for value in ids)
+            or len(ids) != len(set(ids)) or len(ids) != len(paths) or len(ids) != len(covers)):
+        raise ValueError(f"{catalog} must have unique ids and a path and cover for every game")
     for value in paths + covers:
         target = (PUBLIC / value).resolve()
         if not target.is_relative_to(PUBLIC.resolve()) or not target.is_file():
@@ -36,6 +43,7 @@ def catalog_count() -> int:
 
 def build(version: str) -> dict:
     games = catalog_count()
+    classics = catalog_count("assets/classics.js") if (PUBLIC / "assets/classics.js").is_file() else 0
     out = ROOT / "dist"
     # Only the dedicated build directory may be recursively replaced.
     if out.is_symlink() or out.resolve().parent != ROOT.resolve() or out.name != "dist":
@@ -54,7 +62,8 @@ def build(version: str) -> dict:
 
     # This optional deployment record is generated only in dist/.
     (out / "version.json").write_text(
-        json.dumps({"version": version, "games": games}, ensure_ascii=False) + "\n",
+        json.dumps({"version": version, "games": games, "classics": classics,
+                    "totalGames": games + classics}, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
     compressible = [
@@ -86,13 +95,15 @@ for (const path of JSON.parse(fs.readFileSync(0, 'utf8'))) {
         p.relative_to(out).as_posix(): {"sha256": digest(p.read_bytes()), "bytes": p.stat().st_size}
         for p in sorted(out.rglob("*")) if p.is_file()
     }
-    report = {"version": version, "games": games, "brotli": bool(node), "files": manifest}
+    report = {"version": version, "games": games, "classics": classics,
+              "totalGames": games + classics, "brotli": bool(node), "files": manifest}
     (ROOT / ".release").mkdir(exist_ok=True)
     (ROOT / ".release/manifest.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     print(json.dumps({
-        "version": version, "games": games, "files": len(manifest), "brotli": bool(node),
+        "version": version, "games": games, "classics": classics, "totalGames": games + classics,
+        "files": len(manifest), "brotli": bool(node),
         "bytes": sum(item["bytes"] for item in manifest.values()),
     }))
     return report

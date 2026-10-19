@@ -6,11 +6,11 @@
 
 **打开网页，挑一款游戏，免费开玩。**
 
-7 款小游戏 · AI 放映厅 · PC 与手机 · 无需登录
+11 款主游戏 + 18 款经典游戏 · AI 放映厅 · PC 与手机 · 无需登录
 
 [![在线游玩](https://img.shields.io/badge/在线游玩-game.yituohub.com-05d9e8)](https://game.yituohub.com/)
 [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![游戏](https://img.shields.io/badge/小游戏-7款-ff2a6d)](#-游戏库)
+[![游戏](https://img.shields.io/badge/小游戏-29款-ff2a6d)](#-游戏库)
 [![纯静态](https://img.shields.io/badge/部署-纯静态-success)](#-本地运行)
 [![欢迎贡献](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#-一起加新游戏)
 
@@ -20,7 +20,7 @@
 
 这里放着我们做的几款 AI 小游戏。首页沿用设计师的新稿，保留霓虹街机的气氛，点击「游戏库」就能选游戏。没有账号、登录和付费步骤，游戏在你的浏览器里运行。
 
-首页的「AI 放映厅」收录《千禧凝思》。想歇一会儿，可以进去看一场音乐视觉演出，再回游戏厅继续玩。
+网站界面支持简体中文、繁体中文和英文，各款游戏的语言和设备支持以开始页说明为准。首页的「AI 放映厅」收录《千禧凝思》和《阿房宫》，可以看音乐视觉演出，也可以探索交互场景。
 
 ## 🌐 在线开玩
 
@@ -35,7 +35,7 @@
 <table>
 <tr>
 <td width="50%" align="center"><img src="docs/assets/home-preview.png" width="100%" alt="NEON ARCADE 首页实机预览"><br><sub><b>霓虹首页 · 游戏库与 AI 放映厅</b></sub></td>
-<td width="50%" align="center"><img src="docs/republic-frontier/library-preview.png" width="100%" alt="加入共和国之辉后的七款游戏库实机预览"><br><sub><b>游戏库 · 游戏封面、分类筛选与搜索</b></sub></td>
+<td width="50%" align="center"><img src="docs/assets/live-library-20261019.png" width="100%" alt="十一款主游戏的游戏库实机预览"><br><sub><b>游戏库 · 游戏封面、分类筛选与搜索</b></sub></td>
 </tr>
 </table>
 
@@ -44,6 +44,10 @@
 | 游戏 | 玩什么 |
 | --- | --- |
 | [共和国之辉 · 黑潮危机](https://game.yituohub.com/play.html?game=republic-frontier) | 电脑键鼠 RTS，三个阵营、八张遭遇战地图、双线十六关战役与完整战场存档 |
+| [蔬菜忍者](https://game.yituohub.com/play.html?game=vegetable-ninja) | 鼠标或手指滑动切菜，经典、60 秒街机与 90 秒禅意三种模式 |
+| [植物大战僵尸](https://game.yituohub.com/play.html?game=plants-vs-zombies) | 独立同人重制，50 关冒险、49 种植物，经典与技能双模式 |
+| [吞城漫游](https://game.yituohub.com/play.html?game=hollow-city) | 控制黑洞吞下城市，挑战 12 关或探索 4 座城市 |
+| [学园都市](https://game.yituohub.com/play.html?game=academy-city) | 空间能力、自由飞行、城市探索与剧情互动 |
 | [魂斗罗 2026](https://game.yituohub.com/play.html?game=contra-2026) | 30 条命、八关战役、八向射击与双人同屏，支持手机触控 |
 | [星陨前线](https://game.yituohub.com/play.html?game=fallen-frontier) | 第三人称科幻占点战场，枪械与战甲作战 |
 | [智械前线](https://game.yituohub.com/play.html?game=iron-front) | 扩军、拾取军械与重装，突破机器人防线 |
@@ -52,6 +56,10 @@
 | [雷霆战翼](https://game.yituohub.com/play.html?game=thunderwing) | 驾驶战机穿越航线，拾取补给并升级火力 |
 
 游戏库与加载页共用 [游戏清单](public/assets/games.js)。新增游戏时，放入游戏文件与封面，再在 `ARCADE_GAMES` 中追加一条记录。具体步骤见 [添加游戏](docs/adding-game.md)。
+
+[经典游戏区](https://game.yituohub.com/classics.html) 另收录 18 款消除、益智和街机游戏，入口与封面由 [经典游戏清单](public/assets/classics.js) 管理。
+
+本仓库已于 2026-10-19 对齐线上发布目录，补齐游戏、封面、多语言、触屏操作与放映厅资源。同步范围、源码校验和测试边界见 [同步记录](docs/live-sync-20261019.md)。
 
 ### 共和国之辉 · 黑潮危机
 
@@ -71,9 +79,11 @@
 
 经典模式一击倒下，协助模式提供三格装甲，硬核模式增加交火密度；三种难度都从 30 条命开始。关卡演练全部开放，可无限续战。八关主题与方向参照 FC 原作，关卡坐标与模型为重新制作，详细范围见[设计与操作说明](docs/contra-2026-design.md)。
 
-## 🎬 千禧凝思
+当前线上版本包含更密集的安全检查点、复活时保留装备、就近清除敌方弹幕以及关卡现场存档；刷新后可以从已保存的检查点继续。
 
-**[进入 AI 放映厅](https://game.yituohub.com/mv.html)** · [观看《千禧凝思》](https://game.yituohub.com/game-arcade/film.html)
+## 🎬 AI 放映厅
+
+**[进入 AI 放映厅](https://game.yituohub.com/mv.html)** · [观看《千禧凝思》](https://game.yituohub.com/game-arcade/film.html) · [探索《阿房宫》](https://game.yituohub.com/game-arcade/afang-palace/index.html)
 
 放映厅展示封面、时长与作品介绍，点击「进入演出」打开独立播放页面。声音会在点击播放后开启，主页不会提前下载整段音频。
 
@@ -102,10 +112,10 @@ python -m http.server 8080 --directory public
 维护与本地预览使用 `public/`。构建生产发布文件时运行
 
 ```bash
-python scripts/build_release.py --version 1.2.0
+python scripts/build_release.py --version live-sync-20261019
 ```
 
-脚本检查游戏 ID、文件与封面路径，将 `public/` 按原目录复制到 `dist/`，并为文本生成 gzip 文件。电脑上有 Node.js 时，还会用内置模块生成 Brotli 文件。生产服务器发布 `dist/`，资源地址保持不变，缓存配置见 [部署说明](docs/nginx.md)。
+脚本检查主游戏与经典游戏两份清单的 ID、文件和封面路径，将 `public/` 按原目录复制到 `dist/`，并为文本生成 gzip 文件。电脑上有 Node.js 时，还会用内置模块生成 Brotli 文件。`dist/version.json` 分别记录两区数量与总数。生产服务器发布 `dist/`，资源地址保持不变，缓存配置见 [部署说明](docs/nginx.md)。
 
 ## 🗂 项目结构
 
@@ -114,14 +124,21 @@ public/
   index.html           游戏厅首页
   games.html           游戏库
   play.html            统一游戏加载与返回入口
+  classics.html        18 款经典游戏
+  classics-play.html   经典游戏加载入口
   mv.html              AI 放映厅
   assets/
-    games.js           游戏清单
-    covers/v2/         游戏封面
+    games.js           11 款主游戏清单
+    classics.js        18 款经典游戏清单
+    covers/            游戏封面
+    i18n*.js           站点多语言
+    game-locales/      游戏翻译资源
     mv/                放映厅封面
+  classics/games/      经典游戏源码
   game-arcade/
-    games/             七款游戏与独立模块
+    games/             主游戏、独立模块与美术资源
     film.html          千禧凝思影片
+    afang-palace/      阿房宫交互场景
     vendor/three/      本地第三方库及其许可证
 design/
   designer-home.html   设计师提供的首页原稿
@@ -137,7 +154,7 @@ deploy/
   nginx.conf           Nginx 部署配置示例
 ```
 
-构建回归检查可运行 `python scripts/tests/test_build_release.py`。共和国之辉回归检查运行 `node --test scripts/tests/republic-frontier/*.test.mjs`。
+构建回归检查可运行 `python scripts/tests/test_build_release.py`。共和国之辉回归检查运行 `node --test scripts/tests/republic-frontier/*.test.mjs`；魂斗罗检查点与存档回归运行 `node --test scripts/tests/contra-2026/*.test.mjs`，基础引擎检查运行 `node scripts/tests/contra_engine.mjs`。这些自动测试不代替浏览器试玩。
 
 `scripts/optimize_assets.py`、`capture_previews.py` 与原有的游戏 smoke、资源 benchmark 脚本面向 v1.0.0 的目录结构。复现历史结果时请使用对应标签的独立副本；当前页面改版不要运行旧资源拆分工具。
 
@@ -159,6 +176,8 @@ deploy/
 ## 💡 一起加新游戏
 
 可以通过 [Issue](https://github.com/yan9651688/yituohub-game-arcade/issues) 报告问题，或提交 Pull Request。
+
+项目协作规则见 [agent.md](agent.md)，代理入口为 [AGENTS.md](AGENTS.md)。完成代码修改并通过相应验证后，必须提交到本项目 Git；用户要求同步 GitHub 时，还必须推送并核对远端提交。
 
 新游戏请附玩法介绍和电脑、手机的操作方式，并确认统一加载页、开始、暂停与返回游戏库都能使用。涉及画面或布局的修改，附一张截图会更方便讨论。提交素材时，请说明来源与使用许可。
 
