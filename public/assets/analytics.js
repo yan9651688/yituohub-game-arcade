@@ -5,7 +5,11 @@
   const PLAY_WEBSITE_ID = '9e7c25c0-7388-42bb-9984-87636aecfef0';
   const PUBLIC_HOST = 'game.yituohub.com';
   const MAX_QUEUE = 48;
+  const arcadeTitles = Object.freeze({ galaxian: '小蜜蜂', tanks: '坦克大战', breakout: '打砖块', circus: '马戏团', 'lode-runner': '淘金者', 'dr-mario': '马里奥医生' });
+  const arcadeMatch = /^\/arcade\/games\/([a-z-]+)\/(?:index\.html)?$/.exec(location.pathname);
+  const arcadeId = arcadeMatch && Object.hasOwn(arcadeTitles, arcadeMatch[1]) ? arcadeMatch[1] : null;
   const pages = new Set(['/', '/index.html', '/games.html', '/classics.html', '/mv.html', '/play.html', '/classics-play.html']);
+  ['/arcade/', '/arcade/index.html', ...Object.keys(arcadeTitles).flatMap(id => ['/arcade/games/' + id + '/', '/arcade/games/' + id + '/index.html'])].forEach(path => pages.add(path));
   const events = new Set(['game_open', 'game_ready', 'game_error', 'game_retry', 'game_play']);
   const local = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
   // Browser tests may install an in-memory sink before this script runs. A URL
@@ -17,6 +21,7 @@
   let sdkReady = false;
   let draining = false;
   let playSent = false;
+  const arcadeEventsSent = new Set();
   let timer;
   const pending = [];
   const queue = [];
@@ -36,6 +41,7 @@
   }
 
   function gameForPage() {
+    if (arcadeId) return { id: 'arcade-' + arcadeId, title: arcadeTitles[arcadeId] };
     if (!['/play.html', '/classics-play.html'].includes(location.pathname)) return null;
     const catalogue = location.pathname === '/classics-play.html' ? window.CLASSIC_GAMES : window.ARCADE_GAMES;
     const id = new URLSearchParams(location.search).get('game');
@@ -45,6 +51,8 @@
   function pageDetails() {
     let url = location.pathname === '/index.html' ? '/' : location.pathname;
     let title = ({ '/': 'NEON ARCADE', '/games.html': '小游戏库 · NEON ARCADE', '/classics.html': '经典小游戏 · NEON ARCADE', '/mv.html': 'AI放映厅 · NEON ARCADE' })[url] || '游戏加载 · NEON ARCADE';
+    if (url === '/arcade/' || url === '/arcade/index.html') { url = '/arcade/index.html'; title = '经典街机 · NEON ARCADE'; }
+    if (arcadeId) { url = '/arcade/games/' + arcadeId + '/index.html'; title = arcadeTitles[arcadeId] + ' · 经典街机'; }
     if (url === '/play.html' || url === '/classics-play.html') {
       const game = gameForPage();
       if (game) {
@@ -117,11 +125,16 @@
       if (disabled || privacyOptOut() || !events.has(name)) return;
       const game = gameForPage();
       if (!game || data.game_id !== game.id) return;
+      if (arcadeId && ['game_open', 'game_ready', 'game_error', 'game_play'].includes(name)) {
+        if (arcadeEventsSent.has(name)) return;
+        arcadeEventsSent.add(name);
+      }
+      const locale = arcadeId ? window.ArcadeI18n?.language : window.SiteI18n?.locale;
       const safe = {
         game_id: game.id,
         game_title: game.title,
-        catalogue: location.pathname === '/classics-play.html' ? 'classics' : 'original',
-        site_language: ['zh-Hans', 'zh-Hant', 'en'].includes(data.site_language) ? data.site_language : (['zh-Hans', 'zh-Hant', 'en'].includes(window.SiteI18n?.locale) ? window.SiteI18n.locale : 'zh-Hans')
+        catalogue: arcadeId ? 'arcade' : location.pathname === '/classics-play.html' ? 'classics' : 'original',
+        site_language: ['zh-Hans', 'zh-Hant', 'en'].includes(data.site_language) ? data.site_language : (['zh-Hans', 'zh-Hant', 'en'].includes(locale) ? locale : 'zh-Hans')
       };
       for (const key of ['attempt', 'load_ms']) {
         if (Number.isFinite(data[key]) && data[key] >= 0) safe[key] = Math.round(data[key]);
@@ -137,6 +150,37 @@
   }
   window.SiteAnalytics = Object.freeze({ track });
 
+  // Direct arcade pages share the same anonymous datasets as the game loader.
+  // Readiness is supplied by the resource loader; menu/language clicks do not
+  // count as playing, and a visit generates at most one player pageview.
+  function observeArcade() {
+    if (!arcadeId || disabled || privacyOptOut()) return;
+    const data = { game_id: 'arcade-' + arcadeId, attempt: 1 };
+    track('game_open', data);
+    const readiness = () => {
+      const state = document.body.dataset.arcadeState;
+      if (state === 'ready') track('game_ready', { ...data, load_ms: performance.now() });
+      else if (state === 'error') track('game_error', { ...data, error_key: 'load.runtimeError' });
+    };
+    const observer = new MutationObserver(readiness);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['data-arcade-state'] });
+    readiness();
+    const onPlay = event => {
+      if (!event.isTrusted || document.body.dataset.arcadeState !== 'ready') return;
+      const target = event.target;
+      if (target?.closest?.('select, input, textarea, a, [data-arcade-navigation]')) return;
+      if (event.type === 'keydown') {
+        if (!['Enter', ' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'a', 'd', 'w', 's', 'j', 'k', 'z', 'x'].includes(event.key)) return;
+      } else if (!target?.closest?.('canvas#game, #start-button, #primary-button, #action-button, .touch-controls button')) return;
+      track('game_play', data);
+      document.removeEventListener('pointerdown', onPlay, true);
+      document.removeEventListener('keydown', onPlay, true);
+    };
+    document.addEventListener('pointerdown', onPlay, { capture: true, passive: true });
+    document.addEventListener('keydown', onPlay, true);
+    window.addEventListener('pagehide', () => observer.disconnect(), { once: true });
+  }
+
   function init() {
     if (initialized) return;
     initialized = true;
@@ -145,6 +189,7 @@
       // Always send the pageview before gameplay events queued by deferred loader.
       enqueue(pageDetails());
       pending.splice(0).forEach(enqueue);
+      observeArcade();
       if (testSink) { sdkReady = true; void drain(); return; }
       if (!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(WEBSITE_ID)) { stop(); return; }
       const script = document.createElement('script');

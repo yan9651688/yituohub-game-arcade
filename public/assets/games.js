@@ -1,7 +1,8 @@
-/* Catalogue and loading metadata. */
+/* releasedAt records the first launch time; updates must not reset it. */
 window.ARCADE_GAMES = Object.freeze([
   {
     "id": "republic-frontier",
+    "releasedAt": "2026-10-19T12:45:00+08:00",
     "title": "共和国之辉 · 黑潮危机",
     "en": "REPUBLIC FRONTIER",
     "category": "即时战略",
@@ -19,6 +20,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "vegetable-ninja",
+    "releasedAt": "2026-10-19T09:06:16+08:00",
     "title": "蔬菜忍者",
     "en": "VEGETABLE NINJA",
     "category": "休闲切割",
@@ -36,6 +38,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "plants-vs-zombies",
+    "releasedAt": "2026-10-13T00:00:00+08:00",
     "title": "植物大战僵尸",
     "en": "PLANTS VS. ZOMBIES",
     "category": "策略塔防",
@@ -53,6 +56,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "hollow-city",
+    "releasedAt": "2026-10-11T05:50:00+08:00",
     "title": "吞城漫游",
     "en": "HOLLOW CITY",
     "category": "休闲吞噬",
@@ -70,6 +74,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "academy-city",
+    "releasedAt": "2026-10-08T00:00:00+08:00",
     "title": "学园都市",
     "en": "ACADEMY CITY",
     "category": "角色冒险",
@@ -87,6 +92,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "contra-2026",
+    "releasedAt": "2026-10-01T00:00:00+08:00",
     "title": "魂斗罗 2026",
     "en": "CONTRA 2026 · RE: FRONTLINE",
     "category": "动作射击",
@@ -104,6 +110,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "fallen-frontier",
+    "releasedAt": "2026-09-30T00:00:00+08:00",
     "title": "星陨前线",
     "en": "FALLEN FRONTIER",
     "category": "动作射击",
@@ -121,6 +128,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "iron-front",
+    "releasedAt": "2026-09-30T00:00:00+08:00",
     "title": "智械前线",
     "en": "IRON FRONT",
     "category": "动作射击",
@@ -138,6 +146,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "neon-swarm",
+    "releasedAt": "2026-09-30T00:00:00+08:00",
     "title": "霓潮",
     "en": "NEON SWARM",
     "category": "生存挑战",
@@ -155,6 +164,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "road-fury",
+    "releasedAt": "2026-09-30T00:00:00+08:00",
     "title": "公路狂徒",
     "en": "ROAD FURY",
     "category": "竞速格斗",
@@ -172,6 +182,7 @@ window.ARCADE_GAMES = Object.freeze([
   },
   {
     "id": "thunderwing",
+    "releasedAt": "2026-09-30T00:00:00+08:00",
     "title": "雷霆战翼",
     "en": "THUNDERWING",
     "category": "动作射击",
@@ -186,5 +197,116 @@ window.ARCADE_GAMES = Object.freeze([
     "sizeBytes": 163992,
     "cover": "assets/covers/v2/thunderwing.webp",
     "mobileControls": "手机 · 拖动战机 · 自动射击 · EMP / 超频 · 按住精移"
+  },
+  {
+    "id": "seven-swords",
+    "releasedAt": "2026-10-21T05:52:07.418Z",
+    "title": "七剑江湖",
+    "en": "SEVEN SWORDS",
+    "category": "角色冒险",
+    "tags": [
+      "七侠传记",
+      "火舞旋风",
+      "锁妖试炼"
+    ],
+    "description": "执掌七侠名剑，行走九境山河。体验各自的主线传记、伙伴协战与修行成长，以虹猫的火舞旋风破阵，或前往演武场、锁妖塔挑战。",
+    "controls": "WASD / 方向键移动 · J 普攻 · Q / E / F 剑招 · R 调息 · 空格轻功 · Esc 暂停",
+    "mobileControls": "手机 · 左摇杆移动 · 右侧攻击与技能按钮 · 建议横屏",
+    "path": "game-arcade/games/seven-swords/index.html",
+    "sizeBytes": 11335,
+    "cover": "assets/covers/v3/seven-swords-firewhirl-20261021.webp"
+  },
+  {
+    "id": "tear-it-up",
+    "title": "撕个痛快",
+    "en": "TEAR IT UP",
+    "category": "解压沙盒",
+    "tags": [
+      "11 种材质",
+      "8 个场景",
+      "撕剪烧涂"
+    ],
+    "description": "捏住布角，用力一扯。从棉布、牛仔布到果冻与史莱姆，体验 11 种材质的拉扯、剪切、燃烧与喷涂。没有分数和倒计时，随手换一块，接着玩。",
+    "controls": "鼠标拖动操作 · 点击切换工具 / 材质 / 场景 · 空格 + 方向键拉扯",
+    "mobileControls": "手机 · 手指按住拖动 · 点击切换工具、材质与场景 · 横竖屏可玩",
+    "path": "game-arcade/games/tear-it-up/index.html",
+    "cover": "assets/covers/v3/tear-it-up-outline-20261022.webp",
+    "releasedAt": "2026-10-22T07:23:29.996Z",
+    "sizeBytes": 9199
+  },
+  {
+    "id": "frostworks",
+    "title": "雪境工坊",
+    "en": "FROSTWORKS",
+    "category": "生存经营",
+    "tags": [
+      "雪原建城",
+      "生产链",
+      "无尽城防"
+    ],
+    "description": "在风雪中采集木石，点亮供暖设施，把营地建成工业城邦。打通制造与运输链，抵御兽潮，远征新大陆，继续挑战无尽城防。",
+    "controls": "WASD / 方向键移动 · 点击采集 / 建造 · P / 空格 / Esc 暂停",
+    "mobileControls": "虚拟摇杆移动 · 点选资源与蓝图 · 靠近自动采集 / 战斗",
+    "path": "game-arcade/games/frostworks/index.html",
+    "cover": "assets/covers/v3/frostworks-20261022.webp",
+    "detailsPath": "game-info/frostworks.html",
+    "releasedAt": "2026-10-22T13:41:16.201Z",
+    "sizeBytes": 4081
+  },
+  {
+    "id": "tideborn-ark",
+    "title": "潮生方舟",
+    "en": "TIDEBORN ARK",
+    "category": "生存经营",
+    "tags": [
+      "海上建造",
+      "拾荒制造",
+      "无尽远航"
+    ],
+    "description": "从一片漂浮甲板开始，打捞物资、架设工厂、扩建人工岛。安排生产与火力，挡住海怪来袭，再驶向外海，迎战巨兽与无尽潮汐。",
+    "controls": "WASD / 方向键移动 · 空格打捞 · F 攻击 · R 修理 · E 加工 · B 建造 · P 暂停",
+    "mobileControls": "触屏摇杆移动 · 点选物资 / 敌人 · 屏幕按钮打捞、攻击与建造",
+    "path": "game-arcade/games/tideborn-ark/index.html",
+    "cover": "assets/covers/v3/tideborn-ark-20261022.webp",
+    "detailsPath": "game-info/tideborn-ark.html",
+    "releasedAt": "2026-10-22T13:41:16.201Z",
+    "sizeBytes": 8070
+  },
+  {
+    "id": "ai-home",
+    "title": "AI之家",
+    "en": "AI HOME",
+    "category": "角色冒险",
+    "tags": [
+      "小镇日常",
+      "三章防卫",
+      "追猎跑酷"
+    ],
+    "description": "和大肥鱼与 AI 娘伙伴一起住进樱花小镇，散步、聊天、换装，享受自在日常。也可以并肩守住三章防线，挑战无尽守夜，或在高速跑酷中追逐算力。",
+    "controls": "WASD 移动 · E / F 互动 · J 攻击 · 空格闪避 / 跳跃 · A / D 跑酷换道 · Esc 暂停",
+    "mobileControls": "手机 · 点按探索 · 战斗方向键与技能按钮 · 跑酷滑动换道 / 跳跃 / 下滑 · 建议横屏",
+    "path": "game-arcade/games/ai-home/index.html",
+    "cover": "assets/covers/v3/ai-home-20261025.webp",
+    "releasedAt": "2026-10-25T19:46:57.694+08:00",
+    "sizeBytes": 9425
+  },
+  {
+    "id": "wasteland-breakout",
+    "title": "废城突围 · 六城战线",
+    "en": "WASTELAND BREAKOUT",
+    "category": "动作射击",
+    "tags": [
+      "六城战役",
+      "坦克车库",
+      "训练与 DPS 测试"
+    ],
+    "description": "驾驶战车突破六座城市，清除守军、摧毁指挥基地，从轻型坦克晋升为超级天启。体验独立训练场和 10 套个性涂装，支持简体中文、繁体中文与英文。",
+    "controls": "W / S 前进倒车 · A / D 转向 · 鼠标瞄准 · 左键开炮 · Esc 暂停 · Alt 释放鼠标 · M 静音",
+    "mobileControls": "电脑键鼠游戏 · 请使用电脑浏览器游玩，暂不支持触屏操作",
+    "releasedAt": "2026-10-26T15:24:52.193Z",
+    "path": "game-arcade/games/wasteland-breakout/index.html",
+    "detailsPath": "game-info/wasteland-breakout.html",
+    "sizeBytes": 21020,
+    "cover": "assets/covers/v3/wasteland-breakout-battle-20261026.webp"
   }
 ].map(Object.freeze));

@@ -7,14 +7,14 @@
   <title>正在进入游戏 · NEON ARCADE</title>
   <meta name="description" content="在 NEON ARCADE 免费在线玩 AI 小游戏，加载即玩，支持电脑键鼠与手机触屏。">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/loader.css">
-  <link rel="stylesheet" href="assets/i18n.css">
-  <script src="assets/i18n.js"></script>
-  <script src="assets/i18n-library.js"></script>
-  <script src="assets/i18n-games.js"></script>
+  <link rel="stylesheet" href="assets/loader.css?v=20261026-classic-arcade-v1">
+  <link rel="stylesheet" href="assets/i18n.css?v=20261022-frost-tide-v1">
+  <script src="assets/i18n.js?v=20261026-classic-arcade-v1"></script>
+  <script src="assets/i18n-library.js?v=20261026-wasteland-breakout-v1"></script>
+  <script src="assets/i18n-games.js?v=20261026-wasteland-breakout-v1"></script>
   <script src="assets/classics.js" defer></script>
   <script src="assets/analytics.js" async fetchpriority="low"></script>
-  <script src="assets/loader.js" defer></script>
+  <script src="assets/loader.js?v=20261026-wasteland-breakout-v1" defer></script>
 </head>
 <body data-state="loading" data-catalogue="classics">
   <main class="loading-screen" id="loadingScreen" aria-labelledby="loadTitle">
@@ -34,6 +34,7 @@
       </div>
     </section>
     <p class="loader-foot" data-i18n="load.foot">下一场冒险，从这里开始。</p>
+    <nav class="loader-categories" aria-label="主导航" data-i18n-aria-label="catalog.nav"><a href="index.html" data-i18n="catalog.home">首页</a><a href="games.html" data-i18n="catalog.library">游戏库</a><a href="workshop.html" data-i18n="site.workshop">共创工坊</a><a href="arcade/index.html" data-i18n="site.arcade">经典街机</a><a href="classics.html" data-i18n="catalog.classics">经典小游戏</a><a href="mv.html" data-i18n="catalog.cinema">AI放映厅</a></nav>
     <noscript><p class="noscript">请开启 JavaScript 后进入游戏。<a href="classics.html">返回经典小游戏</a></p></noscript>
   </main>
   <div id="gameHost"></div>

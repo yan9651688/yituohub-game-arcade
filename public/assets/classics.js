@@ -1,7 +1,10 @@
-/* Catalogue and loading metadata. */
+/* Catalogue and loading metadata.
+ * releasedAt is the first launch time (with timezone); updates must not reset it.
+ */
 window.CLASSIC_GAMES = Object.freeze([
   {
     "id": "link-match",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "连连看",
     "en": "GARDEN LINK",
     "category": "消除",
@@ -18,6 +21,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "match3",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "经典三消",
     "en": "PRISM ATELIER",
     "category": "消除",
@@ -34,6 +38,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "pop-stars",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "消灭星星",
     "en": "JELLY POP",
     "category": "消除",
@@ -50,6 +55,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "bubble-shooter",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "泡泡龙",
     "en": "DEEP SEA BUBBLES",
     "category": "消除",
@@ -66,6 +72,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "triple-tiles",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "三张配对",
     "en": "TEA HOUSE TRIPLES",
     "category": "消除",
@@ -82,6 +89,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "water-sort",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "水排序",
     "en": "TWILIGHT PALETTE",
     "category": "空间",
@@ -98,6 +106,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "block-puzzle",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "方块拼盘",
     "en": "GRID GARDEN",
     "category": "空间",
@@ -114,6 +123,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "screws",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "螺丝解谜",
     "en": "BRASS WORKSHOP",
     "category": "空间",
@@ -130,6 +140,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "unblock",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "滑块华容道",
     "en": "REDWOOD ESCAPE",
     "category": "空间",
@@ -146,6 +157,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "pipes",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "接水管",
     "en": "RAINWATER CIRCUIT",
     "category": "空间",
@@ -162,6 +174,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "sokoban",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "推箱子",
     "en": "CAT WAREHOUSE",
     "category": "空间",
@@ -178,6 +191,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "2048",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "2048",
     "en": "AMBER ATELIER",
     "category": "合成",
@@ -194,6 +208,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "fruit-merge",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "合成大水果",
     "en": "ORCHARD CLUB",
     "category": "合成",
@@ -210,6 +225,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "memory",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "翻牌配对",
     "en": "LUNAR OBSERVATORY",
     "category": "益智",
@@ -226,6 +242,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "one-line",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "一笔连线",
     "en": "CONSTELLATION LAB",
     "category": "益智",
@@ -242,6 +259,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "sudoku",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "数独",
     "en": "PAPER AND INK",
     "category": "益智",
@@ -258,6 +276,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "brick-breaker",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "弹球打砖块",
     "en": "NEON CIRCUIT",
     "category": "街机",
@@ -274,6 +293,7 @@ window.CLASSIC_GAMES = Object.freeze([
   },
   {
     "id": "stack-tower",
+    "releasedAt": "2026-10-10T00:00:00+08:00",
     "title": "节奏叠塔",
     "en": "DUSK ARCHITECTS",
     "category": "街机",

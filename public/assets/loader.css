@@ -12,3 +12,7 @@
 .loading-screen>.site-language{position:absolute;top:24px;right:40px}.load-actions button>span[data-i18n]{margin-left:0}.load-status-row{align-items:flex-start;line-height:1.6}.load-status-row strong{line-height:1.4}.load-content h1{overflow-wrap:anywhere}.load-card{flex-shrink:0}html:lang(en) .game-return span{writing-mode:vertical-rl;letter-spacing:.02em}
 @media(max-width:680px){.loading-screen{padding-top:88px}.loading-screen>.site-language{top:16px;right:20px}.loader-brand{left:20px;top:27px}.loader-brand span{font-size:10px;letter-spacing:.12em}.loader-brand{gap:7px}.loading-screen>.site-language select[data-site-language]{width:116px;padding-left:29px}.loading-screen>.site-language .site-language-icon{left:8px}.load-content{padding-inline:22px}}
 @media(max-height:560px) and (min-width:681px){.loading-screen{justify-content:flex-start;padding-top:70px}.loading-screen>.site-language{top:12px;right:24px}.loader-brand{top:23px}}
+
+/* Category navigation belongs to the loading screen and never covers gameplay. */
+.loader-categories{display:flex;flex-wrap:wrap;justify-content:center;gap:0 22px;flex-shrink:0;width:min(960px,100%);margin-top:12px;color:var(--muted);font-size:11px;line-height:1.5}.loader-categories a{display:inline-flex;align-items:center;min-height:40px;white-space:nowrap}.loader-categories a:hover,.loader-categories a:focus-visible{color:var(--cyan)}
+@media(max-width:420px){.loader-categories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}.loader-categories a{justify-content:center}}
