@@ -1,0 +1,63 @@
+/* Preserve the original jade/bronze UI and its existing touch controls. */
+.site-language-control{position:fixed;right:12px;bottom:8px;z-index:1500;display:flex;align-items:center;gap:7px;padding:4px 7px;border:1px solid #b89b60;background:#163b31f2;color:#f1dfb3;font:10px/1.3 var(--sans,system-ui);box-shadow:0 2px 7px #10291e66}
+.site-language-control>span{font-weight:700;letter-spacing:.08em}.site-language-control select{color:inherit;background:#183d32;border:0;min-height:27px;font:11px var(--sans,system-ui);max-width:106px}
+.site-translation-note{margin:0 0 12px;padding:7px 10px;border:1px solid #b39b6a66;background:#d5c69a55;color:#405542;font:12px/1.5 var(--sans,system-ui)}
+.site-standalone .game-shell{height:calc(100dvh - 42px)}
+.site-standalone .battle-layer,.site-standalone .modal-layer,.site-standalone .atlas-layer{bottom:42px}
+.site-standalone .battle-layer{height:calc(100dvh - 42px)}
+html[lang="en"] .brand strong,html[lang="en"] .modal-header h2,html[lang="en"] .select-top h1,html[lang="en"] .wx-folio-heading,html[lang="en"] .hero-detail h2{letter-spacing:.02em}
+html[lang="en"] .world-stage .hud-heading strong,html[lang="en"] .hero-card strong{letter-spacing:0}
+html[lang="en"] .wx-painting-caption,html[lang="en"] .wx-hero-verse{writing-mode:horizontal-tb;letter-spacing:.02em}
+html[lang="en"] .wx-hero-verse{max-width:75%;left:12%;bottom:12px;top:auto;text-align:center}
+html[lang="en"] .wx-painting-caption{left:20px;top:14px;right:20px;max-width:calc(100% - 40px);flex-direction:column;gap:0}
+html[lang="en"] .wx-painting-caption strong{font-size:25px;letter-spacing:.03em}
+html[lang="en"] .wx-painting-caption span{font-size:11px;letter-spacing:0}
+html[lang="en"] .hero-card .hero-sword{font-size:9px;letter-spacing:0;white-space:normal;overflow-wrap:anywhere;line-height:1.3}
+html[lang="en"] .world-stage .world-skill-slot .skill-label{font-size:9px;letter-spacing:0;white-space:normal;line-height:1.15}
+html[lang="en"] #battleLayer .ss-combat.ss-combat .ss-c-bottom-hud .ss-c-action>span{font:10px/1.1 var(--sans);letter-spacing:0;white-space:normal;bottom:5px;padding:1px;background:#102823e8}
+html[lang="en"] #battleLayer .ss-combat.ss-combat .ss-c-bottom-hud .ss-c-action>em{inset:5px 4px auto;height:19px;font:10px/1.1 var(--sans);letter-spacing:0;background:#102823ed}
+html[lang="en"] #battleLayer .ss-combat .ss-c-bottom-hud .ss-c-supply-name{font:8px/1.1 var(--sans);bottom:4px;overflow-wrap:anywhere;background:#102823ed}
+html[lang="en"] #battleLayer .ss-combat .ss-c-bottom-hud .ss-c-supply-art{width:26px;height:26px;margin-top:6px}
+html[lang="en"] .world-stage .world-quest-panel{letter-spacing:0}
+html[lang="en"] .world-stage .world-touch-actions button{font:10px/1.2 var(--sans,system-ui);letter-spacing:0}
+@media(pointer:coarse){.world-joystick,.ss-c-joy,.world-touch-actions button,.ss-c-action{touch-action:none}.world-camera-tools button{min-height:30px}}
+@media(max-width:600px){
+  .site-language-control{right:8px;bottom:5px}.site-translation-note{font-size:10px;margin-bottom:9px;padding:6px 8px}
+  html[lang="en"] .wx-select-mark{display:none}
+  html[lang="en"] .select-top h1{font-size:30px}
+  html[lang="en"] .wx-folio-heading{font-size:12px;gap:8px}
+  html[lang="en"] .wx-folio-heading small{font-size:9px;letter-spacing:0}
+  html[lang="en"] .hero-card strong{font-size:10px}
+  html[lang="en"] #modal[data-view="select"] .hero-card strong{font:600 9px/1.4 var(--sans);letter-spacing:0}
+  html[lang="en"] #modal[data-view="select"] .hero-card .hero-sword{font:8px/1.25 var(--sans);white-space:normal;overflow-wrap:anywhere;letter-spacing:0;min-height:20px}
+  html[lang="en"] .selection-bottom button{font-size:12px;letter-spacing:0;padding-inline:10px}
+  html[lang="en"] .world-stage .hud-hero{width:220px}
+  html[lang="en"] .world-stage .hud-player-info{min-width:0}
+  html[lang="en"] .world-stage .hud-heading strong{font-size:16px}
+  html[lang="en"] .world-stage .hud-sword{gap:3px}
+  html[lang="en"] .world-stage .hud-sword span{font-size:10px}
+  html[lang="en"] .world-stage .hud-sword em{font-size:8px;letter-spacing:0}
+  html[lang="en"] .world-stage .world-quest-panel{max-width:184px}
+  html[lang="en"] .world-stage .chapter-hud-rest{font-size:10px;letter-spacing:0;white-space:normal;line-height:1.5;padding-block:5px}
+  html[lang="en"] .world-stage .world-quest-actions{font-size:9px;gap:4px;flex-wrap:wrap}
+  html[lang="en"] .world-stage .world-title h1{font-size:20px;letter-spacing:.02em}
+  html[lang="en"] .world-stage .world-minimap .mini-map-caption,html[lang="en"] .world-stage .mini-atlas-button{font-size:9px;letter-spacing:0}
+  html[lang="en"] .world-stage .world-minimap>p{font-size:8px;letter-spacing:0}
+  html[lang="en"] .main-nav .nav-item>span:last-child{font-size:9px;letter-spacing:0}
+  html[lang="en"] .ss-c-headbuttons .ss-c-mini{font-size:10px;padding-inline:5px}
+  html[lang="en"] #battleLayer .ss-combat.ss-combat .ss-c-bottom-hud .ss-c-action>span{font-size:9px;bottom:4px}
+  html[lang="en"] #battleLayer .ss-combat.ss-combat .ss-c-bottom-hud .ss-c-action>em{top:5px;height:17px;font-size:8px}
+  html[lang="en"] .ss-dojo-title h2{font-size:19px;letter-spacing:.02em}
+  html[lang="en"] .ss-dojo-toolbar button{font-size:10px;letter-spacing:0}
+}
+@media(max-width:360px){html[lang="en"] .world-stage .hud-hero{width:194px}html[lang="en"] .world-stage .hud-sword em{display:none}html[lang="en"] .hero-card strong{font-size:9px}html[lang="en"] .hero-card .hero-sword{font-size:8px}}
+@media(max-height:500px) and (pointer:coarse){
+  .world-stage .world-joystick{bottom:82px;width:76px;height:76px;left:16px}.world-stage .world-joystick-knob{left:18px;top:18px;width:34px;height:34px}
+  .world-stage .world-touch-actions{bottom:82px;right:15px}.world-stage .world-touch-actions button{width:42px;height:42px}.world-stage .world-touch-actions button:last-child{width:48px;height:48px}
+  .world-stage .world-interact{max-width:260px;bottom:120px;left:50%;transform:translateX(-50%)}
+}
+/* Keep all three top controls above the skill dock in short landscape arenas. */
+@media(min-width:641px) and (max-height:500px){
+  #battleLayer .ss-combat.ss-combat .ss-c-headbuttons{flex-direction:row;flex-wrap:nowrap;max-width:none;gap:5px;padding-top:0;align-items:flex-start}
+  #battleLayer .ss-combat.ss-combat .ss-c-headbuttons .ss-c-mini{min-height:32px;padding:7px 8px;font-size:10px;letter-spacing:0;white-space:nowrap}
+}

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3eee3">
+  <title>经典街机 · 小蜜蜂经典飞机战</title>
+  <style id="arcade-loader-style">#arcade-loader{position:fixed;inset:0;z-index:2147483000;background:#f3eee3f7;display:grid;place-items:center;padding:24px;font:14px/1.6 system-ui,sans-serif;color:#34322d}#arcade-loader[hidden]{display:none}#arcade-loader .load-card{width:min(420px,100%);padding:28px;background:#fffcf6;border:1px solid #d8d0c0;border-radius:14px;box-shadow:0 12px 40px #34322d12}#arcade-loader h2{font-size:21px;letter-spacing:0;margin:8px 0 12px}#arcade-loader p{margin:8px 0}#arcade-loader progress{display:block;width:100%;height:12px;accent-color:#8e303b;margin:18px 0}#arcade-loader button{border:0;border-radius:6px;padding:11px 18px;background:#8e303b;color:#fff8ed;cursor:pointer;font:700 14px system-ui}#arcade-loader button[hidden]{display:none}#arcade-loader .load-brand{font-size:10px;letter-spacing:2px;color:#8e303b}#arcade-loader a{display:block;margin-top:15px;color:#8e303b;text-decoration:underline;font-size:12px}</style><script>(function () {
+  'use strict';
+  const gameId = 'galaxian', total = 6;
+  const loaded = new Set();
+  let initialized = false, failed = false, mounted = false, finished = false;
+  let failureKind = '', deadline;
+  const messages = {
+    'zh-Hans': ['正在载入游戏', '载入资源', '游戏遇到问题', '请检查网络后重新加载。', '重新加载', '返回经典街机', '正在准备画面与操作…', '资源载入超时，请重试。'],
+    'zh-Hant': ['正在載入遊戲', '載入資源', '遊戲遇到問題', '請檢查網路後重新載入。', '重新載入', '返回經典街機', '正在準備畫面與操作…', '資源載入逾時，請重試。'],
+    en: ['Loading game', 'Resources loaded', 'Something went wrong', 'Check your connection and reload the game.', 'Reload game', 'Back to Classic Arcade', 'Preparing the screen and controls…', 'Loading timed out. Please try again.']
+  };
+  function locale() {
+    if (window.ArcadeI18n) return window.ArcadeI18n.language;
+    let value = 'zh-Hans';
+    try { value = localStorage.getItem('neon-arcade.locale') || localStorage.getItem('classic-arcade-language') || value; } catch (_) {}
+    try { value = new URLSearchParams(location.search).get('lang') || value; } catch (_) {}
+    return messages[value] ? value : 'zh-Hans';
+  }
+  function track(name, extra) {
+    try { window.SiteAnalytics?.track(name, Object.assign({ game_id: 'arcade-' + gameId }, extra)); } catch (_) {}
+  }
+  function render() {
+    const host = document.getElementById('arcade-loader');
+    if (!host) return;
+    const code = locale(), m = messages[code], done = Math.min(loaded.size, total);
+    host.hidden = finished && !failed;
+    document.body.dataset.arcadeState = failed ? 'error' : finished ? 'ready' : 'loading';
+    document.getElementById('arcade-load-title').textContent = m[failed ? 2 : 0];
+    document.getElementById('arcade-load-detail').textContent = failed ? m[failureKind === 'timeout' ? 7 : 3] : (done === total ? m[6] : m[1] + ' ' + done + ' / ' + total);
+    const progress = document.getElementById('arcade-load-progress');
+    progress.max = total;
+    progress.value = done;
+    progress.hidden = failed;
+    progress.setAttribute('aria-label', m[1] + ' ' + done + ' / ' + total);
+    const retry = document.getElementById('arcade-load-retry');
+    retry.textContent = m[4]; retry.hidden = !failed;
+    const back = document.getElementById('arcade-load-back');
+    back.textContent = m[5]; back.href = '../../index.html?lang=' + code;
+  }
+  function complete() {
+    if (!failed && !finished && initialized && loaded.size >= total) {
+      finished = true;
+      clearTimeout(deadline);
+      render();
+      track('game_ready', { load_ms: Math.round(performance.now()) });
+    } else render();
+  }
+  function fail(kind) {
+    if (failed) return;
+    failed = true; failureKind = kind;
+    clearTimeout(deadline);
+    render();
+    track('game_error', { error_kind: kind });
+  }
+  // Capture also catches errors on non-bubbling script/link resource events.
+  window.addEventListener('load', event => {
+    const target = event.target;
+    if (target?.hasAttribute?.('data-arcade-resource')) { loaded.add(target); complete(); }
+  }, true);
+  window.addEventListener('error', event => {
+    const target = event.target;
+    if (target?.hasAttribute?.('data-arcade-resource')) fail('resource');
+    else if (event instanceof ErrorEvent && (!event.filename || /\/arcade\//.test(event.filename) || /\/(?:app|game-core|controls|levels|audio|i18n)\.js/.test(event.filename))) fail('runtime');
+  }, true);
+  window.addEventListener('unhandledrejection', event => {
+    // Optional analytics/audio promises must not turn a healthy game into a failed load.
+    if (!finished && /\/arcade\//.test(event.reason?.stack || '')) fail('runtime');
+  });
+  window.addEventListener('arcade-language-change', render);
+  window.ArcadeGameLoader = Object.freeze({
+    resourceLoaded(target) { loaded.add(target); complete(); },
+    resourceFailed() { fail('resource'); },
+    ready() { initialized = true; complete(); },
+    mount() {
+      if (mounted) return;
+      mounted = true;
+      document.getElementById('arcade-load-retry')?.addEventListener('click', () => location.reload());
+      render();
+    }
+  });
+  deadline = setTimeout(() => fail('timeout'), 45000);
+})();
+</script><link data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" rel="stylesheet" href="styles.css?v=20261026-classic-arcade-v1">
+  <script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="../../shared/i18n.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="i18n.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="game-core.js?v=20261026-classic-arcade-v1" defer></script>
+  <script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="app.js?v=20261026-classic-arcade-v1" defer></script>
+<link data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" rel="stylesheet" href="../../shared/i18n.css?v=20261026-classic-arcade-v1"><script src="/assets/analytics.js?v=20261026-classic-arcade-v1" defer data-arcade-optional></script><meta name="description" content="驾驶战机迎战俯冲编队，闪避弹幕，挑战更高分数。小蜜蜂独立重制，支持键盘和触屏。"><link rel="canonical" href="https://game.yituohub.com/arcade/games/galaxian/index.html"><link rel="alternate" hreflang="zh-Hans" href="https://game.yituohub.com/arcade/games/galaxian/index.html?lang=zh-Hans"><link rel="alternate" hreflang="zh-Hant" href="https://game.yituohub.com/arcade/games/galaxian/index.html?lang=zh-Hant"><link rel="alternate" hreflang="en" href="https://game.yituohub.com/arcade/games/galaxian/index.html?lang=en"><link rel="alternate" hreflang="x-default" href="https://game.yituohub.com/arcade/games/galaxian/index.html"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><meta property="og:type" content="website"><meta property="og:site_name" content="NEON ARCADE"><meta property="og:locale" content="zh_CN"><meta property="og:title" content="小蜜蜂 · 经典街机"><meta property="og:description" content="驾驶战机迎战俯冲编队，闪避弹幕，挑战更高分数。小蜜蜂独立重制，支持键盘和触屏。"><meta property="og:url" content="https://game.yituohub.com/arcade/games/galaxian/index.html"><meta property="og:image" content="https://game.yituohub.com/assets/covers/og-cover.webp"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json" id="arcade-schema">{"@context":"https://schema.org","@type":"VideoGame","name":"小蜜蜂 · 经典街机","description":"驾驶战机迎战俯冲编队，闪避弹幕，挑战更高分数。小蜜蜂独立重制，支持键盘和触屏。","url":"https://game.yituohub.com/arcade/games/galaxian/index.html","inLanguage":["zh-Hans","zh-Hant","en"],"isAccessibleForFree":true,"gamePlatform":"Web Browser","operatingSystem":"Any","playMode":"https://schema.org/SinglePlayer"}</script><script id="arcade-seo-data" type="application/json">{"names":["小蜜蜂","小蜜蜂","Galaxian"],"descriptions":["驾驶战机迎战俯冲编队，闪避弹幕，挑战更高分数。小蜜蜂独立重制，支持键盘和触屏。","駕駛戰機迎戰俯衝編隊，閃避彈幕，挑戰更高分數。小蜜蜂獨立重製，支援鍵盤和觸控。","Pilot your fighter against diving formations, dodge enemy shots, and chase a higher score in this independent Galaxian remake with keyboard and touch controls."],"path":"games/galaxian/index.html","url":"https://game.yituohub.com/arcade/games/galaxian/index.html","titles":["小蜜蜂 · 经典街机","小蜜蜂 · 經典街機","Galaxian · Classic Arcade"]}</script><script src="../../shared/site-seo.js?v=20261026-classic-arcade-v1" defer></script></head>
+<body data-arcade-state="loading" data-arcade-game="galaxian"><section id="arcade-loader" role="status" aria-live="polite" data-i18n-ignore><div class="load-card"><span class="load-brand">CLASSIC ARCADE</span><h2 id="arcade-load-title"></h2><p id="arcade-load-detail"></p><progress id="arcade-load-progress" value="0"></progress><button id="arcade-load-retry" type="button" hidden></button><a id="arcade-load-back" href="../../index.html"></a><noscript>Please enable JavaScript to play.</noscript></div></section><script>window.ArcadeGameLoader.mount();</script>
+  <header class="site-header">
+    <a class="brand" href="../../index.html" aria-label="返回经典游戏厅"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i><i></i></span>经典街机<span class="brand-en">CLASSIC ARCADE</span></a>
+    <span class="header-note"><span class="live-dot"></span>一张卡带，一个下午</span>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">THE 8-BIT COLLECTION / 001</p><h1 id="page-title">小蜜蜂<span class="title-dot">.</span><span class="subtitle">经典飞机战</span></h1><p class="intro-copy">左右闪避，抓住俯冲的那一刻。</p></div>
+      <div class="cartridge-badge"><span>首张卡带</span><strong>FC</strong><span>经典玩法参考</span></div>
+    </section>
+    <section class="arcade" aria-label="小蜜蜂游戏">
+      <div class="cabinet">
+        <div class="cabinet-top"><div><span class="power-dot"></span><span>PLAYER 1</span></div><span class="game-label">小蜜蜂 · 经典飞机战</span><div class="toolbar"><button id="sound-button" title="声音开关（M）" aria-pressed="true">声音 开</button><button id="pause-button" title="暂停（P / Esc）" disabled>暂停</button><button id="restart-button" title="重新开始（R）" disabled>重开</button></div></div>
+        <div class="screen-frame" id="screen-frame">
+          <canvas id="game" width="256" height="240" tabindex="0" aria-label="飞机在底部，按左右方向键或 A、D 移动；在游戏画面内按住鼠标左键，或按空格、J、K 射击。P 暂停，R 重开。" aria-describedby="fire-instructions"></canvas>
+          <div class="screen-glass" aria-hidden="true"></div>
+          <div class="screen-overlay" id="title-overlay">
+            <div class="start-panel"><p class="screen-kicker">ONE SHIP. ONE SHOT.</p><h2>准备好出击了吗？</h2><p>守住底线，击退整队蜂群。</p><button class="start-button" id="start-button">开始游戏 <span aria-hidden="true">▶</span></button><span class="start-key">或按 ENTER 开始</span></div>
+          </div>
+          <div class="screen-overlay hidden" id="pause-overlay"><div class="pause-panel"><p class="screen-kicker">TAKE A BREATH</p><h2>已暂停</h2><p>战场会在原处等你。</p><button class="start-button" id="resume-button">继续游戏 <span aria-hidden="true">▶</span></button><span class="start-key">按 P / ESC 继续</span></div></div>
+          <div class="screen-overlay hidden" id="gameover-overlay"><div class="pause-panel"><p class="screen-kicker">GAME OVER</p><h2 id="over-title">再来一局？</h2><div class="result-score" id="result-score">000000</div><p id="result-detail">第 1 波 · 本局得分</p><button class="start-button" id="again-button">再次出击 <span aria-hidden="true">↻</span></button><span class="start-key">按 ENTER 重新开始</span></div></div>
+          <div class="toast hidden" id="toast" role="status"></div>
+        </div>
+        <div class="cabinet-bottom"><span><b class="tiny-square"></b> 纯粹的 8-BIT 时光</span><span>NO CONTINUE. JUST ONE MORE TRY.</span></div>
+        <div class="touch-controls" aria-label="触屏操作"><div class="direction-controls"><button class="touch-key" id="left-button" aria-label="向左移动">◀</button><button class="touch-key" id="right-button" aria-label="向右移动">▶</button></div><span class="touch-hint">移动</span><button class="fire-key" id="fire-button" aria-label="按住射击"><span>发射</span><small>FIRE</small></button></div>
+      </div>
+      <aside class="game-guide">
+        <div class="guide-label">HOW TO PLAY <span>01</span></div>
+        <h2>少一点招式，<br>多一点手感。</h2>
+        <p class="guide-intro">没有升级，也没有大招。只有一架飞机，和越来越难缠的蜂群。</p>
+        <div class="control-row"><div class="key-group"><kbd>←</kbd><kbd>→</kbd></div><span>左右移动</span></div>
+        <div class="control-row"><kbd class="wide-key">SPACE</kbd><span>按住射击</span></div>
+        <p class="mouse-hint" id="fire-instructions">也可在游戏画面内按住鼠标左键射击。</p>
+        <div class="control-row"><div class="key-group"><kbd>P</kbd><kbd>M</kbd></div><span>暂停 / 声音</span></div>
+        <div class="rule-note"><span class="rule-number">1</span><p>同屏只有一发子弹。<br><strong>每一枪都要算数。</strong></p></div>
+        <div class="enemy-scores"><p class="small-label">瞄准俯冲的敌人，分数更高</p><div class="enemy-row"><canvas class="enemy-preview" width="26" height="24" data-type="green" aria-hidden="true"></canvas><span>蜂兵</span><b>30 <i>/</i> 60</b></div><div class="enemy-row"><canvas class="enemy-preview" width="26" height="24" data-type="violet" aria-hidden="true"></canvas><span>突击蜂</span><b>40 <i>/</i> 80</b></div><div class="enemy-row"><canvas class="enemy-preview" width="26" height="24" data-type="red" aria-hidden="true"></canvas><span>护卫蜂</span><b>50 <i>/</i> 100</b></div><div class="enemy-row"><canvas class="enemy-preview" width="26" height="24" data-type="flagship" aria-hidden="true"></canvas><span>旗舰</span><b>60 <i>/</i> 150–800</b></div><span class="score-caption">阵列 / 俯冲得分</span></div>
+        <div class="bonus-note"><strong>5,000 分</strong><span>获得一架额外飞机，每局一次。</span></div>
+        <button class="reference-button" id="reference-button">关于原作参考 <span>↗</span></button>
+      </aside>
+    </section>
+    <footer class="page-footer"><span>经典街机 <span class="footer-divider">/</span> 回到简单好玩的年代</span><span>原创重制 · 可离线游玩 · 不含 ROM</span></footer>
+  </main>
+  <dialog id="reference-dialog"><button class="dialog-close" id="close-reference" aria-label="关闭">×</button><p class="eyebrow">REFERENCE NOTES</p><h2>老玩法，重新做。</h2><p>本作以 1984 年 FC《Galaxian》的说明书与实机画面为参考：46 敌编队、单发子弹、三架起始飞机、俯冲攻击、护卫击杀奖励，以及 5,000 分的一次奖励生命。</p><p>它不是官方游戏、模拟器或逐帧复刻。像素美术、音效与代码均为原创；俯冲曲线、攻击间隔、移动速度和后续波次难度为重建参数，并未宣称与原作逐帧一致。</p><p>本轮依据 FC 实玩记录修正相撞计分、重叠敌机同发命中、跨波次射击和旗帜显示。平滑俯冲与按住连发保留；四秒停攻等未独立核实的边界仍属于近似实现。暂未加入原作的第二难度模式。</p><div class="reference-links"><a href="https://archive.org/details/galaxian-ngx-4500-fc-jp-manual-600-dpi" target="_blank" rel="noopener noreferrer">FC 原版说明书 ↗</a><a href="https://www.youtube.com/watch?v=3sGOuJlOYM8" target="_blank" rel="noopener noreferrer">FC 版实玩录像 ↗</a><a href="https://store.steampowered.com/app/1250250/NAMCO_MUSEUM_ARCHIVES_Vol_1/" target="_blank" rel="noopener noreferrer">正版可玩合集 ↗</a><a href="REFERENCES.md" target="_blank" rel="noopener noreferrer">实现与参考说明 ↗</a></div><button class="dialog-primary" id="reference-done">知道了</button></dialog>
+  <dialog id="restart-dialog"><p class="eyebrow">RESTART GAME</p><h2>重新开始这一局？</h2><p>当前分数和波次会清零，最高分会保留。</p><div class="dialog-actions"><button id="cancel-restart">继续当前游戏</button><button class="dialog-primary" id="confirm-restart">重新开始</button></div></dialog>
+</body>
+</html>

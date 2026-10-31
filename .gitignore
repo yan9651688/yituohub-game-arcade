@@ -41,3 +41,11 @@ qa/
 *.gz
 *.br
 .release/
+
+# live sync
+*.br
+*.gz
+shared/
+incoming/
+data/
+*secret*

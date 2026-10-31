@@ -1,4 +1,3 @@
-/* Catalogue translations. */
 window.SITE_GAME_TRANSLATIONS = {
   "zh-Hant": {
     "2048": {
@@ -367,6 +366,84 @@ window.SITE_GAME_TRANSLATIONS = {
       "path": "game-arcade/games/republic-frontier/index.html",
       "sizeBytes": 14988,
       "cover": "game-arcade/games/republic-frontier/assets/command-keyart.webp"
+    },
+    "seven-swords": {
+      "title": "七劍江湖",
+      "en": "SEVEN SWORDS",
+      "category": "角色冒險",
+      "tags": [
+        "七俠傳記",
+        "火舞旋風",
+        "鎖妖試煉"
+      ],
+      "description": "執掌七俠名劍，行走九境山河。體驗各自的主線傳記、夥伴協戰與修行成長，以虹貓的火舞旋風破陣，或前往演武場、鎖妖塔挑戰。",
+      "controls": "WASD / 方向鍵移動 · J 普攻 · Q / E / F 劍招 · R 調息 · 空白鍵輕功 · Esc 暫停",
+      "mobileControls": "手機 · 左搖桿移動 · 右側攻擊與技能按鈕 · 建議橫向遊玩"
+    },
+    "tear-it-up": {
+      "title": "撕個痛快",
+      "en": "TEAR IT UP",
+      "category": "解壓沙盒",
+      "tags": [
+        "11 種材質",
+        "8 個場景",
+        "撕剪燒塗"
+      ],
+      "description": "捏住布角，用力一扯。從棉布、牛仔布到果凍與史萊姆，體驗 11 種材質的拉扯、剪切、燃燒與噴塗。沒有分數和倒數計時，隨手換一塊，接著玩。",
+      "controls": "滑鼠拖曳操作 · 點擊切換工具 / 材質 / 場景 · 空白鍵 + 方向鍵拉扯",
+      "mobileControls": "手機 · 手指按住拖曳 · 點擊切換工具、材質與場景 · 橫直向皆可玩"
+    },
+    "frostworks": {
+      "title": "雪境工坊",
+      "en": "FROSTWORKS",
+      "category": "生存經營",
+      "tags": [
+        "雪原建城",
+        "生產鏈",
+        "無盡城防"
+      ],
+      "description": "在風雪中採集木石，點亮供暖設施，把營地建成工業城邦。打通製造與運輸鏈，抵禦獸潮，遠征新大陸，繼續挑戰無盡城防。",
+      "controls": "WASD / 方向鍵移動 · 點擊採集 / 建造 · P / 空格 / Esc 暫停",
+      "mobileControls": "虛擬搖桿移動 · 點選資源與藍圖 · 靠近自動採集 / 戰鬥"
+    },
+    "tideborn-ark": {
+      "title": "潮生方舟",
+      "en": "TIDEBORN ARK",
+      "category": "生存經營",
+      "tags": [
+        "海上建造",
+        "拾荒製造",
+        "無盡遠航"
+      ],
+      "description": "從一片漂浮甲板開始，打撈物資、架設工廠、擴建人工島。安排生產與火力，擋住海怪來襲，再駛向外海，迎戰巨獸與無盡潮汐。",
+      "controls": "WASD / 方向鍵移動 · 空格打撈 · F 攻擊 · R 修理 · E 加工 · B 建造 · P 暫停",
+      "mobileControls": "觸控搖桿移動 · 點選物資 / 敵人 · 螢幕按鈕打撈、攻擊與建造"
+    },
+    "ai-home": {
+      "title": "AI之家",
+      "en": "AI HOME",
+      "category": "角色冒險",
+      "tags": [
+        "小鎮日常",
+        "三章防衛",
+        "追獵跑酷"
+      ],
+      "description": "和大肥魚與 AI 娘夥伴一起住進櫻花小鎮，散步、聊天、換裝，享受自在日常。也可以並肩守住三章防線，挑戰無盡守夜，或在高速跑酷中追逐算力。",
+      "controls": "WASD 移動 · E / F 互動 · J 攻擊 · 空白鍵閃避 / 跳躍 · A / D 跑酷換道 · Esc 暫停",
+      "mobileControls": "手機 · 點按探索 · 戰鬥方向鍵與技能按鈕 · 跑酷滑動換道 / 跳躍 / 下滑 · 建議橫向"
+    },
+    "wasteland-breakout": {
+      "title": "廢城突圍 · 六城戰線",
+      "en": "WASTELAND BREAKOUT",
+      "category": "動作射擊",
+      "tags": [
+        "六城戰役",
+        "坦克車庫",
+        "訓練與 DPS 測試"
+      ],
+      "description": "駕駛戰車突破六座城市，清除守軍、摧毀指揮基地，從輕型坦克晉升為超級天啟。體驗獨立訓練場和 10 套個性塗裝，支持簡體中文、繁體中文與英文。",
+      "controls": "W / S 前進倒車 · A / D 轉向 · 鼠標瞄準 · 左鍵開炮 · Esc 暫停 · Alt 釋放鼠標 · M 靜音",
+      "mobileControls": "電腦鍵鼠遊戲 · 請使用電腦瀏覽器遊玩，暫不支持觸屏操作"
     }
   },
   "en": {
@@ -736,6 +813,84 @@ window.SITE_GAME_TRANSLATIONS = {
       "path": "game-arcade/games/republic-frontier/index.html",
       "sizeBytes": 14988,
       "cover": "game-arcade/games/republic-frontier/assets/command-keyart.webp"
+    },
+    "seven-swords": {
+      "title": "Seven Swords",
+      "en": "SEVEN SWORDS",
+      "category": "Adventure",
+      "tags": [
+        "Seven heroes",
+        "Fire Whirlwind",
+        "Demon Tower"
+      ],
+      "description": "Explore nine regions as one of seven sword heroes. Follow their stories, fight alongside companions and master Hongmao’s Fire Whirlwind. Train in the dojo or challenge the Demon Tower. English menus and controls; story dialogue remains in Chinese.",
+      "controls": "WASD / arrows to move · J attack · Q / E / F skills · R recover · Space leap · Esc pause",
+      "mobileControls": "Mobile · Left stick to move · Right attack and skill buttons · Landscape recommended"
+    },
+    "tear-it-up": {
+      "title": "Tear It Up",
+      "en": "TEAR IT UP",
+      "category": "Relaxing Sandbox",
+      "tags": [
+        "11 materials",
+        "8 scenes",
+        "Tear, cut & paint"
+      ],
+      "description": "Grab a corner and give it a pull. Tear, cut, burn and paint 11 materials, from cotton and denim to jelly and slime. No scores or countdowns: grab a fresh piece and keep playing.",
+      "controls": "Drag with the mouse · Choose tools, materials and scenes · Space + arrow keys to pull",
+      "mobileControls": "Mobile · Touch and drag · Tap to choose tools, materials and scenes · Portrait or landscape"
+    },
+    "frostworks": {
+      "title": "Frostworks",
+      "en": "FROSTWORKS",
+      "category": "Survival & Building",
+      "tags": [
+        "Winter settlement",
+        "Production chains",
+        "Endless defense"
+      ],
+      "description": "Gather supplies in the snow and grow a heated camp into an industrial settlement. Connect factories and freight routes, repel beasts, explore a new continent and face endless waves.",
+      "controls": "WASD / arrows to move · Click to gather / build · P / Space / Esc to pause",
+      "mobileControls": "Move with the joystick · Tap resources and blueprints · Gather / fight nearby automatically"
+    },
+    "tideborn-ark": {
+      "title": "Tideborn Ark",
+      "en": "TIDEBORN ARK",
+      "category": "Survival & Building",
+      "tags": [
+        "Ocean base-building",
+        "Salvage & crafting",
+        "Endless voyage"
+      ],
+      "description": "Start with a floating deck. Salvage supplies, build factories and connect artificial islands. Balance production and firepower, repel sea creatures, then sail offshore to face bosses and endless waves.",
+      "controls": "WASD / arrows to move · Space salvage · F attack · R repair · E process · B build · P pause",
+      "mobileControls": "Move with the joystick · Tap supplies / enemies · On-screen salvage, attack and build buttons"
+    },
+    "ai-home": {
+      "title": "AI Home",
+      "en": "AI HOME",
+      "category": "Adventure",
+      "tags": [
+        "Small-town life",
+        "Three-chapter defense",
+        "Chase & parkour"
+      ],
+      "description": "Make a home in a cherry-blossom town with DeepSeek and her AI companions. Stroll, chat and try on outfits, then team up for three defense chapters, face Endless Nightwatch or chase computing power on high-speed parkour tracks.",
+      "controls": "WASD move · E / F interact · J attack · Space dodge / jump · A / D change lanes · Esc pause",
+      "mobileControls": "Mobile · Tap to explore · Battle with the directional pad and skill buttons · Swipe to change lanes, jump or slide in parkour · Landscape recommended"
+    },
+    "wasteland-breakout": {
+      "title": "Wasteland Breakout",
+      "en": "SIX-CITY FRONT",
+      "category": "Shooters",
+      "tags": [
+        "Six-city campaign",
+        "Tank garage",
+        "Training & DPS tests"
+      ],
+      "description": "Break through six cities, eliminate the defenders and destroy their command bases. Advance from a light tank to the Super Apocalypse, practice at the proving ground and customize your tank with 10 finishes. Play in English, Simplified Chinese or Traditional Chinese.",
+      "controls": "W / S forward / reverse · A / D steer · Mouse aim · Left click fire · Esc pause · Alt release cursor · M mute",
+      "mobileControls": "Desktop mouse and keyboard required. Touch controls are not supported."
     }
   }
 };

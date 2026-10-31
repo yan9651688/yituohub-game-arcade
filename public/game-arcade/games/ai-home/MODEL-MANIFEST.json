@@ -1,0 +1,422 @@
+{
+  "runnerPresentation": {
+    "imageReference": "design/runner-ui-art-direction.png",
+    "referenceFirst": true,
+    "selectionPreparationHUDResults": true,
+    "simulationChanged": false
+  },
+  "libraryReadingSofa": true,
+  "battlePresentation": {
+    "redesignedDispatchAndDeployment": true,
+    "portraitVitalsAndIconAbilities": true,
+    "independentCampaignAndEndlessHUD": true,
+    "elasticEnemies": true,
+    "layeredCharacterEffects": true,
+    "gameplayChanged": true,
+    "allEightRanged": true,
+    "shortRangeAreaCharacters": [
+      "claude",
+      "grok"
+    ]
+  },
+  "sleepPose": {
+    "supine": true,
+    "bedAligned": true,
+    "allCharacters": true,
+    "wardrobeSupported": true
+  },
+  "title": "AI之家",
+  "version": "2.8.2",
+  "sharedGrowth": {
+    "currency": "鲸圆券",
+    "saveWalletKey": "coins",
+    "sharedAcrossCharacters": true,
+    "campaignRankLimit": 5,
+    "continuedAfterChapter": 3,
+    "hpPerRank": 15,
+    "baseDamagePercentPerRank": 10,
+    "price": "60 + currentRank * 55",
+    "appliesTo": [
+      "campaign",
+      "endless"
+    ],
+    "raceMovementUnchanged": true
+  },
+  "endless": {
+    "cards": 24,
+    "commonCards": 8,
+    "characterCards": 16,
+    "supportSlots": 2,
+    "supportCharacters": 8,
+    "draftWaves": "1,3,5,...",
+    "elites": [
+      "shieldSource",
+      "caster"
+    ],
+    "runOnlyUpgrades": true,
+    "campaignUnchanged": true,
+    "homeEconomyUnchanged": true
+  },
+  "homeLife": {
+    "pointerNavigation": true,
+    "wasdRetained": true,
+    "homeZoomRange": [
+      0.7,
+      1.7
+    ],
+    "battleZoomRange": [
+      0.8,
+      1.25
+    ],
+    "seatBodyFacingLocked": true,
+    "world": "星灯里",
+    "zones": 14,
+    "activitySites": 52,
+    "bedSpaces": 8,
+    "simulatedResidents": 7,
+    "maxVisibleResidentModels": 4,
+    "playerModel": 1,
+    "identityRendering": "all 8 original GLBs; lossless material/rig/visibility-partition batches, including wardrobe-enabled DeepSeek",
+    "maxInactiveResidentModels": 2,
+    "residentReuse": "bounded detached original-actor cache; no animation or rendering while inactive",
+    "poseEvaluation": "rig-only matrix updates, no unchanged paused pose resampling",
+    "navigation": "A* with exact inflated furniture AABB segment checks",
+    "activities": [
+      "tea",
+      "meal",
+      "reading",
+      "painting",
+      "stargaze",
+      "walk"
+    ],
+    "autonomous": [
+      "walking",
+      "cooking",
+      "eating",
+      "reading",
+      "gardening",
+      "painting",
+      "resting",
+      "social visits"
+    ],
+    "mealProps": {
+      "ordinary": "modest mixed meal plates",
+      "oversizedWhiteRice": "deepseek only",
+      "placement": "currently occupied dining seat, player or resident",
+      "identitySpecificHandProps": true
+    },
+    "economy": false,
+    "needsPenalty": false,
+    "offlineCatchUp": false,
+    "originalAssetsUnchanged": true,
+    "savedIn": "version1 save.homeLife"
+  },
+  "dialogue": {
+    "portraitPosition": "left current speaker",
+    "pairedScenes": 24,
+    "soloGreetings": 8,
+    "characters": 8,
+    "activities": 6,
+    "portraits": "assets/dialogue-portraits.js",
+    "portraitStyle": "image-generated full-body Q/chibi illustrations from original character references",
+    "portraitScope": "dialogue only; game models and other portrait assets unchanged",
+    "trigger": "intentional resident interaction or gathered activity chat",
+    "controls": [
+      "next",
+      "skip to choices",
+      "close",
+      "keyboard choices"
+    ],
+    "saveFormatUnchanged": true,
+    "asset": {
+      "file": "assets/dialogue-portraits.js",
+      "bytes": 1153824,
+      "sha256": "7f2131e0cb555fdc7ccbc14cefb5dc792d2a3a5509749183a6bf901281bc43eb"
+    }
+  },
+  "wardrobe": {
+    "character": "deepseek",
+    "outfits": [
+      "original",
+      "whale-hood",
+      "winter-coat",
+      "detective",
+      "red-sport",
+      "claude-work",
+      "white-hanfu"
+    ],
+    "bodyProportionsChanged": false,
+    "animationClipsChanged": false,
+    "baseAssetsChanged": false,
+    "geometry": "independently authored skinned costume layers sharing original skeleton",
+    "persistence": "version1 save.deepseekOutfit",
+    "fallback": "offline CPU-rendered outfit portraits",
+    "paidUnlocks": false,
+    "previewAsset": {
+      "file": "assets/wardrobe-portraits.js",
+      "bytes": 259516,
+      "sha256": "975f5c730e996e2d4a9567539d5c3be4a343480882c7e54cd14324a39575fce5"
+    }
+  },
+  "technicalChase": {
+    "courseIndex": 0,
+    "obstacleRows": 18,
+    "obstaclePieces": 50,
+    "rivalStartOffsets": [
+      60,
+      125,
+      200,
+      275,
+      350,
+      435,
+      600
+    ],
+    "techniqueChainSeparateFromPickups": true,
+    "rivalArchetypes": 3,
+    "automaticTraits": 7,
+    "traitDurationSeconds": 8,
+    "traitSlots": 1,
+    "originalTurnsAndGapsUnchanged": true,
+    "firstCourseFinalStraightExtension": 180,
+    "allThreeCourseObstaclePatternsRevised": true,
+    "courseObstacleRows": [
+      18,
+      23,
+      30
+    ],
+    "courseLeaderOffsets": [
+      600,
+      625,
+      790
+    ]
+  },
+  "endlessChase": {
+    "independent": true,
+    "recycledRivals": 7,
+    "progressiveBaseSpeed": [
+      17.5,
+      30
+    ],
+    "boostedMaxSpeed": 44.28,
+    "rollingRoute": true,
+    "rollingScene": true,
+    "captureHeals": false
+  },
+  "computeChase": {
+    "routes": [
+      1280,
+      1450,
+      1800
+    ],
+    "automaticForward": true,
+    "rivals": 7,
+    "realModelLimits": [
+      3,
+      3,
+      3
+    ],
+    "identityRendering": "original GLB meshes, lossless material/skeleton batches, no generic runner replacements",
+    "farAnimationHz": [
+      20,
+      30,
+      60
+    ],
+    "nearAnimation": "per frame within 16 route metres",
+    "loadingMarker": "original portrait with explicit loading/error label",
+    "baseSpeed": 17.5,
+    "assetFilesChanged": false
+  },
+  "runtimeTailRig": {
+    "bones": 8,
+    "characters": [
+      "deepseek",
+      "gpt",
+      "gemini",
+      "glm"
+    ],
+    "simulationHz": 240,
+    "drive": "speed-scaled travelling wave with species-specific sway and inertia",
+    "assetFilesChanged": false
+  },
+  "models": {
+    "deepseek": {
+      "embedded": true,
+      "bytes": 11865534,
+      "sha256": "62991a4995a08ff8d53f923c1ca9d3b35f3d05ca4d1daa9d0270ad776ef74b46"
+    },
+    "claude": {
+      "embedded": true,
+      "bytes": 8138084,
+      "sha256": "7d36ddcfb04c4180b70bf5c0ffcda6fc18034d34e1dccb054d76d6a48171093c"
+    },
+    "gpt": {
+      "embedded": true,
+      "bytes": 8972249,
+      "sha256": "f3e454e0c06c1880b2e74fc8c0ab27f15960e7f3d88da204969d1d8bab8472b8"
+    },
+    "gemini": {
+      "embedded": true,
+      "bytes": 10946904,
+      "sha256": "0da613675bb09f78bfec99fde0179d0c90ce41887a8ecf5bd381542f58bdc0fc"
+    },
+    "kimi": {
+      "embedded": true,
+      "bytes": 11270198,
+      "sha256": "28588367315e664b060499ff4a230c9249d039562f27b1a5114b54a93e68d53d"
+    },
+    "qwen": {
+      "embedded": true,
+      "bytes": 10231402,
+      "sha256": "d8ba5208f2bfc25ac41ba5552579964cd99c3b55cc9f427cc725dec2f170e67e"
+    },
+    "grok": {
+      "embedded": true,
+      "bytes": 11051634,
+      "sha256": "119f2eb8ee80a309fa7f28d5aa41767699b16d224b71bac4e10891370818d9ca"
+    },
+    "glm": {
+      "embedded": true,
+      "bytes": 10336009,
+      "sha256": "77fe467c3aa69492d739893e1290e0a569fcbc422cf47ea6bec2eab980f48630"
+    }
+  },
+  "verification": "CPU and desktop fallback gameplay verified. GPU, Windows file:// performance and mobile visual layout not verified.",
+  "renderOptimization": {
+    "measurementScope": "Original cottage before town expansion; not total v2.8 town scene cost",
+    "staticHomeVertices": [
+      160140,
+      60065
+    ],
+    "staticHomeBufferBytes": [
+      3843360,
+      2242360
+    ],
+    "staticHomeTriangles": 53380,
+    "battleSceneryMeshesBefore": [
+      82,
+      75,
+      74
+    ],
+    "battleSceneryMeshesAfter": [
+      7,
+      9,
+      8
+    ],
+    "indexedGeometryPreserved": true,
+    "characterAssetsUnchanged": true,
+    "verifiedBy": "CPU geometry equivalence and transform tests; not Windows GPU FPS"
+  },
+  "sakuraTown": {
+    "walkBounds": {
+      "minX": -44,
+      "maxX": 44,
+      "minZ": -29,
+      "maxZ": 37.4
+    },
+    "railZ": 40.65,
+    "railAccessible": false,
+    "trainCars": 3,
+    "trainCycleSeconds": 62,
+    "stationDwellSeconds": 10,
+    "trainRide": false,
+    "shops": 2,
+    "additionalVillageBuildings": 5,
+    "sharedGroundPaths": 12,
+    "sharedYards": 6,
+    "sharedYardWalls": 3,
+    "blossomTrees": 26,
+    "petals": 72,
+    "additionalStaticMeshes": 29,
+    "additionalStaticTriangles": 82768,
+    "statisticsScope": "Town static scenery only; excludes original cottage, distant scenery, moving train, petals and characters",
+    "statisticsSource": "Measured from createSakuraTownScene during this build",
+    "pausedTimeFrozen": true,
+    "existingHouseCoordinatesRetained": true
+  },
+  "homeDistantScenery": {
+    "decorativeOnly": true,
+    "walkBoundsExpanded": false,
+    "addedColliders": 0,
+    "addedActivitySites": 0,
+    "hills": 21,
+    "forestTrees": 60,
+    "distantHouses": 7,
+    "railwayExtensions": 2,
+    "ground": {
+      "x": 0,
+      "z": 4,
+      "radiusX": 175,
+      "radiusZ": 155,
+      "y": -0.12,
+      "color": 9549965,
+      "edgeColor": 13688535
+    },
+    "sourceMeshes": 332,
+    "staticMeshes": 13,
+    "staticTriangles": 18904,
+    "staticVertices": 16535,
+    "shadowCastingMeshes": 0,
+    "shadowReceivingMeshes": 0,
+    "statisticsScope": "Decorative distant scenery only; excludes playable town, original cottage, moving train, petals and characters",
+    "statisticsSource": "Measured from createHomeDistantScene during this build; CPU geometry accounting, not GPU performance"
+  },
+  "standingIdle": {
+    "allEightCharacters": true,
+    "playerAndResidents": true,
+    "originalAssetsUnchanged": true
+  },
+  "outfitDialogue": {
+    "outfit": "claude-work",
+    "activeCharacter": "deepseek",
+    "partner": "claude",
+    "scenes": 2,
+    "alternatesWithOrdinary": true,
+    "locales": [
+      "zh-CN",
+      "zh-TW",
+      "en"
+    ]
+  },
+  "music": {
+    "tracks": {
+      "home": {
+        "file": "assets/music-home.js",
+        "title": "屋檐下",
+        "source": "星灯里-屋檐下.mp3",
+        "bytes": 1944620,
+        "duration": 162.024,
+        "sha256": "df2f93adbb5f6093d6ea949a7bbb5602f2c109714345b76c01f52af9c0e8aa7b"
+      },
+      "battle": {
+        "file": "assets/music-battle.js",
+        "title": "并肩守夜",
+        "source": "星灯里-并肩守夜.mp3",
+        "bytes": 1920716,
+        "duration": 160.032,
+        "sha256": "de1a3ede6ec921aa8228e11c48b1852e132e9bc26169de2dfd4edd428060b159"
+      },
+      "race": {
+        "file": "assets/music-race.js",
+        "title": "蓝色超频",
+        "source": "算力追猎-蓝色超频.mp3",
+        "bytes": 1999916,
+        "duration": 166.632,
+        "sha256": "11aadb21cf600919ae862d2667192887712739b04b42028fdb611b86db224923"
+      }
+    },
+    "lazySceneLoading": true,
+    "encoding": "MP3 96 kbps / 48 kHz / mono",
+    "recordedPlayback": true,
+    "originalDownloads": false
+  },
+  "localization": {
+    "locales": [
+      "zh-CN",
+      "zh-TW",
+      "en"
+    ],
+    "defaultLocale": "zh-CN",
+    "storageKey": "ai-family-language-v1",
+    "gameplayIdentifiersUnchanged": true
+  }
+}

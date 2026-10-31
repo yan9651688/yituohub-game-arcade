@@ -7,10 +7,11 @@
   const i18n = window.SiteI18n;
   const t = (key, vars) => i18n.t(key, vars);
   const classics = document.body.dataset.catalogue === 'classics';
-  const catalogue = classics ? window.CLASSIC_GAMES : window.ARCADE_GAMES;
+  const workshop = document.body.dataset.catalogue === 'workshop';
+  const catalogue = workshop ? window.WORKSHOP_GAMES : classics ? window.CLASSIC_GAMES : window.ARCADE_GAMES;
   const games = Array.isArray(catalogue) ? catalogue : [];
-  const returnLabel = () => t(classics ? 'catalog.classics' : 'catalog.library');
-  const returnPage = classics ? 'classics.html' : 'games.html';
+  const returnLabel = () => t(workshop ? 'site.workshop' : classics ? 'catalog.classics' : 'catalog.library');
+  const returnPage = workshop ? 'workshop.html' : classics ? 'classics.html' : 'games.html';
   const gameId = new URLSearchParams(location.search).get('game');
   const game = games.find((item) => item.id === gameId);
   let attempt = 0;
@@ -61,7 +62,7 @@
       document.querySelector('meta[name="description"]')?.setAttribute('content', t('load.defaultDescription'));
       return;
     }
-    const canonicalUrl = new URL(classics ? 'classics-play.html' : 'play.html', 'https://game.yituohub.com/');
+    const canonicalUrl = new URL(workshop ? 'workshop-play.html' : classics ? 'classics-play.html' : 'play.html', 'https://game.yituohub.com/');
     canonicalUrl.searchParams.set('game', game.id);
     if (i18n.locale !== 'zh-Hans') canonicalUrl.searchParams.set('lang', i18n.locale);
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -89,6 +90,10 @@
     document.title = `${current ? current.title : t('load.notFound')} · NEON ARCADE`;
     refreshSeo(current);
     $('loadTitle').textContent = current ? current.title : t('load.notFound');
+    if ($('loadAuthor')) {
+      $('loadAuthor').hidden = !game?.author;
+      $('loadAuthor').textContent = game?.author ? `${t('workshop.author')} ${game.author}` : '';
+    }
     $('loadEnglish').textContent = current?.en || 'NEON ARCADE';
     $('loadCover').alt = current ? t('load.coverAlt', { title: current.title }) : '';
     $('loadDescription').textContent = errorInfo ? t(errorInfo.key, { library, ...errorInfo.vars }) : current?.description || t('load.soon');
@@ -121,7 +126,7 @@
       $('loadPercent').textContent = t('load.preparingShort');
       $('loadBytes').textContent = t('load.startingBytes', { bytes: mb(loaded) });
       indeterminate(t('load.preparingAria'));
-      if (game?.id === 'plants-vs-zombies' && imageStatus?.count) {
+      if (['plants-vs-zombies', 'seven-swords'].includes(game?.id) && imageStatus?.count) {
         const percent = Math.min(99, Math.floor(imageStatus.done / imageStatus.count * 100));
         $('loadProgress').classList.remove('is-indeterminate');
         $('loadProgress').setAttribute('aria-valuenow', String(percent));
@@ -249,6 +254,17 @@
             await new Promise(resolve => setTimeout(resolve, 32));
           }
           if (!window.PVZApp?.rendererReady) throw { key: 'load.imageError' };
+        }
+        if (id === 'wasteland-breakout') {
+          // The tank world builds asynchronously after its images have decoded.
+          // Report ready only after its first real menu render and loading fade.
+          const deadline = performance.now() + 60000;
+          while (!(window.__game?._homePreview && document.querySelector('#loading.hidden'))) {
+            const failed = document.getElementById('fatal');
+            if (scriptError || imageError || (failed && !failed.classList.contains('hidden'))) break;
+            if (performance.now() > deadline) throw { key: 'load.initError' };
+            await new Promise(resolve => setTimeout(resolve, 32));
+          }
         }
         if (scriptError) throw scriptError;
         if (imageError) throw { key: 'load.imageError' };

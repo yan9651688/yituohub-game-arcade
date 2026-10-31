@@ -1,0 +1,69 @@
+/* Visual novel dialogue: the live game scene is the stage, not a second modal. */
+#modalLayer.story-layer{padding:0;align-items:stretch}
+#modalLayer.story-layer .modal-backdrop{background:linear-gradient(180deg,rgba(5,17,18,.08),rgba(5,17,18,.04) 45%,rgba(5,17,18,.38));backdrop-filter:none}
+#modal.story-dialogue{position:relative;width:100%;max-width:none;height:100%;max-height:none;padding:0!important;overflow:clip;border:0;border-radius:0;outline:0;background:transparent;box-shadow:none;color:#f3ebd2;isolation:isolate;animation:none}
+#modal.story-dialogue:before,#modal.story-dialogue:after{content:none}
+/* Hide exploration chrome only while speaking; visibility preserves scene geometry. */
+body:has(#modalLayer.story-layer:not([hidden])) #worldStage>:not(.world-canvas),
+body:has(#modalLayer.story-layer:not([hidden])) .game-shell>.topbar,
+body:has(#modalLayer.story-layer:not([hidden])) .game-shell>.journey-bar,
+body:has(#modalLayer.story-layer:not([hidden])) .game-shell>.playerbar{visibility:hidden!important;pointer-events:none!important}
+/* Preserve the dialog's accessible title without a chapter-card composition. */
+.story-heading,.story-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.story-figure{position:absolute;left:3%;bottom:-24%;width:min(80vw,950px);height:118%;filter:drop-shadow(0 8px 18px #0005);pointer-events:none;z-index:0}
+.story-figure .hero-svg{display:block;width:100%;height:100%;max-height:none;max-width:none}
+.story-panel{position:absolute;z-index:1;left:3%;right:3%;bottom:max(22px,env(safe-area-inset-bottom));min-height:210px;padding:35px 42px 16px;border:1px solid #b7a16a;border-radius:2px;background:linear-gradient(110deg,#102d2bf2,#102725ed 65%,#142e2bf5);box-shadow:0 8px 30px #0005,inset 0 0 0 4px #b7a36b12}
+.story-panel:after{content:'';position:absolute;inset:7px;border:1px solid #c5ae7329;pointer-events:none}
+.story-speaker-row{position:absolute;top:-21px;left:28px;right:28px;display:flex;align-items:center;gap:12px;pointer-events:none}
+#modal.story-dialogue .story-speaker{margin:0;min-width:120px;padding:7px 25px;border:1px solid #b7a16a;background:linear-gradient(110deg,#244139,#142e2b);box-shadow:inset 0 0 0 3px #b7a36b12;font:600 22px/1.3 var(--serif);color:#f1db9f;letter-spacing:.12em;text-align:center}
+.story-count{margin-left:auto;margin-top:36px;color:#a8b5a4;font-size:11px;white-space:nowrap}
+#modal.story-dialogue .story-line{min-height:3.7em;max-height:26dvh;overflow-y:auto;margin:0 32px 0 0;color:#f4efdf;font-size:clamp(18px,1.8vw,22px);line-height:1.85;letter-spacing:.045em;white-space:pre-wrap;overflow-wrap:anywhere;scrollbar-width:thin;scrollbar-color:#8e7e53 transparent}
+.story-next{position:relative;z-index:2;display:flex;gap:12px;align-items:center;justify-content:flex-end;min-height:36px;margin:10px 0 0 auto;padding:4px 0 2px 24px;color:#deca94;background:none;border:0;cursor:pointer;font:13px var(--sans)}
+.story-next i{font-size:9px;animation:story-cue 1.7s ease-in-out infinite}
+.story-next:hover{color:#fff1c4}.story-next:focus-visible{outline:2px solid #e7cf8e;outline-offset:4px}
+#modal.story-dialogue .modal-close{position:absolute;float:none;margin:0;z-index:5;width:36px;height:36px;top:max(18px,env(safe-area-inset-top));right:20px;color:#f3e4ba;background:#102825b8;border:1px solid #ab9567;box-shadow:none}
+.story-decisions{position:relative;z-index:2;max-height:42dvh;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#8e7e53 #16302c}
+#modal.story-dialogue .chapter-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+#modal.story-dialogue .choice-button{width:100%;color:#eee1bc;background:#213e35;border-color:#a5915d}
+#modal.story-dialogue .chapter-actions>button{max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere}
+#modal.story-dialogue .choice-body{min-width:0}
+#modal.story-dialogue .choice-body strong{color:#f3e4b8}
+#modal.story-dialogue .choice-button:hover:not(:disabled){background:#2b4b40;color:#fff0c8;transform:none}
+#modal.story-dialogue .choice-body small{color:#c4cbb8}
+#modal.story-dialogue .chapter-rewards{color:#dbc790;background:none;border:0;padding:12px 0 0;font-size:13px}
+#modal.story-dialogue .chapter-source{color:#b6baa4;background:transparent;margin-top:22px;border-top:1px solid #a18c533b;font-size:12px}
+#modal.story-dialogue .chapter-source a,#modal.story-dialogue .chapter-source summary{color:#d5c38e}
+#modal.story-dialogue .small-note,#modal.story-dialogue .chapter-source p,#modal.story-dialogue .ss-audit-note{color:#b6baa4;font-size:12px}
+#modal.story-dialogue .story-decisions .sword-result,#modal.story-dialogue .story-decisions .checkpoint-note{background:#e5dcc3;color:#263d32;border-color:#9b8658}
+#modal.story-dialogue .story-decisions .reward-grid{margin:12px 0}
+#modal.story-dialogue .story-decisions .reward-item{background:#e5dcc3;color:#263d32}
+/* Reward values have their own global gold color; override it on paper cards. */
+#modal.story-dialogue .story-decisions .reward-item b{color:#694c28}
+.story-decisions[hidden],.story-next[hidden]{display:none!important}
+@keyframes story-cue{50%{transform:translateY(3px);opacity:.5}}
+@media(max-width:650px){
+ .story-figure{width:150%;height:100%;bottom:-8%;left:-25%}
+ .story-panel{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));padding:32px 20px 12px;min-height:220px}
+ .story-speaker-row{left:16px;right:16px;top:-19px}
+ #modal.story-dialogue .story-speaker{font-size:19px;min-width:104px;padding:7px 19px}
+ #modal.story-dialogue .story-line{font-size:17px;min-height:5.55em;max-height:29dvh;margin-right:0;line-height:1.85}
+ .story-count{margin-top:0;padding:3px 7px;background:#102825bd;border-radius:2px}
+ .story-next{font-size:12px;margin-top:5px}
+ .story-decisions{max-height:36dvh}
+ .story-choosing .story-line{min-height:0;max-height:17dvh}
+ .story-choosing .story-figure{bottom:5%}
+}
+@media(max-height:500px){
+ .story-figure{height:138%;width:74%;left:0;bottom:-40%}
+ .story-panel{left:16px;right:16px;bottom:10px;min-height:132px;padding:24px 28px 8px}
+ .story-speaker-row{top:-17px;left:20px;right:20px}
+ #modal.story-dialogue .story-speaker{font-size:17px;padding:5px 20px;min-width:100px}
+ #modal.story-dialogue .story-line{font-size:16px;min-height:3.2em;max-height:26dvh;line-height:1.6}
+ .story-next{min-height:28px;margin-top:2px;font-size:11px}
+ .story-decisions{max-height:35dvh}
+ .story-choosing .story-line{min-height:0;max-height:15dvh}
+ .story-choosing .story-figure{height:90%;width:64%;bottom:10%;left:4%}
+}
+@media(prefers-reduced-motion:reduce){.story-next i{animation:none}}
+
+.story-adaptation{position:absolute;z-index:2;top:max(22px,env(safe-area-inset-top));left:3%;max-width:calc(100% - 90px);padding:5px 9px;color:#d3d2bb;background:#102825cc;border-radius:2px;font-size:11px;line-height:1.5;pointer-events:none}

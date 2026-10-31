@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>废城突围 · 六城战线</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23262c22'/%3E%3Crect x='6' y='12' width='20' height='9' fill='%2356684e'/%3E%3Crect x='14' y='7' width='11' height='6' fill='%23c9c9b6'/%3E%3Crect x='22' y='9' width='9' height='2' fill='%23888'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./assets/game.css" />
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<!-- ============ 战斗 HUD ============ -->
+<div id="hud" class="hidden" aria-hidden="true">
+
+  <div class="hud-top">
+    <div class="panel panel-base" id="basePanel">
+      <div class="panel-label">敌军指挥基地</div>
+      <div class="bar bar-base"><div class="bar-fill" id="baseFill"></div></div>
+      <div class="panel-sub" id="baseSub">结构完整</div>
+    </div>
+    <div class="panel panel-level">
+      <div class="panel-label">当前关卡</div>
+      <div class="level-name" id="levelName">第一关</div>
+      <div class="level-pips" id="levelPips"></div>
+    </div>
+    <div class="panel panel-units">
+      <div class="panel-label">剩余防御单位</div>
+      <div class="panel-value"><span id="unitAlive">6</span><span class="dim">/6</span></div>
+      <div class="unit-pips" id="unitPips"></div>
+    </div>
+  </div>
+
+  <div class="reticle" id="reticle">
+    <svg class="ret-optic" viewBox="0 0 128 128" aria-hidden="true">
+      <path class="ret-frame" d="M38 24H26L22 28V42 M90 24H102L106 28V42 M22 86V100L26 104H38 M106 86V100L102 104H90" />
+      <path class="ret-stadia" d="M7 64H25 M103 64H121 M14 60V68 M21 61V67 M107 61V67 M114 60V68 M64 10V20 M60 16H68" />
+      <path class="ret-charge-track" d="M37.13 90.87 A38 38 0 1 1 90.87 90.87" pathLength="100" />
+      <path class="ret-charge" id="retCharge" d="M37.13 90.87 A38 38 0 1 1 90.87 90.87" pathLength="100" />
+      <path class="ret-axis" d="M44 64H54 M74 64H84 M64 44V53 M64 82V88 M60 88H68" />
+      <path class="ret-chevron" d="M57 71L64 64L71 71" />
+      <circle class="ret-dot" cx="64" cy="64" r="1.7" />
+    </svg>
+    <span class="ret-reload" id="retReload"></span>
+    <div class="ret-readout"><span class="ret-type" id="retType">主炮</span><span class="ret-range" id="retRange"></span></div>
+  </div>
+  <!-- 炮弹真实落点（炮塔未转到位时显示） -->
+  <div class="shot-mark" id="shotMark"></div>
+  <div class="hitmarker" id="hitmarker"></div>
+  <div class="dmg-layer" id="dmgLayer"></div>
+  <div class="kill-banner" id="killBanner"></div>
+  <div class="dmg-vignette" id="dmgVignette"></div>
+
+  <div class="hud-bottom">
+    <div class="stat stat-armor">
+      <div class="speedo" id="speedo"><span id="speedNum">0</span><small>km/h</small></div>
+      <div class="stat-head"><span class="stat-name">装甲</span><span class="stat-num" id="armorNum">100</span></div>
+      <div class="bar bar-armor"><div class="bar-fill" id="armorFill"></div></div>
+      <div class="armor-segs" id="armorSegs"></div>
+      <div class="shield-row" id="shieldRow"><span class="shield-label">附加装甲</span><div class="bar bar-shield"><div class="bar-fill" id="shieldFill"></div></div><span class="shield-num" id="shieldNum">0</span></div>
+      <div class="tier-row">
+        <span class="tier-name" id="tierName">轻型坦克</span>
+        <span class="tier-next" id="tierNext">再击毁 8 辆晋升</span>
+      </div>
+      <div class="tier-bar"><div class="tier-bar-fill" id="tierBarFill"></div></div>
+      <div class="tier-pips" id="tierPips"></div>
+    </div>
+
+    <div class="stat stat-gun">
+      <div class="gun-ring">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="42" class="ring-bg"></circle>
+          <circle cx="50" cy="50" r="42" class="ring-fg" id="reloadRing"></circle>
+        </svg>
+        <div class="gun-core"><span id="reloadText">就绪</span></div>
+      </div>
+      <div class="gun-meta"><span id="gunState">主炮就绪</span></div>
+    </div>
+
+    <div class="stat stat-mission">
+      <div class="objective" id="objectiveText">摧毁指挥基地与全部守军</div>
+      <div class="mission-rows">
+        <div class="mrow"><span class="mk" id="mkUnits">○</span><span>清除防御单位</span></div>
+        <div class="mrow"><span class="mk" id="mkBase">○</span><span>摧毁指挥基地</span></div>
+      </div>
+      <div class="buffs" id="buffList"></div>
+    </div>
+  </div>
+
+  <div class="hud-actions">
+    <button class="icon-btn" id="btnMute" title="静音 (M)" aria-label="静音">♪</button>
+    <button class="icon-btn" id="btnPause" title="暂停 (Esc)" aria-label="暂停">❚❚</button>
+  </div>
+
+  <!-- 小地图雷达 -->
+  <div class="minimap-wrap">
+    <div class="minimap-label">雷达</div>
+    <canvas id="minimap" width="190" height="190"></canvas>
+  </div>
+
+  <div class="fp-badge" id="fpBadge">第一人称 · 炮管视角</div>
+
+  <!-- Proving ground: gameplay measurements and explicit practice controls. -->
+  <section class="train-panel" id="trainPanel" aria-label="训练场控制台">
+    <div class="tp-title"><span>北岭 / 试验控制台</span><span class="tp-live">无损练习</span></div>
+    <div class="tp-metric"><div><span class="tp-caption">近 5 秒 DPS</span><strong id="tpDps">0.0</strong></div><span class="tp-unit">伤害 / 秒</span></div>
+    <div class="tp-numbers"><div><span>累计伤害</span><b id="tpDamage">0.0</b></div><div><span>最近一次伤害</span><b id="tpLastDamage">0.0</b></div></div>
+    <div class="tp-row"><span>命中 / 发射</span><b id="tpHits">0 次 / 0 发</b></div>
+    <div class="tp-target" id="tpLastHit">等待命中</div>
+    <div class="tp-benchmark"><div class="tp-caption">10 秒火力测试</div><b id="tpSample">首发开炮开始计时</b><div class="tp-progress"><i id="tpSampleFill"></i></div><small id="tpSampleStatus">包含飞行、连发与装填时间</small></div>
+    <div class="tp-controls">
+      <label>试验车辆<select id="tpVehicle" aria-label="试验车辆"><option value="0">轻型坦克</option><option value="1">灰熊坦克</option><option value="2">犀牛坦克</option><option value="3">天启坦克</option><option value="4">精英天启</option><option value="5">超级天启</option></select></label>
+      <label>DPS 靶减伤<select id="tpArmor" aria-label="DPS 测试靶减伤"><option value="0">0% · 标准测量</option><option value="0.15">15% · Boss 等效</option><option value="0.35">35% · 重装甲</option></select></label>
+      <nav class="tp-zones" aria-label="前往试验区"><button data-training-zone="range">01 射程靶道</button><button data-training-zone="dps">02 火力测试</button><button data-training-zone="obstacle">03 障碍试验</button><button data-training-zone="boss">04 Boss 场地</button><button data-training-zone="moving">移动靶</button><button id="tpReset">R 重置全场</button></nav>
+    </div>
+    <details class="tp-details" open><summary>Boss 试炼 <span id="tpBossState">待机 · 不会主动攻击</span></summary><div class="tp-boss-controls"><select id="tpBossPhase" aria-label="Boss 起始阶段"><option value="1">阶段 1 · 满血</option><option value="2">阶段 2 · 65% 血量</option><option value="3">阶段 3 · 32% 血量</option></select><button id="tpBossToggle">启动试炼</button><button id="tpBossReset">重置</button></div><div class="tp-row"><span>承受伤害（减甲后，不扣血）</span><b id="tpReceived">0.0</b></div></details>
+    <details class="tp-details"><summary>车辆尺寸与瞄准读数</summary><div class="tp-row"><span>碰撞宽度 / 净高</span><b><span id="tpWidth">—</span> / <span id="tpHeight">—</span></b></div><div class="tp-row"><span>准星测距</span><b id="tpDist">—</b></div><div class="tp-row"><span>视角</span><b id="tpCam">—</b></div></details>
+    <p class="tp-hint">按住 <kbd>Alt</kbd> 操作面板 · <kbd>R</kbd> 重置<br>伤害合计含群伤；DPS 靶减伤仅作用于专用测试靶。</p>
+  </section>
+
+  <!-- Boss 血条 -->
+  <div class="boss-bar" id="bossBar">
+    <div class="boss-name" id="bossName">机械战争兵器</div>
+    <div class="boss-track"><div class="boss-fill" id="bossFill"></div></div>
+    <div class="boss-phase" id="bossPhase">阶段 1</div>
+  </div>
+
+  <div class="freeze-hint" id="freezeHint">按住 <kbd>Alt</kbd> 释放鼠标以使用按钮</div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<!-- ============ 开始界面 ============ -->
+<main id="screen-boot" class="screen hidden" aria-labelledby="homeTitle">
+  <div class="home-shade" aria-hidden="true"></div>
+  <div class="home-shell">
+    <header class="home-top">
+      <div class="home-brand">
+        <svg class="home-mark" viewBox="0 0 32 32" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 11V3h8m10 0h8v8m0 10v8h-8m-10 0H3v-8"/><path d="m9 20 7-12 7 12-7-4Z" fill="currentColor" stroke="none"/></svg>
+        <span>六城战线</span>
+      </div>
+      <div class="home-top-note"><span>单人战役</span><span>第三人称装甲射击</span><label class="language-switch"><span>语言</span><select id="homeLanguage" data-locale-select data-language-static aria-label="Language"><option value="zh-Hans">简体中文</option><option value="zh-Hant">繁體中文</option><option value="en">English</option></select></label></div>
+    </header>
+    <div class="home-main">
+      <section class="home-copy">
+        <p class="home-eyebrow">装甲就绪 · 等待出击</p>
+        <h1 class="home-title" id="homeTitle"><span>废城</span><span>突围</span></h1>
+        <p class="home-subtitle" lang="en">WASTELAND BREAKOUT</p>
+        <p class="home-brief">穿过六座城市，突破敌军防线。<br>清剿全部守军，摧毁指挥基地。</p>
+        <nav class="home-nav" aria-label="主菜单">
+          <button class="home-action home-action-primary" id="btnStart" type="button">
+            <span class="home-action-no" aria-hidden="true">01</span>
+            <span class="home-action-copy"><strong>进入战役</strong><small>选择关卡 · 开始突围</small></span>
+            <svg class="home-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 12h17m-6-6 6 6-6 6"/></svg>
+          </button>
+          <button class="home-action home-action-garage" id="btnGarage" type="button">
+            <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13M7 21V11h10v10M7 15h10M7 18h10"/></svg><span class="home-action-copy"><strong>车库 / 外观</strong><small>涂装 · 标识 · 套件</small></span><span class="home-garage-badge">10 套涂装</span><span class="home-garage-arrow" aria-hidden="true">↗</span>
+          </button>
+          <button class="home-action" id="btnTraining" type="button">
+            <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 1v5m0 12v5M1 12h5m12 0h5"/></svg>
+            <span>训练场</span>
+          </button>
+          <button class="home-action" id="btnSettings" type="button">
+            <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M4 3v18M12 3v18M20 3v18"/><path d="M1 8h6m2 9h6m2-11h6" stroke-width="3"/></svg><span>设置</span>
+          </button>
+        </nav>
+      </section>
+      <aside class="home-showcase" aria-label="超级天启展示">
+        <div class="home-showcase-top" aria-hidden="true"><span>ARMORED DIVISION<br>06 / APOC-SUPER</span><span>WASTELAND<br>BREAKOUT</span></div>
+        <div class="home-vehicle"><div class="home-vehicle-kicker">APOCALYPSE / ★★★</div><div class="home-vehicle-name">超级天启</div><div class="home-vehicle-info">战役终阶载具 · 双联主炮 · 四连发</div><div id="homeSkinLabel">原野军绿 · 标准车体</div></div>
+      </aside>
+    </div>
+    <footer class="home-bottom">
+      <section class="home-controls" aria-label="操作指南">
+        <h2 class="home-label">操作指南</h2>
+        <div class="home-keys"><span><kbd>W S</kbd>前进 / 倒车</span><span><kbd>A D</kbd>转向</span><span><kbd>鼠标</kbd>瞄准</span><span><kbd>左键</kbd>开炮</span><span><kbd>Esc</kbd>暂停</span><span><kbd>Alt</kbd>释放鼠标</span><span><kbd>M</kbd>静音</span></div>
+      </section>
+      <section class="home-campaign" aria-label="战役进度">
+        <h2 class="home-label">六城战线 <small id="homeProgressText">已突破 0 / 6</small></h2>
+        <ol class="home-route" id="homeRoute"><li class="current"><b>01</b>旧城</li><li><b>02</b>海港</li><li><b>03</b>煤钢</li><li><b>04</b>货港</li><li><b>05</b>山城</li><li><b>06</b>海崖</li></ol>
+      </section>
+      <div class="home-notice"><span id="bootNotice">桌面键鼠操作 · 暂不支持触控</span><span class="home-edition">SIX CITIES / ONE BREAKOUT</span></div>
+    </footer>
+  </div>
+</main>
+
+<section id="screen-garage" class="screen hidden" aria-labelledby="garageTitle"></section>
+
+<!-- ============ 选关界面 ============ -->
+<div id="screen-levels" class="screen hidden">
+  <div class="screen-bg"></div>
+  <div class="panel-inner panel-wide">
+    <div class="kicker">战役 · 六关</div>
+    <h2>选择关卡</h2>
+    <p class="brief" id="levelsBrief">逐关解锁：通关当前关卡后开放下一关。</p>
+    <div class="level-grid" id="levelGrid"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btnLevelsBack">返回</button>
+      <button class="btn btn-ghost" id="btnLevelsReset">清空进度</button>
+    </div>
+    <div class="notice" id="levelsNotice"></div>
+  </div>
+</div>
+
+<!-- ============ 设置界面 ============ -->
+<div id="screen-settings" class="screen hidden">
+  <div class="screen-bg"></div>
+  <div class="panel-inner">
+    <div class="kicker">选项</div>
+    <h2>设置</h2>
+    <p class="brief">调整声音，或选择训练与体验选项。</p>
+
+    <div class="settings-group display-settings">
+      <label class="display-setting"><span>语言</span><select id="settingsLanguage" data-locale-select data-language-static aria-label="Language"><option value="zh-Hans">简体中文</option><option value="zh-Hant">繁體中文</option><option value="en">English</option></select></label>
+      <label class="display-setting"><span>画面品质</span><select id="graphicsQuality"><option value="low">流畅</option><option value="balanced" selected>均衡</option><option value="high">高画质</option></select></label>
+      <p class="setting-note">画面设置自动保存，立即生效。远景与战斗射程保持一致。</p>
+    </div>
+    <div class="settings-group sound-settings" role="group" aria-labelledby="soundHeading">
+      <h3 id="soundHeading" class="setting-heading">声音</h3>
+      <div class="volume-setting">
+        <label for="musicVolume">背景音乐</label>
+        <output id="musicVolumeValue" for="musicVolume">25%</output>
+        <input id="musicVolume" type="range" min="0" max="100" step="1" value="25" />
+      </div>
+      <div class="volume-setting">
+        <label for="sfxVolume">音效</label>
+        <output id="sfxVolumeValue" for="sfxVolume">100%</output>
+        <input id="sfxVolume" type="range" min="0" max="100" step="1" value="100" />
+      </div>
+      <label class="setting-toggle sound-mute"><input id="soundMuted" type="checkbox" /><span>静音全部声音</span><kbd>M</kbd></label>
+      <p class="setting-note">背景音乐默认轻一些，突出开炮与命中音效。音量设置自动保存。</p>
+      <p class="setting-note hidden" id="musicStatus" role="status"></p>
+    </div>
+
+    <h3 class="setting-heading">体验选项</h3>
+
+    <div class="settings-row">
+      <label class="setting-toggle">
+        <input type="checkbox" id="cheatToggle" />
+        <span>开启作弊模式</span>
+      </label>
+    </div>
+    <p class="setting-note" id="cheatNote">关闭时将立即撤销无敌并恢复正常的关卡解锁限制。</p>
+
+    <div class="settings-group" id="cheatGroup">
+      <div class="settings-row">
+        <label class="setting-toggle"><input type="checkbox" id="cheatUnlockAll" /><span>无视存档，解锁全部关卡</span></label>
+      </div>
+      <div class="settings-row">
+        <label class="setting-toggle"><input type="checkbox" id="cheatGod" /><span>无敌（免疫所有伤害）</span></label>
+      </div>
+      <div class="settings-row">
+        <span class="setting-label">直接升级坦克</span>
+        <div class="setting-btns" id="cheatTierBtns"></div>
+      </div>
+      <p class="setting-note" id="cheatTierNote">需在关卡内生效；未进入关卡时选择会在下次进入时应用。</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnSettingsBack">返回</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 暂停界面 ============ -->
+<div id="screen-pause" class="screen hidden">
+  <div class="screen-bg"></div>
+  <div class="panel-inner">
+    <div class="kicker">任务中止</div>
+    <h2>已暂停</h2>
+    <p class="brief" id="pauseBrief">炮塔锁定，发动机空转。</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnResume">继续任务</button>
+      <button class="btn" id="btnRestartPause">重新开始</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btnLevelsPause">选择关卡</button>
+      <button class="btn btn-ghost" id="btnMutePause">声音：开</button>
+      <button class="btn btn-ghost" id="btnSettingsPause">设置</button>
+      <button class="btn btn-garage" id="btnGaragePause"><strong>车库 / 外观</strong><small>涂装 · 标识 · 套件 ↗</small></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 结算界面 ============ -->
+<div id="screen-result" class="screen hidden">
+  <div class="screen-bg"></div>
+  <div class="panel-inner">
+    <div class="kicker" id="resultKicker">任务完成</div>
+    <h2 id="resultTitle">废城已突破</h2>
+    <p class="brief" id="resultBrief"></p>
+    <div class="result-grid">
+      <div><span class="rg-num" id="resKills">0</span><span class="rg-label">击毁单位</span></div>
+      <div><span class="rg-num" id="resTime">0:00</span><span class="rg-label">用时</span></div>
+      <div><span class="rg-num" id="resShots">0</span><span class="rg-label">发射炮弹</span></div>
+      <div><span class="rg-num" id="resAcc">0%</span><span class="rg-label">命中率</span></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnRestart">再战一次</button>
+      <button class="btn btn-ghost" id="btnResultLevels">选择关卡</button>
+      <button class="btn btn-ghost" id="btnDismiss">停留观战</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 战役通关界面 ============ -->
+<div id="screen-campaign" class="screen hidden">
+  <div class="screen-bg"></div>
+  <div class="panel-inner">
+    <div class="kicker">战役完成</div>
+    <h2>全线突破</h2>
+    <p class="brief">六道防线的敌军指挥体系已被彻底摧毁。从河岸旧城到海崖石城，你打穿了整条防线。</p>
+    <div class="result-grid">
+      <div><span class="rg-num" id="campKills">0</span><span class="rg-label">最后一关击毁</span></div>
+      <div><span class="rg-num" id="campLevels">3</span><span class="rg-label">完成关卡</span></div>
+      <div><span class="rg-num" id="campTime">0:00</span><span class="rg-label">最后一关用时</span></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnCampRestart">再来一次战役</button>
+      <button class="btn btn-ghost" id="btnCampLevels">选择关卡</button>
+    </div>
+  </div>
+</div>
+
+<div id="loading" class="screen">
+  <div class="load-inner">
+    <div class="load-title">正在构筑废城…</div>
+    <div class="load-bar"><i id="loadFill"></i></div>
+    <div class="load-note" id="loadNote">生成街区、坦克与守军</div>
+  </div>
+</div>
+
+<div id="fatal" class="screen hidden">
+  <div class="panel-inner">
+    <h2>无法启动</h2>
+    <p class="brief" id="fatalText"></p>
+  </div>
+</div>
+
+<!-- Web release: versioned assets resolve from the game base URL. -->
+<script src="./assets/game-REY4Y2P7.js"></script>
+</body>
+</html>

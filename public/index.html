@@ -4,12 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title data-i18n="seo.home.title">AI 小游戏在线玩 · NEON ARCADE 人工智能游戏宇宙</title>
-<meta data-i18n-content="seo.home.metaDescription" name="description" content="29 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。无需下载，支持手机与电脑。" />
+<meta data-i18n-content="seo.home.metaDescription" name="description" content="41 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。无需下载，支持手机与电脑。" />
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-<link rel="stylesheet" href="assets/i18n.css">
-<script src="assets/i18n.js"></script>
-<script src="assets/i18n-pages.js"></script>
-<script src="assets/i18n-seo.js?v=20261019-republic-03"></script>
+<link rel="stylesheet" href="assets/i18n.css?v=20261022-frost-tide-v1">
+<script src="assets/i18n.js?v=20261026-classic-arcade-v1"></script>
+<script src="assets/i18n-pages.js?v=20261026-classic-arcade-v1"></script>
+<script src="assets/i18n-seo.js?v=20261026-wasteland-breakout-v1"></script>
 <script src="assets/analytics.js" async fetchpriority="low"></script>
 <!-- SEO-AUTO-START -->
   <link rel="canonical" href="https://game.yituohub.com/">
@@ -17,14 +17,14 @@
   <meta property="og:site_name" content="NEON ARCADE">
   <meta property="og:locale" content="zh_CN">
   <meta data-i18n-content="seo.home.title" property="og:title" content="AI 小游戏在线玩 · NEON ARCADE 人工智能游戏宇宙">
-  <meta data-i18n-content="seo.home.socialDescription" property="og:description" content="29 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。">
+  <meta data-i18n-content="seo.home.socialDescription" property="og:description" content="41 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。">
   <meta property="og:url" content="https://game.yituohub.com/">
   <meta property="og:image" content="https://game.yituohub.com/assets/covers/og-cover.webp">
   <meta name="twitter:card" content="summary_large_image">
   <meta data-i18n-content="seo.home.title" name="twitter:title" content="AI 小游戏在线玩 · NEON ARCADE 人工智能游戏宇宙">
-  <meta data-i18n-content="seo.home.socialDescription" name="twitter:description" content="29 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。">
+  <meta data-i18n-content="seo.home.socialDescription" name="twitter:description" content="41 款 AI 创造的免费在线小游戏，角色冒险、动作射击、经典怀旧，即点即玩。">
   <meta name="twitter:image" content="https://game.yituohub.com/assets/covers/og-cover.webp">
-  <script type="application/ld+json" data-i18n-schema-alternate-name="seo.home.siteName" data-i18n-schema-description="seo.home.schemaDescription">{"@context":"https://schema.org","@type":"WebSite","name":"NEON ARCADE","alternateName":"AI 小游戏站","url":"https://game.yituohub.com/","description":"由 AI 创造的小游戏宇宙，29 款免费在线小游戏。","inLanguage":"zh-CN"}</script>
+  <script type="application/ld+json" data-i18n-schema-alternate-name="seo.home.siteName" data-i18n-schema-description="seo.home.schemaDescription">{"@context":"https://schema.org","@type":"WebSite","name":"NEON ARCADE","alternateName":"AI 小游戏站","url":"https://game.yituohub.com/","description":"由 AI 创造的小游戏宇宙，41 款免费在线小游戏。","inLanguage":"zh-CN"}</script>
   <!-- SEO-AUTO-END -->
 <style>
   :root {
@@ -159,12 +159,17 @@
   @media(max-width:380px) { header { padding-inline: 18px; } header .site-language select[data-site-language] { width: 120px; } .copy { left: 18px; right: 18px; } .actions { gap: 8px; } .btn { padding-inline: 15px; } .caption .name { font-size: 12px; } }
   @media(max-height:620px) and (max-width:900px) { .copy { bottom: 24px; } .copy h1 { font-size: 38px; } html[lang="en"] .copy h1 { font-size: 34px; } .copy .sub { margin-top: 12px; font-size: 12px; } .copy .tag { margin-bottom: 12px; font-size: 9px; } .actions { margin-top: 16px; } .caption { top: 140px; } .forms { top: 49%; } }
   @media(max-height:500px) and (min-width:600px) { header { padding: 14px 24px; flex-wrap: nowrap; } header .logo { font-size: 10px; } header nav { width: auto; order: 1; margin-left: auto; font-size: 11px; } header .site-language { order: 2; margin-left: 0; } header .site-language select[data-site-language] { width: 120px; } .caption { left: 70%; top: 100px; } .copy { max-width: 350px; bottom: 24px; } .copy h1 { font-size: 40px; } .copy .sub { margin-top: 10px; } .copy .actions { margin-top: 14px; } .forms { left: 72%; top: auto; bottom: 36px; } .tag { display: none; } }
+  @media(max-width:600px) { header nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 16px; } .caption { top:188px; } }
+/* Keep all category links visible beside the existing LANGUAGE control. */
+@media(min-width:901px) and (max-width:1280px){header{flex-wrap:wrap;gap:14px;padding:24px}header .logo{order:0}header .site-language{order:1;margin-left:auto}header nav{order:2;width:100%;margin-left:0;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:.04em}.caption{top:156px}}
+@media(max-width:600px){header nav{font-size:11px;letter-spacing:.02em}.caption{top:224px}}
+@media(max-height:500px) and (min-width:600px) and (max-width:1280px){header{flex-wrap:wrap;gap:10px;padding:14px 24px}header .logo{order:0}header .site-language{order:1;margin-left:auto}header nav{order:2;width:100%;margin-left:0;justify-content:space-between;gap:10px;font-size:11px}.caption{top:145px}}
 </style>
 </head>
 <body>
   <!-- SEO-AUTO-START -->
     <h1 data-i18n="seo.home.hiddenTitle" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0">NEON ARCADE · AI 小游戏在线免费玩</h1>
-    <p style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0"><span data-i18n="seo.home.intro">NEON ARCADE 是 AI 创造的小游戏宇宙：共和国之辉 · 黑潮危机、蔬菜忍者、植物大战僵尸、吞城漫游、学园都市、魂斗罗 2026、星陨前线、霓潮等 11 款精选游戏，加 18 款经典小游戏，全部免费在线玩，无需下载。</span> <a href="games.html" data-i18n="home.library">游戏库</a> <a href="classics.html" data-i18n="home.classics">经典小游戏</a> <a href="mv.html" data-i18n="home.mv">AI 放映厅</a></p>
+    <p style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0"><span data-i18n="seo.home.intro">NEON ARCADE 是 AI 创造的小游戏宇宙：废城突围、AI之家、雪境工坊、潮生方舟、撕个痛快、七剑江湖、共和国之辉 · 黑潮危机、蔬菜忍者、植物大战僵尸、吞城漫游、学园都市、魂斗罗 2026、星陨前线、霓潮等 17 款精选游戏，加 18 款经典小游戏与独立经典街机专区的 6 款游戏，全部免费在线玩，无需下载。</span> <a href="games.html" data-i18n="home.library">游戏库</a> <a href="workshop.html" data-i18n="site.workshop">共创工坊</a> <a href="arcade/index.html" data-i18n="site.arcade">经典街机</a><a href="classics.html" data-i18n="home.classics">经典小游戏</a> <a href="mv.html" data-i18n="home.mv">AI 放映厅</a></p>
     <!-- SEO-AUTO-END -->
   
 <canvas id="stage"></canvas>
@@ -176,7 +181,8 @@
   <a href="./" class="logo"><span class="logo-mark"></span>NEON ARCADE</a>
   <nav aria-label="主导航" data-i18n-aria-label="home.nav">
     <a href="games.html" data-i18n="home.library">游戏库</a>
-    <a href="classics.html" data-i18n="home.classics">经典小游戏</a>
+    <a href="workshop.html" data-i18n="site.workshop">共创工坊</a>
+    <a href="arcade/index.html" data-i18n="site.arcade">经典街机</a><a href="classics.html" data-i18n="home.classics">经典小游戏</a>
     <a href="mv.html" data-i18n="home.mv">AI放映厅</a>
   </nav>
   <div class="site-language" data-language-switcher></div>

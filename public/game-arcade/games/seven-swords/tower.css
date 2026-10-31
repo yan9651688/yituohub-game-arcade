@@ -1,0 +1,9 @@
+/* Tower remains inside the existing modal / top HUD footprint. */
+.tower-info {line-height:1.9;color:var(--muted,#bcb8a6);font-size:14px}
+.tower-info p {margin:0 0 13px}.tower-info b {color:#e8ce88}
+.tower-pressure {display:block;width:min(270px,100%);height:7px;margin:7px auto 0;border:0;border-radius:5px;overflow:hidden;background:#263b3a;accent-color:#b2cf99}
+.tower-pressure::-webkit-progress-bar {background:#263b3a}.tower-pressure::-webkit-progress-value {background:linear-gradient(90deg,#7da99e,#ddcf86)}
+@media(max-width:600px){.tower-info{font-size:12px}.tower-pressure{height:5px;margin-top:4px}}
+
+.tower-floor-picker{display:flex;align-items:center;flex-wrap:wrap;gap:12px 18px;margin:18px 0;padding:16px 18px;border:1px solid #806e4380;border-radius:10px;background:#18292399;color:#e8ce88}
+.tower-floor-picker>div{display:flex;align-items:center;gap:9px}.tower-floor-picker input{width:105px;min-width:0;padding:8px 10px;border:1px solid #8c794e;border-radius:5px;background:#101c19;color:#f2dfac;font:inherit;font-size:18px;text-align:center}.tower-floor-picker input:focus{outline:2px solid #d8bc76;outline-offset:2px}.tower-floor-picker small{color:var(--muted,#bcb8a6);font-size:12px}

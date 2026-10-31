@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#f3eee3">
+<title>打砖块 · 经典街机</title><style id="arcade-loader-style">#arcade-loader{position:fixed;inset:0;z-index:2147483000;background:#f3eee3f7;display:grid;place-items:center;padding:24px;font:14px/1.6 system-ui,sans-serif;color:#34322d}#arcade-loader[hidden]{display:none}#arcade-loader .load-card{width:min(420px,100%);padding:28px;background:#fffcf6;border:1px solid #d8d0c0;border-radius:14px;box-shadow:0 12px 40px #34322d12}#arcade-loader h2{font-size:21px;letter-spacing:0;margin:8px 0 12px}#arcade-loader p{margin:8px 0}#arcade-loader progress{display:block;width:100%;height:12px;accent-color:#8e303b;margin:18px 0}#arcade-loader button{border:0;border-radius:6px;padding:11px 18px;background:#8e303b;color:#fff8ed;cursor:pointer;font:700 14px system-ui}#arcade-loader button[hidden]{display:none}#arcade-loader .load-brand{font-size:10px;letter-spacing:2px;color:#8e303b}#arcade-loader a{display:block;margin-top:15px;color:#8e303b;text-decoration:underline;font-size:12px}</style><script>(function () {
+  'use strict';
+  const gameId = 'breakout', total = 7;
+  const loaded = new Set();
+  let initialized = false, failed = false, mounted = false, finished = false;
+  let failureKind = '', deadline;
+  const messages = {
+    'zh-Hans': ['正在载入游戏', '载入资源', '游戏遇到问题', '请检查网络后重新加载。', '重新加载', '返回经典街机', '正在准备画面与操作…', '资源载入超时，请重试。'],
+    'zh-Hant': ['正在載入遊戲', '載入資源', '遊戲遇到問題', '請檢查網路後重新載入。', '重新載入', '返回經典街機', '正在準備畫面與操作…', '資源載入逾時，請重試。'],
+    en: ['Loading game', 'Resources loaded', 'Something went wrong', 'Check your connection and reload the game.', 'Reload game', 'Back to Classic Arcade', 'Preparing the screen and controls…', 'Loading timed out. Please try again.']
+  };
+  function locale() {
+    if (window.ArcadeI18n) return window.ArcadeI18n.language;
+    let value = 'zh-Hans';
+    try { value = localStorage.getItem('neon-arcade.locale') || localStorage.getItem('classic-arcade-language') || value; } catch (_) {}
+    try { value = new URLSearchParams(location.search).get('lang') || value; } catch (_) {}
+    return messages[value] ? value : 'zh-Hans';
+  }
+  function track(name, extra) {
+    try { window.SiteAnalytics?.track(name, Object.assign({ game_id: 'arcade-' + gameId }, extra)); } catch (_) {}
+  }
+  function render() {
+    const host = document.getElementById('arcade-loader');
+    if (!host) return;
+    const code = locale(), m = messages[code], done = Math.min(loaded.size, total);
+    host.hidden = finished && !failed;
+    document.body.dataset.arcadeState = failed ? 'error' : finished ? 'ready' : 'loading';
+    document.getElementById('arcade-load-title').textContent = m[failed ? 2 : 0];
+    document.getElementById('arcade-load-detail').textContent = failed ? m[failureKind === 'timeout' ? 7 : 3] : (done === total ? m[6] : m[1] + ' ' + done + ' / ' + total);
+    const progress = document.getElementById('arcade-load-progress');
+    progress.max = total;
+    progress.value = done;
+    progress.hidden = failed;
+    progress.setAttribute('aria-label', m[1] + ' ' + done + ' / ' + total);
+    const retry = document.getElementById('arcade-load-retry');
+    retry.textContent = m[4]; retry.hidden = !failed;
+    const back = document.getElementById('arcade-load-back');
+    back.textContent = m[5]; back.href = '../../index.html?lang=' + code;
+  }
+  function complete() {
+    if (!failed && !finished && initialized && loaded.size >= total) {
+      finished = true;
+      clearTimeout(deadline);
+      render();
+      track('game_ready', { load_ms: Math.round(performance.now()) });
+    } else render();
+  }
+  function fail(kind) {
+    if (failed) return;
+    failed = true; failureKind = kind;
+    clearTimeout(deadline);
+    render();
+    track('game_error', { error_kind: kind });
+  }
+  // Capture also catches errors on non-bubbling script/link resource events.
+  window.addEventListener('load', event => {
+    const target = event.target;
+    if (target?.hasAttribute?.('data-arcade-resource')) { loaded.add(target); complete(); }
+  }, true);
+  window.addEventListener('error', event => {
+    const target = event.target;
+    if (target?.hasAttribute?.('data-arcade-resource')) fail('resource');
+    else if (event instanceof ErrorEvent && (!event.filename || /\/arcade\//.test(event.filename) || /\/(?:app|game-core|controls|levels|audio|i18n)\.js/.test(event.filename))) fail('runtime');
+  }, true);
+  window.addEventListener('unhandledrejection', event => {
+    // Optional analytics/audio promises must not turn a healthy game into a failed load.
+    if (!finished && /\/arcade\//.test(event.reason?.stack || '')) fail('runtime');
+  });
+  window.addEventListener('arcade-language-change', render);
+  window.ArcadeGameLoader = Object.freeze({
+    resourceLoaded(target) { loaded.add(target); complete(); },
+    resourceFailed() { fail('resource'); },
+    ready() { initialized = true; complete(); },
+    mount() {
+      if (mounted) return;
+      mounted = true;
+      document.getElementById('arcade-load-retry')?.addEventListener('click', () => location.reload());
+      render();
+    }
+  });
+  deadline = setTimeout(() => fail('timeout'), 45000);
+})();
+</script><link data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" rel="stylesheet" href="../../shared/i18n.css?v=20261026-classic-arcade-v1"><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="../../shared/i18n.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="i18n.js?v=20261026-classic-arcade-v1" defer></script><link data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" rel="stylesheet" href="styles.css?v=20261026-classic-arcade-v1"><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="levels.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="game-core.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="app.js?v=20261026-classic-arcade-v1" defer></script>
+<script src="/assets/analytics.js?v=20261026-classic-arcade-v1" defer data-arcade-optional></script><meta name="description" content="移动挡板反弹小球，清除砖块、收集胶囊，挑战关卡与首领。打砖块独立重制，支持鼠标、键盘和触屏。"><link rel="canonical" href="https://game.yituohub.com/arcade/games/breakout/index.html"><link rel="alternate" hreflang="zh-Hans" href="https://game.yituohub.com/arcade/games/breakout/index.html?lang=zh-Hans"><link rel="alternate" hreflang="zh-Hant" href="https://game.yituohub.com/arcade/games/breakout/index.html?lang=zh-Hant"><link rel="alternate" hreflang="en" href="https://game.yituohub.com/arcade/games/breakout/index.html?lang=en"><link rel="alternate" hreflang="x-default" href="https://game.yituohub.com/arcade/games/breakout/index.html"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><meta property="og:type" content="website"><meta property="og:site_name" content="NEON ARCADE"><meta property="og:locale" content="zh_CN"><meta property="og:title" content="打砖块 · 经典街机"><meta property="og:description" content="移动挡板反弹小球，清除砖块、收集胶囊，挑战关卡与首领。打砖块独立重制，支持鼠标、键盘和触屏。"><meta property="og:url" content="https://game.yituohub.com/arcade/games/breakout/index.html"><meta property="og:image" content="https://game.yituohub.com/assets/covers/og-cover.webp"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json" id="arcade-schema">{"@context":"https://schema.org","@type":"VideoGame","name":"打砖块 · 经典街机","description":"移动挡板反弹小球，清除砖块、收集胶囊，挑战关卡与首领。打砖块独立重制，支持鼠标、键盘和触屏。","url":"https://game.yituohub.com/arcade/games/breakout/index.html","inLanguage":["zh-Hans","zh-Hant","en"],"isAccessibleForFree":true,"gamePlatform":"Web Browser","operatingSystem":"Any","playMode":"https://schema.org/SinglePlayer"}</script><script id="arcade-seo-data" type="application/json">{"names":["打砖块","打磚塊","Arkanoid"],"descriptions":["移动挡板反弹小球，清除砖块、收集胶囊，挑战关卡与首领。打砖块独立重制，支持鼠标、键盘和触屏。","移動擋板反彈小球，清除磚塊、收集膠囊，挑戰關卡與首領。打磚塊獨立重製，支援滑鼠、鍵盤和觸控。","Move the paddle, break bricks, collect capsules, and face the boss in this independent Arkanoid remake with mouse, keyboard, and touch controls."],"path":"games/breakout/index.html","url":"https://game.yituohub.com/arcade/games/breakout/index.html","titles":["打砖块 · 经典街机","打磚塊 · 經典街機","Arkanoid · Classic Arcade"]}</script><script src="../../shared/site-seo.js?v=20261026-classic-arcade-v1" defer></script></head>
+<body data-arcade-state="loading" data-arcade-game="breakout"><section id="arcade-loader" role="status" aria-live="polite" data-i18n-ignore><div class="load-card"><span class="load-brand">CLASSIC ARCADE</span><h2 id="arcade-load-title"></h2><p id="arcade-load-detail"></p><progress id="arcade-load-progress" value="0"></progress><button id="arcade-load-retry" type="button" hidden></button><a id="arcade-load-back" href="../../index.html"></a><noscript>Please enable JavaScript to play.</noscript></div></section><script>window.ArcadeGameLoader.mount();</script>
+<header class="site-header"><a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true">▦</span>经典街机 <small>CLASSIC ARCADE</small></a><a class="back-link" href="../../index.html">← 回到游戏厅</a></header>
+<main>
+<section class="intro"><div><p class="eyebrow">THE 8-BIT COLLECTION / BRICK BREAKER</p><h1>打砖块<span>.</span><small>一拍，一球，一整面彩虹。</small></h1><p class="intro-copy">瞄准缺口，把熟悉的快乐一点点敲回来。</p></div><div class="cartridge"><span>经典玩法参考</span><b>FC</b><span>36 STAGES</span></div></section>
+<div class="arcade-layout">
+<section class="cabinet" aria-label="打砖块游戏机">
+<div class="cabinet-top"><span class="power-light"></span><span class="player-label">PLAYER 1</span><div class="toolbar"><button id="sound-button" aria-pressed="true" title="声音开关 M">声音 开</button><button id="pause-button" disabled title="暂停 P / Esc">暂停</button><button id="restart-button" disabled title="重开 R">重开</button><button id="help-button" title="查看玩法">玩法</button></div></div>
+<div class="screen-frame"><canvas id="game" width="320" height="400" tabindex="0" aria-label="打砖块游戏。鼠标移动挡板，左键发球或射激光；也可按左右键或 A、D 移动，空格发射。P 暂停。" aria-describedby="controls-description">浏览器需要支持 Canvas 才能运行。</canvas><div class="glass" aria-hidden="true"></div>
+<div class="overlay" id="overlay"><div class="overlay-panel"><p class="screen-kicker" id="overlay-kicker">ONE PADDLE. ENDLESS JOY.</p><h2 id="overlay-title">接住这一点快乐。</h2><p id="overlay-copy">35 面砖阵 + 第 36 关 DOH 决战<br>一颗小球，一路闯到底。</p><div class="result-score hidden" id="result-score"></div><button class="primary" id="primary-button">开始游戏 <span>▶</span></button><button class="secondary" id="select-button">选关练习</button><span class="screen-shortcut" id="overlay-shortcut">ENTER 开始 · 鼠标左键发球</span></div></div>
+<div class="toast hidden" id="toast" role="status" aria-live="polite"></div></div>
+<div class="cabinet-bottom"><span><i></i> 原创重建 · v1.9</span><span>TAKE YOUR TIME.</span></div>
+<div class="touch-controls"><div class="move-buttons"><button id="left-button" aria-label="向左移动">◀</button><button id="right-button" aria-label="向右移动">▶</button></div><span class="touch-label">左右移动 / 画面拖动</span><button class="action-button" id="action-button" aria-label="发球或按住发射激光"><span>发球 / 激光</span><small>ACTION</small></button></div>
+</section>
+<aside class="guide"><div class="guide-heading">HOW TO PLAY <span>01</span></div><h2>角度对了，<br>就会有回响。</h2><p id="controls-description" class="guide-copy">鼠标移到画面内控制挡板。<br>左键发球，接住每一次回弹。</p><div class="key-row"><kbd>鼠标移动</kbd><span>左右接球</span></div><div class="key-row"><kbd>左键 / SPACE</kbd><span>发球 / 激光</span></div><div class="key-row"><kbd>← → / A D</kbd><span>键盘移动</span></div><div class="key-row"><kbd>P / ESC</kbd><span>暂停游戏</span></div><div class="tip"><b>↗</b><p>用挡板边缘改变反弹方向。<br>不是接住就好，也要瞄准。</p></div>
+<div class="brick-legend"><p class="small-label">不是每块砖，都一样。</p><div><i class="brick normal"></i><span>彩砖</span><b>1 次</b></div><div><i class="brick silver"></i><span>银砖</span><b>2–6 次</b></div><div><i class="brick gold"></i><span>金砖</span><b>不可破坏</b></div></div>
+<div class="power-legend"><p class="small-label">接住胶囊，换一种打法。</p><div><i class="capsule expand">E</i><span>加长</span><i class="capsule laser">L</i><span>激光</span></div><div><i class="capsule catch">C</i><span>粘球</span><i class="capsule multi">D</i><span>三球</span></div><div><i class="capsule slow">S</i><span>减速</span><i class="capsule life">P</i><span>加命</span></div><div><i class="capsule warp">B</i><span>传送出口</span></div><p class="power-note">新胶囊替换挡板能力；失球后恢复普通挡板。金砖不计入过关目标。</p></div>
+<div class="level-note"><span id="level-caption">ROUND 01 / 36</span><strong id="level-name">彩虹墙</strong><p id="level-hint">从最简单的回弹开始</p><button class="text-button" id="levels-button">查看全部关卡 <span>↗</span></button></div><button class="text-button reference-link" id="reference-button">关于原作参考 <span>↗</span></button>
+</aside></div>
+<footer><span>经典街机 / 回到简单好玩的年代</span><span>非官方重制 · 不含 ROM · 美术与音效原创</span></footer>
+</main>
+<dialog id="help-dialog"><button class="close-dialog" data-close aria-label="关闭玩法">×</button><p class="eyebrow">HOW TO PLAY</p><h2>把快乐弹回去。</h2><p>清掉彩砖和银砖即可过关。金砖无法破坏，不影响过关。每局 3 条生命，所有小球落下才扣 1 条；每关清空奖励 500 分（本作新增），B 传送不发清空奖励。</p><ul><li>鼠标移动 / ← → / A D：移动挡板。手机可直接在画面拖动，也有左右按钮。</li><li>鼠标左键 / 空格 / J：发球、释放粘住的小球，激光状态可按住连射。</li><li>挡板分为左右各三档反弹角，中间更直、边缘更斜。首次触顶及多次撞砖会提速。银砖每 8 关增加一次耐久：第 1–8 关为 2 次，第 33–35 关为 6 次；激光每发计一次。</li><li>E 加长、L 激光、C 粘球持续到换胶囊或失球。D 分成三球，S 降低球速，P 增加生命（最多 9 条），B 打开右侧出口，移动到最右侧即可提前过关。</li><li>漂浮障碍会改变球路，用小球、激光或挡板撞毁可得 100 分；障碍不计入清关目标。</li><li>P / Esc 暂停，M 声音，R 重开。切换标签页或离开窗口自动暂停。</li><li>第 36 关挑战 DOH：用球命中石像 16 次，躲开瞄准挡板的火球。失去一条生命后 Boss 恢复满血；这是本作的挑战数值适配。</li><li>“选关练习”可从任何一关开始，每次从 0 分、3 条生命开始；最佳成绩保存在此浏览器。</li></ul><button class="dialog-primary" data-close>知道了</button></dialog>
+<dialog id="levels-dialog"><button class="close-dialog" data-close aria-label="关闭关卡选择">×</button><p class="eyebrow">STAGE SELECT</p><h2>今天，从哪一面开始？</h2><p>35 面砖阵，最后挑战 DOH。每页 12 关；选择任意关开始练习，分数和生命会重置。</p><div id="level-pages" class="level-pages" role="group" aria-label="关卡分页"></div><div id="level-grid" class="level-grid"></div></dialog>
+<dialog id="restart-dialog"><p class="eyebrow">A FRESH START</p><h2 id="restart-title">重新开始这一局？</h2><p id="restart-copy">当前分数和关卡进度会清零，最高分会保留。</p><div class="dialog-actions"><button data-close>继续当前游戏</button><button class="dialog-primary" id="confirm-restart">重新开始</button></div></dialog>
+<dialog id="reference-dialog"><button class="close-dialog" data-close aria-label="关闭参考说明">×</button><p class="eyebrow">REFERENCE NOTES</p><h2>熟悉的结构，重新做。</h2><p>本作参考 Taito《Arkanoid》的 FC / NES 玩法，以美版 NES 的 35 面砖阵 + 第 36 关 DOH 为流程目标，参考 NESmaps 实机地图与关卡图谱重建关卡结构。</p><p>这是 36 关的非官方适配流程，不是原作 ROM 或逐帧复刻。画面、配色、物理、掉落概率和计时均为重新设计，不含原作 ROM、贴图或音乐。</p><p>保留彩砖分值、银砖递增耐久、金砖不可破坏及 7 种胶囊。补入传送出口、漂浮障碍、六档反弹角与分档加速；数值和障碍轨迹是适配，并非原机数据。DOH 的 16 点耐久、瞄准火球与失命后满血为本作适配，不宣称与原机参数一致。未实现双人模式；新增选关、触屏操作及清砖 500 分奖励。</p><div class="reference-links"><a href="https://www.digitpress.com/library/manuals/nes/Arkanoid.pdf" target="_blank" rel="noopener noreferrer">NES 原版说明书扫描 ↗</a><a href="https://nesmaps.com/maps/Arkanoid/Arkanoid.html" target="_blank" rel="noopener noreferrer">NESmaps 实机关卡图 ↗</a><a href="https://www.youtube.com/watch?v=5MMrXKgeKMs" target="_blank" rel="noopener noreferrer">NES 美版全流程视频 ↗</a><a href="https://tasvideos.org/9448S" target="_blank" rel="noopener noreferrer">NES 工具辅助速通（TAS） ↗</a><a href="REFERENCES.md" target="_blank" rel="noopener noreferrer">完整实现与参考说明 ↗</a></div><button class="dialog-primary" data-close>继续玩</button></dialog>
+</body></html>

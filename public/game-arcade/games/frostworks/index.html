@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#294e58"><title>雪境工坊 v0.7 · 雪国微缩工坊</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="site-mobile.css"></head>
+<body>
+<div class="game-language" data-language-static><label for="game-language" lang="en">LANGUAGE</label><select id="game-language" aria-label="LANGUAGE"><option value="zh-Hans" lang="zh-Hans">简体中文</option><option value="zh-Hant" lang="zh-Hant">繁體中文</option><option value="en" lang="en">English</option></select></div>
+<main id="game-shell">
+ <section id="world" aria-label="雪境工坊游戏世界"><canvas id="game" tabindex="0" aria-label="移动人物：WASD 或方向键；点击地面移动；停在资源旁自动采集"></canvas>
+  <header class="world-header"><div class="brand"><span class="brand-mark"><i></i><i></i><i></i></span><div><strong>雪境工坊</strong><small>FROSTWORKS</small></div><span class="version">v0.7</span></div><div class="top-actions"><button id="debugBtn" aria-label="调试与作弊模式">调试</button><button id="map-btn" aria-label="切换全景与跟随镜头" aria-pressed="false" title="全景 / 跟随">图</button><button id="help-btn" aria-label="玩法说明">?</button><button id="pause-btn" aria-label="暂停游戏">II</button></div></header>
+  <div id="resource-hud" aria-label="背包和仓库资源"></div>
+  <div id="deadline-strip"><b id="deadline-label">终潮倒计时 16:00</b><div class="meter"><i id="deadline-fill"></i></div></div>
+  <div id="weather-banner" class="weather-banner"></div>
+  <div id="debugWatermark" hidden>DEBUG · 正常进度不受影响</div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div class="world-bottom"><div id="carry"><span>背负</span><strong id="carry-text">0 / 18</strong><div class="meter"><i id="carry-fill"></i></div><button id="depot-btn">前往最近货栈</button></div><div class="control-hint"><span class="keycaps">W A S D</span> / 方向键 / 点地移动<br><small>停在资源旁采集 · 走入圆圈自动投料</small></div></div>
+  <div id="joystick" aria-label="触屏移动摇杆"><div id="stick"></div></div>
+ </section>
+ <aside id="sidebar"><div class="chapter-kicker"><span id="chapter-number">第一章</span><span id="elapsed">00:00</span></div><div id="chapter-dots"></div><h1 id="chapter-title">火种营地</h1><p id="chapter-story"></p><div class="status-row"><div><span>供暖</span><b id="heat-value">88%</b><div class="meter"><i id="heat-fill"></i></div></div><div><span>城市核心</span><b id="base-value">100%</b><div class="meter"><i id="base-fill"></i></div></div><div><span>体力</span><b id="hp-value">100%</b><div class="meter"><i id="hp-fill"></i></div></div></div>
+ <div id="forecast"></div><section id="endless-panel" hidden aria-label="无尽波次与付费扩建"></section><div class="section-label"><span>建设与升级</span><small>材料到齐，即刻落成</small></div><div id="build-list"></div><div id="production-panel"></div><div class="sidebar-foot"><span id="save-status">本机自动存档</span><button id="save-btn">保存 / 暂停</button></div>
+ </aside>
+</main>
+<div id="overlay" class="overlay"><section id="modal" class="modal"></section></div>
+<details class="music-controls"><summary aria-label="展开音乐设置">♫ 音乐</summary><div class="music-body"><b>冬日工坊</b><small>Suno · 录制版 / 普通与战斗共用</small><button id="music-toggle" type="button" aria-pressed="false">静音</button><label for="music-volume">音量 <input id="music-volume" type="range" min="0" max="100" step="1" value="24"></label><span id="music-status" role="status">开始游戏后播放</span></div></details>
+<script src="site-locale-data.js"></script><script src="site-locale.js"></script><script src="music.js"></script><script src="engine.js"></script><script src="renderer.js"></script><script src="app.js"></script>
+</body></html>

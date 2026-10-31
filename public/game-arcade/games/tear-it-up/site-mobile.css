@@ -1,0 +1,47 @@
+/* Site controls share the original cream and sage studio palette. */
+.header-actions{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.tear-language{display:flex;align-items:center;gap:7px;color:var(--sage);font-size:10px;letter-spacing:.05em}
+.tear-language>span{font-weight:700;font-size:10px;letter-spacing:.08em}
+.tear-language select{min-height:36px;max-width:112px;padding:6px 8px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);font-size:11px}
+html[lang="en"] h1{letter-spacing:.04em}
+html[lang="en"] .brand p,html[lang="en"] .section-label,html[lang="en"] .tool,html[lang="en"] .scene,html[lang="en"] .reset,html[lang="en"] .palette>span,html[lang="en"] .quiet{letter-spacing:0}
+.tool-options{flex-wrap:wrap;row-gap:3px}
+#toolNote,#materialNote{max-width:100%;overflow-wrap:break-word;text-wrap:pretty}
+.performance-meter{overflow-wrap:anywhere;line-height:1.45}
+@media(max-width:1100px){
+  .scenes,.tools,.material-switch{min-width:0}
+  html[lang="en"] .scene,html[lang="en"] .material{white-space:normal;overflow-wrap:break-word;line-height:1.25}
+  html[lang="en"] .tool{white-space:normal;line-height:1.25}
+}
+@media(max-width:600px){
+  main{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+  header{gap:8px}
+  .brand{gap:8px;min-width:0}.brand .mark{width:28px;height:32px;flex-shrink:0}.brand .mark .icon{width:21px;height:21px}
+  h1{font-size:20px}.header-actions{flex-direction:column;align-items:flex-end;gap:4px}
+  .tear-language{gap:4px}.tear-language>span{font-size:9px}.tear-language select{min-height:32px;width:84px;padding:4px;font-size:10px}
+  .sound{min-height:36px;white-space:nowrap}
+  .scenes,.tools,.material-switch{display:flex;justify-content:flex-start;align-items:stretch;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#8e9c7e88 transparent;gap:4px;padding-block:3px;max-width:100%}
+  .scenes{margin-top:8px}
+  .scenes>.section-label,.tools>.section-label,.material-switch>.section-label{position:sticky;left:0;z-index:1;background:var(--paper);min-width:45px;margin-right:3px;align-self:stretch;padding-right:6px}
+  .scene{flex:0 0 76px;min-height:40px;padding:6px 5px;white-space:normal;line-height:1.25;font-size:10px}
+  .tool{flex:0 0 58px;min-width:58px;min-height:52px;padding:6px 4px;white-space:normal;font-size:10px;line-height:1.25}
+  .material{flex:0 0 66px;flex-direction:column;min-width:66px;min-height:50px;padding:5px 3px;gap:4px;white-space:normal;font-size:10px;line-height:1.25}
+  .material-preview{width:16px;height:17px}
+  .tool-options{min-height:38px;font-size:10px;padding:4px 0}
+  .tool-options>div:not([hidden]){flex-wrap:wrap;gap:7px;max-width:100%}
+  .tool-options button,#fireControls select{min-height:36px}
+  #materialNote{min-height:28px;font-size:10px;line-height:1.4}
+  .swatch{width:36px;height:36px}.reset{min-height:40px}
+  .studio{min-height:160px}
+}
+@media(max-width:360px){
+  h1{font-size:18px}.brand{gap:6px}.brand .mark{width:25px;height:29px}
+  .tear-language>span{font-size:8px}.tear-language select{width:78px}
+}
+@media(max-height:700px) and (max-width:600px){body{overflow-y:auto}main{height:auto;min-height:100dvh}.studio{flex:1 0 170px}}
+@media(max-height:500px) and (min-width:601px){
+  body{overflow-y:auto}main{height:auto;min-height:100dvh}.studio{flex:1 0 170px}
+  .header-actions{gap:10px}.tear-language select{min-height:32px}
+  .scene,.tool,.material{min-height:36px}
+  .tool-options>div:not([hidden]){flex-wrap:wrap}
+}

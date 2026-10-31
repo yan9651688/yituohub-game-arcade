@@ -1,0 +1,32 @@
+@charset "UTF-8";
+/* v11.1: transparent UI art only; retain the v10 layout and all Canvas models. */
+.ss-art-png { display:block; width:100%; height:100%; max-width:100%; overflow:visible; pointer-events:none; }
+.ss-art-png image { pointer-events:none; }
+/* Ring backgrounds remain circular. Ears/crowns are not cut by their rings. */
+.hud-avatar,.hero-card .hero-art,.dojo-portrait,.ss-c-avatar,.life-party-avatar,.life-companion-avatar,.world-party-avatar,.player-marker>span { overflow:visible; }
+.wx-hero-model>.ss-art-png { width:100%; height:100%; max-width:100%; transform:none; }
+.roster-portrait>.ss-art-png,.chapter-portrait>.ss-art-png { width:100%; height:100%; transform:none; position:relative; z-index:1; }
+.chapter-line>b .ss-dialogue-avatar { display:block; width:48px; height:48px; margin:0 0 4px; }
+.ss-dialogue-avatar { flex:none; background:radial-gradient(circle,#d6c39b70,transparent 72%); }
+.dojo-stage-preview { margin:12px 0; display:grid; grid-template-columns:78px minmax(0,1fr); align-items:center; gap:10px; padding:9px 10px; border:1px solid #b5986955; background:linear-gradient(110deg,#d8c8a820,#b6c69c18); }
+.dojo-stage-preview .ss-art-standing { height:120px; }
+.dojo-stage-preview figcaption { margin:0; font-size:11px; line-height:1.8; color:inherit; }
+.dojo-stage-preview figcaption small { display:block; opacity:.8; }
+.ss-finale-cut-in { float:right; width:76px; height:112px; margin:0 0 7px 14px; pointer-events:none; }
+.ss-finale-footer,.ss-finale-coop { clear:both; }
+.ss-audit-note { font-size:12px; line-height:1.85; color:#46513e; }
+.ss-audit-note p { margin:8px 0; }
+.ss-audit-note ul { padding-left:19px; margin:8px 0; }
+.ss-audit-summary { margin-top:16px; }
+.ss-audit-summary summary { cursor:pointer; }
+.ss-audit-summary>p { font-size:12px; line-height:1.85; }
+.ss-audit-sources { display:grid; gap:12px; margin-top:12px; }
+.ss-audit-sources article { padding-bottom:10px; border-bottom:1px dashed #a68f605e; }
+.ss-audit-sources p { font-size:11px; line-height:1.75; margin:4px 0 0; }
+@media(max-width:640px){.chapter-line>b .ss-dialogue-avatar{width:40px;height:40px}.ss-finale-cut-in{width:58px;height:88px;margin-left:9px}.dojo-stage-preview{grid-template-columns:70px minmax(0,1fr)}.dojo-stage-preview .ss-art-standing{height:108px}}
+@media(max-height:480px){.ss-finale-cut-in{width:48px;height:72px}}
+/* Match legacy selector specificity so its circular crop cannot trim long ears. */
+.modal[data-view="select"] .hero-card .hero-art,
+.modal[data-view="select"] .hero-card .hero-art svg,
+.world-stage .hud-avatar,
+#battleLayer .ss-combat .ss-c-avatar { overflow:visible; }

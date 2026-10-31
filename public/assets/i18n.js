@@ -4,13 +4,13 @@
   const storageKey = 'neon-arcade.locale';
   const locales = ['zh-Hans', 'zh-Hant', 'en'];
   const dictionaries = {
-    'zh-Hans': { 'site.language': '网站语言' },
-    'zh-Hant': { 'site.language': '網站語言' },
-    en: { 'site.language': 'Site language' }
+    'zh-Hans': { 'site.language': '网站语言', 'site.workshop': '共创工坊', 'site.arcade': '经典街机' },
+    'zh-Hant': { 'site.language': '網站語言', 'site.workshop': '共創工坊', 'site.arcade': '經典街機' },
+    en: { 'site.language': 'Site language', 'site.workshop': 'Creator Workshop', 'site.arcade': 'Classic Arcade' }
   };
   const script = document.currentScript;
   const siteBase = new URL('../', script ? script.src : new URL('assets/i18n.js', location.href));
-  const shellPaths = new Set(['', 'index.html', 'games.html', 'classics.html', 'mv.html', 'play.html', 'classics-play.html', 'game-arcade/', 'game-arcade/index.html', 'game-arcade/film.html', 'game-arcade/afang-palace/', 'game-arcade/afang-palace/index.html'].map(path => new URL(path, siteBase).pathname));
+  const shellPaths = new Set(["arcade/","arcade/index.html","arcade/references.html","arcade/games/galaxian/index.html","arcade/games/tanks/index.html","arcade/games/breakout/index.html","arcade/games/circus/index.html","arcade/games/lode-runner/index.html","arcade/games/dr-mario/index.html",'', 'index.html', 'games.html', 'game-info/frostworks.html', 'game-info/tideborn-ark.html', 'workshop.html', 'classics.html', 'mv.html', 'play.html', 'workshop-play.html', 'classics-play.html', 'game-arcade/', 'game-arcade/index.html', 'game-arcade/film.html', 'game-arcade/afang-palace/', 'game-arcade/afang-palace/index.html'].map(path => new URL(path, siteBase).pathname));
 
   function normalize(value) {
     const tag = String(value || '').replace(/_/g, '-').toLowerCase();

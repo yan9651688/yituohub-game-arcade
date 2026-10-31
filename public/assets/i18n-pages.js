@@ -3,7 +3,7 @@
   const messages = {
     'zh-Hans': {
       'home.title': 'NEON ARCADE · AI 小游戏站',
-      'home.description': '由 AI 参与创造的小游戏宇宙，探索原创游戏、经典小游戏与 AI 音乐视觉演出。',
+      'home.description': '由 AI 参与创造的小游戏宇宙，探索原创游戏、经典街机、经典小游戏与 AI 音乐视觉演出。',
       'home.nav': '主导航', 'home.home': '首页', 'home.brandLabel': 'NEON ARCADE 首页',
       'home.library': '游戏库', 'home.classics': '经典小游戏', 'home.mv': 'AI放映厅',
       'home.tagline': 'AI 造梦 · 游戏宇宙', 'home.heading1': 'AI 造梦', 'home.heading2': '游戏宇宙',
@@ -44,7 +44,7 @@
     },
     'zh-Hant': {
       'home.title': 'NEON ARCADE · AI 小遊戲站',
-      'home.description': '由 AI 參與創作的小遊戲宇宙，探索原創遊戲、經典小遊戲與 AI 音樂視覺演出。',
+      'home.description': '由 AI 參與創作的小遊戲宇宙，探索原創遊戲、經典街機、經典小遊戲與 AI 音樂視覺演出。',
       'home.nav': '主要導覽', 'home.home': '首頁', 'home.brandLabel': 'NEON ARCADE 首頁',
       'home.library': '遊戲庫', 'home.classics': '經典小遊戲', 'home.mv': 'AI放映廳',
       'home.tagline': 'AI 造夢 · 遊戲宇宙', 'home.heading1': 'AI 造夢', 'home.heading2': '遊戲宇宙',
@@ -85,7 +85,7 @@
     },
     en: {
       'home.title': 'NEON ARCADE · AI Game Universe',
-      'home.description': 'Discover a universe of AI-assisted original games, arcade classics and AI music videos. Play right in your browser.',
+      'home.description': 'Discover a universe of AI-assisted original games, classic arcade games, casual classics and AI music videos. Play right in your browser.',
       'home.nav': 'Main navigation', 'home.home': 'Home', 'home.brandLabel': 'NEON ARCADE home',
       'home.library': 'Games', 'home.classics': 'Classics', 'home.mv': 'AI Cinema',
       'home.tagline': 'AI dreams · A universe of play', 'home.heading1': 'AI DREAMS', 'home.heading2': 'PLAY ON.',

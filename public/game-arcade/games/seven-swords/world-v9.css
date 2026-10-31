@@ -1,0 +1,22 @@
+@charset "UTF-8";
+/* 同游伙伴随山河画面呈现，五个常用入口保持触手可及。 */
+.hud-avatar svg{transform:none}
+.world-party{position:absolute;z-index:2;left:23px;top:132px;display:flex;align-items:center;gap:9px;max-width:265px;padding:7px 11px 7px 8px;border:1px solid #b6a3754d;border-radius:3px;background:linear-gradient(105deg,#15342ce8,#204033b8);box-shadow:0 4px 18px #0d292c30;color:#e7d6b0;pointer-events:none}
+.world-party[hidden]{display:none}
+.world-party-title{font-size:8px;letter-spacing:2px;color:#b8b895;writing-mode:vertical-rl;margin-right:1px}
+.world-party-member{display:flex;align-items:center;gap:6px;min-width:0}
+.world-party-member>span:last-child{font:12px/1.25 var(--serif);letter-spacing:1px;white-space:nowrap}
+.world-party-avatar{display:block;width:35px;height:38px;border:1px solid #c9b9826b;border-radius:50%;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#75907155,#1b413690)}
+.world-party-avatar svg{width:100%;height:100%;display:block}
+.world-hotbar{gap:7px;max-width:calc(100% - 360px)}
+.world-skill-slot{flex-shrink:0;width:59px}
+@media(min-width:1700px){.world-party{left:30px;top:143px}.world-skill-slot{width:65px}}
+@media(max-width:1200px){.world-party{left:19px;top:123px;gap:8px;padding:6px 9px}.world-party-avatar{width:32px;height:35px}.world-hotbar{gap:5px;padding:7px 8px 5px;max-width:calc(100% - 300px)}.world-skill-slot{width:52px}}
+@media(max-width:940px){.world-party{left:17px;top:116px}.world-party-member>span:last-child{font-size:11px}.world-hotbar{max-width:calc(100% - 230px)}.world-skill-slot{width:48px}}
+@media(max-width:760px){.world-party{left:13px;top:141px;max-width:195px;gap:6px;padding:5px 7px}.world-party-avatar{width:29px;height:31px}.world-party-member{gap:4px}.world-party-member>span:last-child{font-size:10px;letter-spacing:0}.world-party-title{font-size:7px;letter-spacing:1px}.world-hotbar{left:calc(50% - 19px);gap:4px;padding:6px;max-width:none}.world-skill-slot{width:43px;height:54px}.world-skill-slot .skill-label{font-size:7px}.world-hints{max-width:105px}.world-hints>span{font-size:9px}}
+@media(max-width:520px){.world-party{left:11px;top:137px;max-width:163px;gap:5px}.world-party-title{display:none}.world-party-avatar{width:26px;height:29px}.world-party-member>span:last-child{font-size:9px}.world-hotbar{left:calc(50% - 22px);gap:3px;padding:5px}.world-skill-slot{width:41px;height:51px}.world-skill-slot .skill-label{font-size:7px}.world-skill-slot .skill-icon{width:30px;height:30px}.world-hints{display:none}}
+@media(max-width:370px){.world-party{left:10px;top:129px;max-width:151px;gap:5px}.world-party-avatar{width:24px;height:27px}.world-hotbar{left:calc(50% - 17px);gap:3px;padding:4px}.world-skill-slot{width:36px;height:49px}.world-skill-slot .skill-label{font-size:6px}}
+@media(max-height:590px) and (min-width:761px){.world-party{left:16px;top:96px;padding:4px 7px}.world-party-avatar{width:27px;height:30px}.world-party-member>span:last-child{font-size:10px}.world-party-title{font-size:7px}.world-skill-slot{height:51px}}
+@media(max-height:590px) and (max-width:760px){.world-party{left:15px;top:129px;padding:3px 5px}.world-party-avatar{width:22px;height:24px}.world-party-title{display:none}.world-party-member>span:last-child{font-size:9px}.world-skill-slot{height:49px}}
+@media(pointer:coarse){.world-hotbar{display:none}}
+@media(prefers-reduced-motion:reduce){.world-party{backdrop-filter:none}}

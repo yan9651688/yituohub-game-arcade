@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f4efe5">
+<title>马里奥医生 · 经典街机</title>
+<style id="arcade-loader-style">#arcade-loader{position:fixed;inset:0;z-index:2147483000;background:#f3eee3f7;display:grid;place-items:center;padding:24px;font:14px/1.6 system-ui,sans-serif;color:#34322d}#arcade-loader[hidden]{display:none}#arcade-loader .load-card{width:min(420px,100%);padding:28px;background:#fffcf6;border:1px solid #d8d0c0;border-radius:14px;box-shadow:0 12px 40px #34322d12}#arcade-loader h2{font-size:21px;letter-spacing:0;margin:8px 0 12px}#arcade-loader p{margin:8px 0}#arcade-loader progress{display:block;width:100%;height:12px;accent-color:#8e303b;margin:18px 0}#arcade-loader button{border:0;border-radius:6px;padding:11px 18px;background:#8e303b;color:#fff8ed;cursor:pointer;font:700 14px system-ui}#arcade-loader button[hidden]{display:none}#arcade-loader .load-brand{font-size:10px;letter-spacing:2px;color:#8e303b}#arcade-loader a{display:block;margin-top:15px;color:#8e303b;text-decoration:underline;font-size:12px}</style><script>(function () {
+  'use strict';
+  const gameId = 'dr-mario', total = 8;
+  const loaded = new Set();
+  let initialized = false, failed = false, mounted = false, finished = false;
+  let failureKind = '', deadline;
+  const messages = {
+    'zh-Hans': ['正在载入游戏', '载入资源', '游戏遇到问题', '请检查网络后重新加载。', '重新加载', '返回经典街机', '正在准备画面与操作…', '资源载入超时，请重试。'],
+    'zh-Hant': ['正在載入遊戲', '載入資源', '遊戲遇到問題', '請檢查網路後重新載入。', '重新載入', '返回經典街機', '正在準備畫面與操作…', '資源載入逾時，請重試。'],
+    en: ['Loading game', 'Resources loaded', 'Something went wrong', 'Check your connection and reload the game.', 'Reload game', 'Back to Classic Arcade', 'Preparing the screen and controls…', 'Loading timed out. Please try again.']
+  };
+  function locale() {
+    if (window.ArcadeI18n) return window.ArcadeI18n.language;
+    let value = 'zh-Hans';
+    try { value = localStorage.getItem('neon-arcade.locale') || localStorage.getItem('classic-arcade-language') || value; } catch (_) {}
+    try { value = new URLSearchParams(location.search).get('lang') || value; } catch (_) {}
+    return messages[value] ? value : 'zh-Hans';
+  }
+  function track(name, extra) {
+    try { window.SiteAnalytics?.track(name, Object.assign({ game_id: 'arcade-' + gameId }, extra)); } catch (_) {}
+  }
+  function render() {
+    const host = document.getElementById('arcade-loader');
+    if (!host) return;
+    const code = locale(), m = messages[code], done = Math.min(loaded.size, total);
+    host.hidden = finished && !failed;
+    document.body.dataset.arcadeState = failed ? 'error' : finished ? 'ready' : 'loading';
+    document.getElementById('arcade-load-title').textContent = m[failed ? 2 : 0];
+    document.getElementById('arcade-load-detail').textContent = failed ? m[failureKind === 'timeout' ? 7 : 3] : (done === total ? m[6] : m[1] + ' ' + done + ' / ' + total);
+    const progress = document.getElementById('arcade-load-progress');
+    progress.max = total;
+    progress.value = done;
+    progress.hidden = failed;
+    progress.setAttribute('aria-label', m[1] + ' ' + done + ' / ' + total);
+    const retry = document.getElementById('arcade-load-retry');
+    retry.textContent = m[4]; retry.hidden = !failed;
+    const back = document.getElementById('arcade-load-back');
+    back.textContent = m[5]; back.href = '../../index.html?lang=' + code;
+  }
+  function complete() {
+    if (!failed && !finished && initialized && loaded.size >= total) {
+      finished = true;
+      clearTimeout(deadline);
+      render();
+      track('game_ready', { load_ms: Math.round(performance.now()) });
+    } else render();
+  }
+  function fail(kind) {
+    if (failed) return;
+    failed = true; failureKind = kind;
+    clearTimeout(deadline);
+    render();
+    track('game_error', { error_kind: kind });
+  }
+  // Capture also catches errors on non-bubbling script/link resource events.
+  window.addEventListener('load', event => {
+    const target = event.target;
+    if (target?.hasAttribute?.('data-arcade-resource')) { loaded.add(target); complete(); }
+  }, true);
+  window.addEventListener('error', event => {
+    const target = event.target;
+    if (target?.hasAttribute?.('data-arcade-resource')) fail('resource');
+    else if (event instanceof ErrorEvent && (!event.filename || /\/arcade\//.test(event.filename) || /\/(?:app|game-core|controls|levels|audio|i18n)\.js/.test(event.filename))) fail('runtime');
+  }, true);
+  window.addEventListener('unhandledrejection', event => {
+    // Optional analytics/audio promises must not turn a healthy game into a failed load.
+    if (!finished && /\/arcade\//.test(event.reason?.stack || '')) fail('runtime');
+  });
+  window.addEventListener('arcade-language-change', render);
+  window.ArcadeGameLoader = Object.freeze({
+    resourceLoaded(target) { loaded.add(target); complete(); },
+    resourceFailed() { fail('resource'); },
+    ready() { initialized = true; complete(); },
+    mount() {
+      if (mounted) return;
+      mounted = true;
+      document.getElementById('arcade-load-retry')?.addEventListener('click', () => location.reload());
+      render();
+    }
+  });
+  deadline = setTimeout(() => fail('timeout'), 45000);
+})();
+</script><link data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" rel="stylesheet" href="../../shared/i18n.css?v=20261026-classic-arcade-v1"><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="../../shared/i18n.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="i18n.js?v=20261026-dr-mario-touch-v1" defer></script><link data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" rel="stylesheet" href="styles.css?v=20261026-dr-mario-radar-v1"><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="game-core.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="controls.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="audio.js?v=20261026-classic-arcade-v1" defer></script><script data-arcade-resource onload="window.ArcadeGameLoader.resourceLoaded(this)" onerror="window.ArcadeGameLoader.resourceFailed()" src="app.js?v=20261026-dr-mario-touch-v1" defer></script>
+<script src="/assets/analytics.js?v=20261026-classic-arcade-v1" defer data-arcade-optional></script><meta name="description" content="旋转双色胶囊，将同色连成四个消除病毒。马里奥医生独立重制，支持等级与速度选择、键盘和触屏操作。"><link rel="canonical" href="https://game.yituohub.com/arcade/games/dr-mario/index.html"><link rel="alternate" hreflang="zh-Hans" href="https://game.yituohub.com/arcade/games/dr-mario/index.html?lang=zh-Hans"><link rel="alternate" hreflang="zh-Hant" href="https://game.yituohub.com/arcade/games/dr-mario/index.html?lang=zh-Hant"><link rel="alternate" hreflang="en" href="https://game.yituohub.com/arcade/games/dr-mario/index.html?lang=en"><link rel="alternate" hreflang="x-default" href="https://game.yituohub.com/arcade/games/dr-mario/index.html"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><meta property="og:type" content="website"><meta property="og:site_name" content="NEON ARCADE"><meta property="og:locale" content="zh_CN"><meta property="og:title" content="马里奥医生 · 经典街机"><meta property="og:description" content="旋转双色胶囊，将同色连成四个消除病毒。马里奥医生独立重制，支持等级与速度选择、键盘和触屏操作。"><meta property="og:url" content="https://game.yituohub.com/arcade/games/dr-mario/index.html"><meta property="og:image" content="https://game.yituohub.com/assets/covers/og-cover.webp"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json" id="arcade-schema">{"@context":"https://schema.org","@type":"VideoGame","name":"马里奥医生 · 经典街机","description":"旋转双色胶囊，将同色连成四个消除病毒。马里奥医生独立重制，支持等级与速度选择、键盘和触屏操作。","url":"https://game.yituohub.com/arcade/games/dr-mario/index.html","inLanguage":["zh-Hans","zh-Hant","en"],"isAccessibleForFree":true,"gamePlatform":"Web Browser","operatingSystem":"Any","playMode":"https://schema.org/SinglePlayer"}</script><script id="arcade-seo-data" type="application/json">{"names":["马里奥医生","瑪利歐醫生","Dr. Mario"],"descriptions":["旋转双色胶囊，将同色连成四个消除病毒。马里奥医生独立重制，支持等级与速度选择、键盘和触屏操作。","旋轉雙色膠囊，將同色連成四個消除病毒。瑪利歐醫生獨立重製，支援等級與速度選擇、鍵盤和觸控操作。","Rotate two-color capsules and match four colors to clear viruses in this independent Dr. Mario remake, with level and speed selection plus keyboard and touch controls."],"path":"games/dr-mario/index.html","url":"https://game.yituohub.com/arcade/games/dr-mario/index.html","titles":["马里奥医生 · 经典街机","瑪利歐醫生 · 經典街機","Dr. Mario · Classic Arcade"]}</script><script src="../../shared/site-seo.js?v=20261026-classic-arcade-v1" defer></script></head>
+<body data-arcade-state="loading" data-arcade-game="dr-mario"><section id="arcade-loader" role="status" aria-live="polite" data-i18n-ignore><div class="load-card"><span class="load-brand">CLASSIC ARCADE</span><h2 id="arcade-load-title"></h2><p id="arcade-load-detail"></p><progress id="arcade-load-progress" value="0"></progress><button id="arcade-load-retry" type="button" hidden></button><a id="arcade-load-back" href="../../index.html"></a><noscript>Please enable JavaScript to play.</noscript></div></section><script>window.ArcadeGameLoader.mount();</script>
+<header class="site-header"><a class="brand" href="../../index.html"><span>▦</span>经典街机 <small>CLASSIC ARCADE</small></a><a class="back" href="../../index.html">← 返回游戏合集</a></header>
+<main>
+<section class="intro"><div><p class="eyebrow">THE 8-BIT COLLECTION / CAPSULE PUZZLE</p><h1>马里奥医生<span>.</span><small>DR. MARIO · 致敬重制</small></h1><p>把颜色排成一线，让小怪物一只只消失。</p></div><div class="cartridge"><span>ORIGINAL RULES</span><b>FC</b><span>LEVEL 00—20</span></div></section>
+<div class="arcade-layout">
+<section class="cabinet" aria-label="马里奥医生游戏">
+<div class="cabinet-top"><span class="player"><i></i>PLAYER 1</span><div class="toolbar"><select id="music-select" aria-label="背景音乐"><option value="fever">Fever·原谱</option><option value="pulse">轻快·原创</option><option value="calm">舒缓·原创</option><option value="off">关闭配乐</option></select><button id="sound-toggle" aria-pressed="true">声音 开</button><button id="pause-button" disabled>暂停</button><button id="restart-button" disabled>重开</button><button id="help-button" aria-label="游戏帮助">?</button></div></div>
+<div class="screen-frame">
+<canvas id="game" width="248" height="352" tabindex="0" aria-label="马里奥医生。左右箭头或 A D 移动，向下或 S 加速下落，Z 逆时针旋转，X 或画面左键顺时针旋转。P 暂停。"></canvas>
+<div class="glass" aria-hidden="true"></div>
+<div class="overlay" id="overlay"><div class="overlay-panel">
+<svg class="dose-emblem" viewBox="0 0 96 72" aria-hidden="true" focusable="false"><defs><linearGradient id="doseRed" x2="0" y2="1"><stop stop-color="#f3a083"/><stop offset="1" stop-color="#c26753"/></linearGradient><linearGradient id="doseGold" x2="0" y2="1"><stop stop-color="#fff0b9"/><stop offset="1" stop-color="#ddba6d"/></linearGradient></defs><circle cx="48" cy="36" r="31" fill="#aacdb2" fill-opacity=".06" stroke="#8bb9a5" stroke-opacity=".25"/><g transform="rotate(-32 48 36)"><path d="M48 23H32a13 13 0 0 0 0 26h16Z" fill="url(#doseRed)"/><path d="M48 23h16a13 13 0 0 1 0 26H48Z" fill="url(#doseGold)"/><path d="M48 24v24" stroke="#5c6d55" stroke-opacity=".4"/><path d="M31 27h32" stroke="#fffbea" stroke-opacity=".58" stroke-width="3" stroke-linecap="round"/></g><path d="M79 13v8m-4-4h8" stroke="#b3d5bd" stroke-width="2" stroke-linecap="round"/><circle cx="15" cy="54" r="2" fill="#e4c381"/></svg>
+<p class="screen-kicker" id="overlay-kicker">A LITTLE DOSE OF COLOR</p><h2 id="overlay-title">今天，消灭哪一瓶？</h2><p id="overlay-copy">同色连成四个，病毒就会消失。<br>留好空间，等下一颗刚刚好的胶囊。</p>
+<div id="setup-controls" class="setup-controls"><label>病毒等级<select id="level-select" aria-label="起始病毒等级"></select></label><label>下落速度<select id="speed-select"><option value="low">LOW · 慢</option><option value="med">MED · 中</option><option value="hi">HI · 快</option></select></label><span id="level-detail">4 只病毒 · 下方 10 行</span></div>
+<button class="primary" id="action-button">开始治疗 ▶</button><span class="start-key" id="overlay-key">ENTER 开始 · Z / X 旋转</span>
+</div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+</div>
+<div class="cabinet-bottom"><span>8 × 16 / CAPSULE CLINIC</span><span id="stage-caption">LEVEL 00 · LOW</span><div class="touch-layout-switch" role="group" aria-label="触屏布局"><button type="button" data-touch-layout="one" aria-pressed="true">单手</button><button type="button" data-touch-layout="two" aria-pressed="false">双手</button></div></div>
+<div class="touch-controls" aria-label="触屏游戏控制"><aside class="virus-lounge" aria-label="病毒放大镜"><canvas id="virus-dance" width="160" height="160" role="img" aria-label="三色病毒在放大镜中跳舞"></canvas><span>VIRUS DANCE</span></aside><div class="move-controls"><button data-input="left" aria-label="向左移动">◀</button><button data-input="down" aria-label="加速下落">▼</button><button data-input="right" aria-label="向右移动">▶</button></div><div class="rotate-controls"><button data-input="ccw" aria-label="逆时针旋转">↶<small>Z</small></button><button data-input="cw" aria-label="顺时针旋转">↷<small>X</small></button></div></div>
+<div class="motion-controls"><label for="motion-select">动效 <small>v1.9</small></label><select id="motion-select" aria-label="动效模式"><option value="full">完整</option><option value="simple">简化</option><option value="system">跟随系统</option></select><button id="motion-preview" title="在选关界面预览，不影响游戏">演示动效</button><span id="motion-status" role="status">完整：病毒跳舞 / 医生投药</span></div>
+<p id="live-status" class="sr-only" aria-live="polite"></p>
+</section>
+<details class="guide"><summary>操作、音乐与原作说明 <span aria-hidden="true">＋</span></summary><div class="guide-content">
+<p class="guide-copy">横向或纵向凑齐 4 个同色格即可消除。胶囊和病毒可以一起凑数，断开的半颗胶囊会落下。</p>
+<div class="control-row"><span><kbd>←</kbd><kbd>→</kbd></span><b>左右移动 · A / D</b></div><div class="control-row"><span><kbd>↓</kbd></span><b>加速下落 · S</b></div><div class="control-row"><span><kbd>Z</kbd><kbd>X</kbd></span><b>左旋 / 右旋</b></div><p class="mouse-note">画面左键顺时针旋转。P 暂停，无一键到底。完整玩法请点上方「?」。</p>
+<div class="local-audio"><label for="local-music">载入本地音乐 <span>＋</span></label><input id="local-music" type="file" accept="audio/*"><p id="local-music-status">只在本机播放，不上传。可选你的音频文件。</p></div>
+<button id="reference-button" class="text-button">关于原作、关卡与声音 ↗</button>
+</div></details>
+</div><footer><span>一张卡带，一个下午。</span><span>原创重制 · 无 ROM · 完整离线</span></footer>
+</main>
+<dialog id="help-dialog"><button class="close" data-close aria-label="关闭">×</button><p class="eyebrow">ONE CAPSULE. MANY POSSIBILITIES.</p><h2>别急，先看看下一颗。</h2><p>左右箭头 / A D 移动；下箭头 / S 加速下落；Z 逆时针旋转，X 或游戏画面左键顺时针旋转。触屏使用下方按钮。</p><p>红、黄、蓝的胶囊与病毒，横向或纵向凑齐 4 个以上同色格就会消除。没有斜线消除。病毒不下落；断开的半颗胶囊会落下，完整的两半仍一起下落，一侧有支撑就会停住。</p><p>消完病毒过关，瓶口堵住则游戏结束。每颗胶囊的连锁中，病毒依次得 100、200、400、800、1600、3200 分，之后每只 3200 分；MED ×2，HI ×3。只消胶囊不得分。</p><p>每关落定第 8、18、28…颗胶囊后加速。P / Esc 暂停，R 重开（先确认），M 开关声音。切出窗口会暂停，回来需手动继续。没有一键落底或暂存胶囊。</p><button class="primary" data-close>明白了</button></dialog>
+<dialog id="restart-dialog"><p class="eyebrow">A FRESH BOTTLE</p><h2>要重新开始吗？</h2><p>当前进度和本局分数将清零，最高分保留。可以重新选择起始等级和速度。</p><div class="dialog-actions"><button data-close>继续当前游戏</button><button class="primary" id="confirm-restart">重新选关</button></div></dialog>
+<dialog id="reference-dialog"><button class="close" data-close aria-label="关闭">×</button><p class="eyebrow">REFERENCE NOTES</p><h2>熟悉的规则，重新编写。</h2><p>参考 1990 年 FC / NES《Dr. Mario》的单人玩法：8 × 16 瓶身、三种颜色、双段胶囊、四连消除、断片重力与连锁。0—20 级的病毒数量、分布高度、颜色间隔限制、放置扫描顺序、下落速度与计分参考说明书和公开反汇编资料。</p><p>原作关卡是程序生成，不是 21 张固定地图。本版保留生成约束，重建随机数算法，但启动种子与预览状态不同；相同等级不代表原版实机同一局。视觉、投药/消除动画和非下落计时为原创适配，不是 ROM 逐帧模拟。未收录双人模式、20 级后的继续加关或原作结局演出。</p><p>默认「Fever·原谱」按原作音符与节拍合成重建，消除声按原作音效数据重建；不是原声录音，音色并非逐周期模拟。左下角病毒舞蹈参考原作动作意象，按 150 BPM 节拍编排。「轻快 / 舒缓」仍是独立创作的备选曲目。未直接收录 ROM 或原视频录音。</p><div class="reference-links"><a href="https://www.nintendo.co.jp/clv/manuals/en/pdf/CLV-P-NAAXE_en.pdf" target="_blank" rel="noopener">Nintendo 官方 NES 说明书 ↗</a><a href="https://github.com/Nostaljipi/dr-mario-disassembly" target="_blank" rel="noopener">公开程序规则分析 ↗</a><a href="REFERENCES.md" target="_blank">实现对照与近似边界 ↗</a></div><button class="primary" data-close>知道了</button></dialog>
+</body></html>
