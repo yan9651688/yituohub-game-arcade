@@ -1,0 +1,143 @@
+/* 七剑演武场 · Jade, slate, brass; open canvas and character-stage controls. */
+.dojo-shell{--dojo-tint:#d8bd80;position:absolute;inset:0;display:flex;flex-direction:column;background:#142b2b;color:#d7ddc8;font-family:var(--sans);font-size:12px;line-height:1.6;overflow:hidden}
+.dojo-shell button{transition:background .16s,border-color .16s;color:inherit}
+.dojo-shell button:focus-visible{outline:2px solid #dfcc98;outline-offset:-3px}
+.dojo-header{height:86px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:0 28px;border-bottom:1px solid #ada57945;background:linear-gradient(110deg,#203a32,#182f2b 55%,#1b332e);position:relative;z-index:3}
+.dojo-brand{display:flex;align-items:center;gap:13px;flex-shrink:0}
+.dojo-seal{display:block;padding:7px 6px;border:1px solid #b1a16b;color:#dfcc93;font:18px/1.05 var(--serif);box-shadow:inset 0 0 0 3px #182e2a;transform:rotate(-3deg)}
+.dojo-brand p{margin:0 0 4px;color:#91a690;font-size:9px;letter-spacing:2px}
+.dojo-brand h1{font:400 25px/1.2 var(--serif);letter-spacing:4px;color:#ead9a6;margin:0}
+.dojo-current{display:flex;align-items:baseline;gap:13px;text-align:left;min-width:0;padding:10px 15px;border-left:1px solid #81987933;cursor:default}
+.dojo-current-name{font:19px var(--serif);letter-spacing:2px;white-space:nowrap;color:#d3d8b6}
+.dojo-current-stage{font-size:11px;color:#a6b69b;white-space:nowrap}
+.dojo-current>small{display:none;font-size:9px;color:#aaa575;white-space:nowrap}
+.dojo-current i{font-style:normal;margin-left:5px}
+.dojo-header-actions{display:flex;align-items:center;gap:23px;flex-shrink:0}
+.dojo-hp-rule{display:flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.3px;color:#b5c6a4;white-space:nowrap}
+.dojo-hp-rule>i{width:5px;height:5px;background:#a9c988;transform:rotate(45deg);box-shadow:0 0 8px #a9c98822}
+.dojo-hp-rule.at-floor{color:#f2ce99}.dojo-hp-rule.at-floor>i{background:#f2c586;box-shadow:0 0 8px #efb57077}
+.dojo-exit{padding:9px 14px;border:1px solid #89977366;border-radius:3px;color:#d3cfab!important;font-size:11px;letter-spacing:1px;background:#30433566;white-space:nowrap}
+.dojo-exit span{margin-left:12px;color:#bdae79}.dojo-exit:hover{background:#3b513c}
+.dojo-layout{display:grid;grid-template-columns:288px minmax(0,1fr);flex:1;min-height:0;position:relative}
+.dojo-sidebar{min-height:0;overflow:auto;overscroll-behavior:contain;padding:20px 20px 14px;background:linear-gradient(155deg,#203a31,#182f2b);border-right:1px solid #aaa0713b;scrollbar-width:thin;scrollbar-color:#58715a transparent;z-index:2}
+.dojo-sidebar-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:11px;letter-spacing:1px;color:#c7cba9}
+.dojo-sidebar-heading>small{font-size:9px;letter-spacing:.4px;color:#8ba28a}
+.dojo-panel-close{display:none}
+.dojo-heroes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.dojo-hero{position:relative;padding:6px 4px 5px;min-width:0;border:1px solid #8ba07c28;border-radius:3px;background:#102b2766}
+.dojo-portrait{height:37px;width:37px;display:block;margin:0 auto 3px;border-radius:50%;overflow:hidden;background:radial-gradient(ellipse,#68877655,#25443a11)}
+.dojo-portrait svg{display:block;width:100%;height:100%}
+.dojo-hero strong{font:13px var(--serif);letter-spacing:1px;color:#aab89a;font-weight:400}
+.dojo-hero:hover{background:#3b51405e;border-color:#b3ad78}
+.dojo-hero[aria-pressed="true"]{border-color:#cebc84;background:#49594177;box-shadow:inset 0 -2px var(--hero-tint)}
+.dojo-hero[aria-pressed="true"] strong{color:#f0dfb6}
+.dojo-stage-section{margin-top:23px}
+.dojo-section-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 11px}
+.dojo-section-heading h2{font:15px var(--serif);letter-spacing:2px;color:#d6c697;font-weight:400;margin:0;white-space:nowrap}
+.dojo-section-heading>span,.dojo-section-heading>small{color:#8b9e84;font-size:9px;letter-spacing:0}
+.dojo-stages{display:grid;gap:6px}
+.dojo-stage{display:flex;align-items:center;gap:11px;width:100%;padding:9px 11px;border:1px solid #78917139;border-radius:2px;text-align:left;background:#122c2666;min-height:57px}
+.dojo-stage-number{font:italic 17px Georgia,serif;color:#6c8876}
+.dojo-stage>span:nth-child(2){flex:1;min-width:0}
+.dojo-stage strong{font:14px var(--serif);font-weight:400;color:#afbea5;letter-spacing:1px;display:block}
+.dojo-stage small{font-size:9px;color:#7f9986;margin-top:3px;display:block}
+.dojo-stage>i{font-size:10px;font-style:normal;color:#7b967f}
+.dojo-stage:hover{border-color:#baaf7d;background:#3a50406e}
+.dojo-stage[aria-pressed="true"]{border-color:#c4ac72;background:linear-gradient(110deg,#4b563a88,#2b44364a);box-shadow:inset 2px 0 #cfb678}
+.dojo-stage[aria-pressed="true"] strong{color:#eddbb0}.dojo-stage[aria-pressed="true"] small{color:#b4c0a1}.dojo-stage[aria-pressed="true"] .dojo-stage-number,.dojo-stage[aria-pressed="true"]>i{color:#d1bd86}
+.dojo-loadout{margin-top:20px;padding-top:16px;border-top:1px solid #7e937645}
+.dojo-weapon{display:flex;align-items:center;gap:11px}
+.dojo-weapon-art{width:38px;height:51px;flex-shrink:0;display:block;background:radial-gradient(ellipse,#bbaa6333,transparent 70%)}
+.dojo-weapon-art svg{width:100%;height:100%;display:block}
+.dojo-weapon-name{font:17px var(--serif);letter-spacing:2px;font-weight:400;color:#d9ca9e;display:block}
+.dojo-weapon-hand{color:#a0b299;font-size:9px;letter-spacing:1px;display:block;margin-top:3px}
+.dojo-stage-description{font-size:10px;color:#a5b399;line-height:1.9;margin:10px 0 15px}
+.dojo-move-info{display:flex;align-items:flex-start;gap:9px;margin:10px 0}
+.dojo-move-info[hidden],.dojo-casts>div[hidden]{display:none}
+.dojo-move-info>div{flex:1;min-width:0}
+.dojo-move-info>kbd{display:grid;place-items:center;border:1px solid #8993746b;border-radius:3px;width:24px;height:24px;color:#d1c091;font:11px Georgia,serif;flex-shrink:0;background:#30453577}
+.dojo-move-info strong{display:block;font-size:11px;color:#c8d0b1;font-weight:400}
+.dojo-move-info span{display:block;font-size:9px;color:#869e8b;margin-top:2px;line-height:1.65}
+.dojo-try{flex-shrink:0;margin-left:1px;padding:3px 5px;border:1px solid #8e9a6866;border-radius:3px;background:#344b335c;color:#c1cda4!important;font-size:9px;line-height:1.7;cursor:pointer}
+.dojo-try:hover:not(:disabled){background:#53633c88;border-color:#c4b984}
+.dojo-try:disabled{color:#7b927f!important;opacity:.7;cursor:default}
+.dojo-finisher-info{padding-top:11px;border-top:1px solid #b68d6152;margin-top:13px}
+.dojo-finisher-info>kbd{color:#f0c89a;border-color:#c99a6a99;background:#78543538}
+.dojo-finisher-info strong{color:#e5c69c}
+.dojo-f-status{display:block;margin-top:6px;font-size:9px;line-height:1.7;color:#ccb97f;font-variant-numeric:tabular-nums}
+.dojo-move-locked>kbd{color:#829589;border-color:#61776b99;background:#223b32}
+.dojo-move-locked strong,.dojo-move-locked .dojo-f-status{color:#8b9d87}
+.dojo-stage-note{border-left:2px solid #9e8a5759;padding-left:9px;font-size:9px;color:#abac87;line-height:1.85;margin:13px 0 0}
+.dojo-combo-note{font-size:9px;line-height:1.85;color:#8ea18c;margin:10px 0 0}
+.dojo-record{border-top:1px solid #7e937638;margin-top:21px;padding-top:16px}
+.dojo-record .dojo-section-heading{display:block}.dojo-record .dojo-section-heading>small{display:block;margin-top:5px;font-size:8px}
+.dojo-record dl{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;margin:15px 0}
+.dojo-record dt{color:#879e8a;font-size:9px;letter-spacing:1px}
+.dojo-record dd{font:22px Georgia,serif;color:#c6be96;margin:5px 0 0;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.dojo-record .dojo-casts{grid-template-columns:repeat(3,minmax(0,1fr));margin:12px 0 0;padding-top:10px;border-top:1px solid #7e93762c}
+.dojo-record .dojo-casts dd{font-size:15px;margin-top:3px;color:#a8b99c}
+.dojo-record .dojo-casts dt{font-size:8px;letter-spacing:0}
+.dojo-shell[data-has-finisher="false"] .dojo-casts{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dojo-save-note{font-size:9px;line-height:1.85;color:#7f9984;margin:18px 0 0;padding-top:12px;border-top:1px solid #7e93762c}
+.dojo-main{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative;background:#17312f}
+.dojo-tools{position:relative;flex-shrink:0;min-height:57px;display:flex;align-items:center;gap:18px;padding:10px 22px;border-bottom:1px solid #87977536;background:#203932;z-index:1}
+.dojo-targets{display:flex;border:1px solid #7c957249;border-radius:3px;padding:3px;background:#102a2355;gap:2px}
+.dojo-targets button{border-radius:2px;padding:5px 12px;font-size:10px;color:#8da78e;border:1px solid transparent;white-space:nowrap}
+.dojo-targets button[aria-pressed="true"]{border-color:#a9a0747d;color:#e4d2a2;background:#62704a66}
+.dojo-setting{display:flex;align-items:center;gap:7px;font-size:10px;color:#a4b99e!important;white-space:nowrap;padding:7px 0}
+.dojo-setting b{font-weight:400;color:#c4c8a4;font:12px Georgia,serif}
+.dojo-switch{height:13px;width:25px;border:1px solid #778d70;border-radius:9px;position:relative;background:#152f28}
+.dojo-switch:after{content:"";position:absolute;top:2px;left:2px;background:#889e7f;height:7px;width:7px;border-radius:50%;transition:transform .18s}
+.dojo-free[aria-pressed="true"] .dojo-switch{background:#6e86574d;border-color:#b3c48c}.dojo-free[aria-pressed="true"] .dojo-switch:after{transform:translateX(11px);background:#d3ddaa}
+.dojo-speed[aria-pressed="true"]{color:#e0c995!important}.dojo-speed[aria-pressed="true"] b{color:#efdaac}
+.dojo-reset{margin-left:auto;display:flex;align-items:center;gap:10px;border:1px solid #839b6d55;border-radius:3px;background:#28442e55;padding:6px 10px;color:#b6c5a3!important;white-space:nowrap;font-size:10px}
+.dojo-reset span{font-size:17px;line-height:1;color:#b6be8e}.dojo-reset:hover{background:#42573b88}
+.dojo-arena{flex:1;min-height:0;position:relative;overflow:hidden;isolation:isolate}
+.dojo-arena .ss-combat{min-height:0}
+.dojo-footer{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:33px;padding:7px 20px;border-top:1px solid #7b947234;background:#1b352e;font-size:9px;color:#7e9e8c;flex-shrink:0}
+.dojo-repeat-note{color:#abaf88;white-space:nowrap}
+.dojo-arena .ss-c-location{display:none}
+.dojo-arena .ss-c-hud{left:18px;right:18px;top:17px}
+.dojo-arena .ss-c-player{background:#16332de8;border-color:#b3af8155}
+.dojo-arena .ss-c-headbuttons{margin-left:auto}
+.dojo-arena .ss-c-guide{bottom:117px;left:22px;max-width:65%;font-size:9px;color:#a4b89b;opacity:.75}
+.dojo-arena .ss-c-controls{bottom:22px}
+.dojo-arena .ss-c-finisher{min-width:106px}
+.dojo-arena .ss-c-chain{top:105px;right:20px}
+.dojo-arena .ss-c-toast{top:26%;font-size:11px;background:#18372df2;border:1px solid #9696677a;color:#dfd5ad}
+.dojo-entry-button{color:#d4c397!important;border-color:#ab976166!important;background:#3e5135a8!important}
+.selection-bottom .dojo-entry-button{margin-left:auto;white-space:nowrap}
+.world-training-link{color:#d5bd86!important}
+.dojo-panel-scrim{position:absolute;inset:0;border:0;background:#051b19a8;z-index:5;cursor:default}
+@media(max-width:1200px){.dojo-header{padding:0 22px;gap:14px}.dojo-current{gap:9px;padding-inline:10px}.dojo-header-actions{gap:14px}.dojo-hp-rule{font-size:9px}.dojo-layout{grid-template-columns:268px minmax(0,1fr)}.dojo-sidebar{padding:18px 16px 14px}.dojo-tools{gap:13px;padding-inline:15px}.dojo-targets button{padding-inline:10px}.dojo-repeat-note{display:none}.dojo-arena .ss-c-guide{font-size:8px}.dojo-arena .ss-c-controls{gap:7px}.dojo-arena .ss-c-action{min-width:83px}.dojo-arena .ss-c-ultimate{min-width:102px}}
+@media(max-width:960px){.dojo-header{height:73px;padding:0 17px;gap:13px}.dojo-brand h1{font-size:21px;letter-spacing:3px}.dojo-brand p{font-size:8px;letter-spacing:1px}.dojo-seal{font-size:15px}.dojo-header-actions{gap:8px}.dojo-hp-rule{display:none}.dojo-exit{font-size:10px;padding:8px 10px}.dojo-current{display:block;cursor:pointer;border:1px solid #7f967243;border-radius:3px;padding:7px 11px;margin-left:auto}.dojo-current-name{font-size:15px;margin-right:8px}.dojo-current-stage{font-size:10px}.dojo-current>small{display:block;font-size:8px;margin-top:2px}.dojo-layout{display:block;position:relative}.dojo-main{height:100%}.dojo-sidebar{position:absolute;inset:0 auto 0 0;width:290px;transform:translateX(-101%);transition:transform .18s;z-index:6;border-right:1px solid #a3986588;box-shadow:15px 0 32px #031a1980}.dojo-shell[data-panel="open"] .dojo-sidebar{transform:translateX(0)}.dojo-shell[data-panel="open"] .dojo-arena{pointer-events:none}.dojo-panel-close{display:block;font-size:22px;line-height:1;padding:0 4px;margin-left:5px;color:#aeaf85!important}.dojo-sidebar-heading>small{margin-left:auto}.dojo-tools{padding-inline:17px;min-height:52px;gap:17px}.dojo-footer{font-size:8px;padding:6px 15px;min-height:30px}.dojo-arena .ss-c-guide{font-size:9px}.dojo-arena .ss-c-action{min-width:91px}.dojo-arena .ss-c-ultimate{min-width:120px}.selection-bottom{flex-wrap:wrap}.selection-bottom .dojo-entry-button{margin-left:0}}
+@media(max-width:640px){.dojo-header{height:76px;padding:0 11px;gap:9px}.dojo-brand{gap:8px}.dojo-brand p{font-size:6px;letter-spacing:.4px;margin-bottom:4px}.dojo-brand h1{font-size:18px;letter-spacing:1px}.dojo-seal{font-size:12px;padding:5px 4px}.dojo-current{padding:6px 8px;flex:1;max-width:175px}.dojo-current-name{font-size:13px;letter-spacing:1px;margin-right:4px}.dojo-current-stage{font-size:8px;display:inline}.dojo-current>small{font-size:7px;letter-spacing:0}.dojo-exit{font-size:9px;padding:7px 8px;letter-spacing:0}.dojo-exit span{display:none}.dojo-tools{padding:7px 10px;gap:10px;min-height:49px;flex-wrap:wrap}.dojo-targets{padding:2px;gap:0}.dojo-targets button{padding:4px 9px;font-size:9px}.dojo-setting{font-size:9px;gap:5px;padding:4px 0}.dojo-setting b{font-size:11px}.dojo-switch{width:23px;height:12px}.dojo-switch:after{width:6px;height:6px}.dojo-free[aria-pressed="true"] .dojo-switch:after{transform:translateX(10px)}.dojo-reset{gap:5px;padding:5px 7px;font-size:9px}.dojo-reset span{font-size:14px}.dojo-footer{font-size:8px;padding:6px 10px}.dojo-arena .ss-c-hud{left:9px;right:9px;top:11px}.dojo-arena .ss-c-player{width:195px}.dojo-arena .ss-c-controls{right:15px;bottom:19px;gap:7px}.dojo-arena .ss-c-action{width:61px;min-width:0}.dojo-arena .ss-c-ultimate{width:61px;min-width:0}.dojo-arena .ss-c-attack{width:66px}.dojo-arena .ss-c-chain{top:87px;right:12px}.dojo-arena .ss-c-toast{top:29%;font-size:10px;max-width:88%}.dojo-arena .ss-c-guide{display:none}.dojo-panel-scrim{backdrop-filter:blur(2px)}.dojo-sidebar{width:min(300px,85vw)}}
+@media(max-width:390px){.dojo-header{gap:7px;padding:0 8px}.dojo-brand h1{font-size:16px}.dojo-brand p{font-size:6px;letter-spacing:0}.dojo-seal{display:none}.dojo-current{padding:5px 7px}.dojo-current-stage{display:block;margin-top:2px}.dojo-current>small{font-size:6px}.dojo-tools{gap:9px;padding-inline:9px}.dojo-targets button{padding-inline:8px}.dojo-setting{font-size:8px}.dojo-reset{font-size:8px;margin-left:0}.dojo-reset span{display:none}.dojo-arena .ss-c-player{width:181px}.dojo-arena .ss-c-mini{font-size:9px;padding:8px 7px}.dojo-arena .ss-c-controls{right:10px}}
+@media(max-height:590px){.dojo-header{height:61px}.dojo-brand h1{font-size:20px}.dojo-brand p{font-size:7px}.dojo-tools{min-height:45px;padding-block:5px}.dojo-footer{min-height:24px;padding-block:4px}.dojo-arena .ss-c-hud{top:9px}.dojo-arena .ss-c-controls{bottom:12px}.dojo-arena .ss-c-guide{display:none}.dojo-sidebar{padding-top:13px}.dojo-stage-section{margin-top:17px}}
+/* Hongmao has six controls. Keep them within two rows, with F in its own cell. */
+@media(pointer:coarse),(max-width:640px){
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-controls{display:grid;grid-template-columns:repeat(3,61px);grid-template-rows:repeat(2,59px);gap:7px;padding:6px;left:auto;right:15px;transform:none;align-items:stretch}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-action{width:61px;min-width:0;height:59px}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-skill{grid-column:1;grid-row:1}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-ultimate{grid-column:2;grid-row:1}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-finisher{grid-column:3;grid-row:1}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-dodge{grid-column:1;grid-row:2}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-herb{grid-column:2;grid-row:2}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-attack{grid-column:3;grid-row:2}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-attack .ss-c-v4icon{top:3px;width:29px;height:29px}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-attack .ss-c-glyph{top:5px;width:25px;height:25px}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-attack span{bottom:7px}
+}
+@media(max-width:390px){
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-controls{grid-template-columns:repeat(3,52px);gap:6px;right:10px}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-action{width:52px}
+  .dojo-arena .ss-c-joy{width:92px;height:92px;left:9px;bottom:30px}
+  .dojo-arena .ss-c-joy:before{inset:20px}
+  .dojo-arena .ss-c-joynub{width:38px;height:38px;left:26px;top:26px}
+}
+@media(pointer:coarse) and (min-width:700px) and (max-height:550px){
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-controls{grid-template-columns:repeat(3,54px);grid-template-rows:repeat(2,49px)}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-action{width:54px;height:49px}
+  .dojo-shell[data-has-finisher="true"] .dojo-arena .ss-c-attack .ss-c-v4icon{width:25px;height:25px}
+}
+@media(prefers-reduced-motion:reduce){.dojo-shell button,.dojo-sidebar,.dojo-switch:after{transition:none}}

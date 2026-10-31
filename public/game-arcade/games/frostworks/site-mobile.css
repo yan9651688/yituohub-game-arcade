@@ -1,0 +1,21 @@
+/* Existing winter palette and native layout, with accessible site-language controls. */
+.game-language{position:fixed;right:16px;top:10px;z-index:120;display:flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid #c3d4c6;border-radius:9px;background:#f5f5eef7;color:#294e58;box-shadow:0 3px 10px #173e4715;font:11px system-ui,sans-serif}
+.game-language label{font-size:10px;font-weight:800;letter-spacing:.7px}.game-language select{max-width:116px;min-height:30px;border:0;background:transparent;color:#294e58;font:12px system-ui,sans-serif;cursor:pointer}.game-language select:focus-visible{outline:2px solid #ba8e56;outline-offset:2px}
+#sidebar{padding-top:64px}#debugBtn,.modal [data-action="debug"]{display:none}html[data-debug-tools="true"] #debugBtn,html[data-debug-tools="true"] .modal [data-action="debug"]{display:inline-flex}
+.build-card .card-top{gap:6px;align-items:flex-start}.build-card .card-top>span{flex-shrink:0}.modal h2{overflow-wrap:break-word}.world-header .brand{min-width:0}.control-hint{max-width:235px}#map-btn{width:auto;min-width:38px;padding:0 8px}
+html[lang="en"] .modal .eyebrow{letter-spacing:1.3px}html[lang="en"] .modal h2{font-size:29px}html[lang="en"] .modal .feature-line{line-height:1.7}html[lang="en"] .resource-chip .res-name{font-size:9px}html[lang="en"] .build-card p{line-height:1.65}html[lang="en"] .top-actions #map-btn{font-size:11px}
+#game{touch-action:none}#joystick{user-select:none;-webkit-user-select:none}.build-card button,.recipe-row button,.endless-actions button,.endless-upgrade button{touch-action:manipulation}
+@media(max-width:660px){
+ .game-language{top:auto;bottom:56px;right:12px;padding:5px 8px;gap:5px;max-width:210px}.game-language select{min-height:34px;font-size:12px}.game-language label{font-size:9px}
+ #sidebar{height:35dvh;padding:13px 13px 114px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ #world{height:65dvh}.top-actions button{min-width:40px;height:42px}.world-header{gap:8px}.brand .version{display:none}.brand strong{font-size:16px}
+ .build-card{flex:0 0 185px;min-width:185px}.build-card.complete{flex:0 0 110px;min-width:110px}.build-card button,.recipe-row button{min-height:42px;font-size:11px}.build-card .card-top{font-size:12px;line-height:1.35}.build-cost{font-size:10px}
+ #forecast{display:block}#forecast>span{display:block}.status-row{gap:8px}#chapter-title{font-size:18px;line-height:1.2;min-width:0;overflow-wrap:break-word}
+ #resource-hud{flex-wrap:nowrap;gap:4px;top:70px;overflow-x:auto;touch-action:pan-x}.resource-chip{flex:0 0 auto;min-width:70px}.resource-chip .res-name{font-size:9px;white-space:nowrap}.resource-chip strong{font-size:12px}.resource-chip strong small{font-size:8px}
+ #deadline-strip{top:128px;max-width:calc(100% - 26px);font-size:9px}.weather-banner{top:174px;max-width:calc(100% - 26px);font-size:9px;line-height:1.4}
+ #carry{width:145px}#carry button{min-height:35px;font-size:10px}#joystick{bottom:132px;width:86px;height:86px}#stick{left:24px;top:24px}
+ .overlay{align-items:flex-start;padding:12px 12px 112px;overflow-y:auto}.modal{margin:auto 0;max-height:calc(100dvh - 130px);padding:24px}.modal .primary,.modal .secondary,.modal .subtle{min-height:44px}.modal p{line-height:1.65}html[lang="en"] .modal h2{font-size:25px}
+ #endless-panel{grid-column:1/-1;min-width:0}.endless-heading{flex-wrap:wrap}.endless-upgrade strong{flex-wrap:wrap}
+}
+@media(max-height:520px) and (min-width:661px){.game-language{top:4px;right:8px;padding:3px 7px}#sidebar{padding-top:50px;padding-bottom:100px}.world-header{top:14px}.resource-chip{min-width:52px;padding:5px}#resource-hud{top:66px}.weather-banner{left:16px;top:146px;max-width:calc(100% - 32px)}#deadline-strip{top:113px}.world-bottom{bottom:12px}#joystick{bottom:106px;left:18px}.overlay{padding:8px 12px 54px}.modal{max-height:calc(100dvh - 70px);padding:22px}}
+@media(prefers-reduced-motion:reduce){.overlay,#toast{transition:none}}

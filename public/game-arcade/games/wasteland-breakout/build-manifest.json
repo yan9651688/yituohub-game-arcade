@@ -1,0 +1,30 @@
+{
+  "edition": "six-cities-v9",
+  "script": "game-REY4Y2P7.js",
+  "files": [
+    {
+      "path": "assets/sakura-chibi-L23T4N5H.webp",
+      "bytes": 434464
+    },
+    {
+      "path": "assets/astra-chibi-6QG2ZE4O.webp",
+      "bytes": 414192
+    },
+    {
+      "path": "assets/ember-chibi-2UZWZJ7P.webp",
+      "bytes": 364460
+    },
+    {
+      "path": "assets/yuki-chibi-7AM7L26G.webp",
+      "bytes": 397296
+    },
+    {
+      "path": "assets/tank-theme-A2M6VTLW.ogg",
+      "bytes": 4316807
+    },
+    {
+      "path": "assets/game-REY4Y2P7.js",
+      "bytes": 944728
+    }
+  ]
+}

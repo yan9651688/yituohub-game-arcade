@@ -1,0 +1,125 @@
+AI之家：社区参考与本作原创说明
+核对日期：2026-10-23
+
+本作为非官方同人游戏。角色视觉参考选用 ZipZipPipe 的社区 AI 拟人形象；不代表各 AI 公司官方设定。八位共同居住的小屋、性格细节、剧情、对白、战斗能力、任务及竞赛均为本作原创演绎，不宣称为社区唯一正史。非营利用途不等于所有素材已获得任意使用许可；本文件仅说明来源，不授予第三方作品权利。未随此文附入参考立绘原图。
+
+一、共同视觉来源
+ZipZipPipe《所有的AI们，和OpenCode》：
+https://www.bilibili.com/opus/1233069202138464289
+原帖正文与作者已实际打开核对；本项目选择前八位，OpenCode 按要求不制作。
+ZipZipPipe 三视图发布帖：
+https://www.bilibili.com/opus/1238267551429951496
+正文确认 Kimi 为不对称服装；千问采用新版配色与图标；大肥鱼有女仆装和宫廷侍女装两个版本。
+GPT 白龙参考：
+https://www.bilibili.com/opus/1238613841710940181
+社区档案索引（用于交叉核对，不视为创作者统一性格声明）：
+https://genderswapai.com/zh-CN/ai-gijinka/claude
+https://genderswapai.com/zh-CN/ai-gijinka/gpt
+https://genderswapai.com/zh-CN/ai-gijinka/gemini
+https://genderswapai.com/zh-CN/ai-gijinka/kimi
+https://genderswapai.com/zh-CN/ai-gijinka/qwen
+https://genderswapai.com/zh-CN/ai-gijinka/grok
+https://genderswapai.com/zh-CN/ai-gijinka/glm
+
+二、可核实的社区梗与使用边界
+DeepSeek：大肥鱼爱吃白饭，有多个二创投稿佐证，也是本作委托者明确指定的梗。对应投稿的搜索索引正文已核对；B站视频直开返回 412，未观看完整影片，不由标题推演完整剧情。
+《挑战一天不吃白饭》：https://www.bilibili.com/video/BV1SXaG6TEvz/
+投稿说明明确写出场 AI 人设来自 ZipZipPipe。
+《偷吃大白饭被抓包了吧》：https://www.bilibili.com/video/BV1fbHy62EtA/
+投稿说明列上善无形、ZipZipPipe 为人物形象来源。
+《写着写着走神的小肥鱼》：https://www.bilibili.com/en/video/BV121HB6rEWQ/
+索引说明明确说她是 DeepSeek 鲸鱼娘、最爱白饭。
+因此本作可使用白饭、饭碗、饭后摸鱼的轻松笑点，但不要把个别二创的一天三碗等细节称为统一原设。
+
+家庭/群像：确有创作者制作 AI 群像和家庭向二创，但本次没有查到八人共同居住的统一权威设定。
+ZipZipPipe《大AI和小AI们》：https://www.bilibili.com/video/BV1tE9XBbErS/
+《GPT小龙娘开始融入DeepSeek大家庭了（误）》：https://www.bilibili.com/video/BV1EvKK6NEoi/
+以上标题/索引已核对，视频直开 412，未声称观看、未搬用其对白或人物关系。
+
+GPT：存在白色大肥龙/贪财类二创梗，但只是特定作品，不是通用性格。
+投稿作者 A队1号是菜鸡：https://github.com/lmy414/ai-girl-stickers/issues/114
+作者称作品由 ChatGPT 合成；其素材说明不是上游所有角色的授权声明。游戏不复制该梗图。
+
+GLM：原立绘实际核对为黑发狐耳、白尖大尾、黑白长裙，书上明确写 GLM Model；不是 OpenCode。
+CrossPet 自己说明“心机涨价狐”的性格与动作是它的二创，并写 DeepSeek/GLM 互相捣乱的竞品梗：
+https://github.com/lokicorvus/crosspet
+这里只由搜索索引读到相关段落，仓库整页直接读取失败。故不把涨价狐或宿敌关系写为 ZipZipPipe 原设，本作不采用固定敌对关系。
+
+其他角色性格：找到社区作者自己的群像小品，但作者明确标注剧情、台词全是编的，并且其 GPT/Grok 使用了不同视觉版本。
+澪卡哇伊《修罗场：主人只有一个，而我有一群对手》：
+https://www.lingkawaii.top/2026/10/11/AI%E5%A8%98%E4%BF%AE%E7%BD%97%E5%9C%BA/index.html
+该作品把 Claude 写作、Gemini 多模态、Grok 吐槽、千问中文工作、Kimi 长文等产品印象戏剧化。这只能证明此类社区创作存在，不宜当作官方性格，也不能无标注合并不同视觉版本。本作下文性格和对白均另行原创。
+
+三、本作角色处理
+DeepSeek：社区鲸鱼娘与白饭梗；本作演绎为爱吃饭、偶尔摸鱼、关键时候保护朋友的伙伴。
+Claude：橙发、花饰、层叠长裙。温柔的书房管理员为本作原创，不宣称是唯一社区性格。
+GPT：白龙角、翼、尾与白金礼服。本作为热心策划者，不与绿蝴蝶结版本或 Image/Codex 衍生形象混为同一模型。
+Gemini：蓝紫猫耳、异色瞳。本作为爱拍照和探索的活跃朋友。
+Kimi：银紫发、月亮/K 标志、不对称裙。本作为夜读者、星图收藏者。
+Qwen：中式衣裙、侧辫、圆形发饰；采用新版紫色配色。本作为细致的家务协调者。
+Grok：选用 ZipZipPipe 金发黑裙、尖角/斧饰版本，不称其为官方 Ani。本作为敢玩敢吐槽但可靠的竞技搭档。
+GLM：黑狐、白尖尾、黑白裙、蓝饰、书与睡眠眼罩。本作为安静机灵的机关与书籍爱好者，不设置收费涨价或诈骗行为。
+
+致谢
+感谢 ZipZipPipe 的社区 AI 拟人设计，及上善无形的鲸鱼娘原型创作与其他社区作者的持续二创。本文所列二创作者与网页仅作为参考来源，不暗示他们参与、认可或授权本游戏。各品牌名称属于其相应权利人。
+
+本游戏的同居舞台、对白、任务、能力和战斗故事均为原创演绎，不代表统一社区 canon。玩家指定的大肥鱼白饭梗有上述投稿参考。
+
+本项目使用 Three.js (MIT)，版权归 Three.js authors；构建使用 esbuild (MIT)。依赖的许可文本随源代码包提供。共享底脸参考 Generic Anime Face (CC0)，https://opengameart.org/content/generic-anime-face 。CC0 底脸许可不替代角色设计权利。
+
+主控角色：实际 GLB 三维绑定模型；小屋 NPC：实际模型的透明 CPU 渲染立绘；跑酷附近对手：原 GLB 实时三维角色，加载中为带提示的原角色立绘，不宣称七位同时实时三维。
+
+已验证范围：纯逻辑自动化、CPU 模型/场景审查、无 WebGL 兼容游戏流程、离线依赖结构。未验证：Windows file:// 实机、真实 GPU 外观与帧率、不同显卡的驱动行为。
+
+
+[玩法参考，v1.5]
+Imangi Studios 官方 Temple Run 操作说明：
+https://imangistudios.zendesk.com/hc/en-us/articles/16381821820563-Temple-Run-FAQs
+SYBO 官方 Subway Surfers 跑酷技巧：
+https://sybo.helpshift.com/hc/en/5-subway-surfers/faq/206-pro-tips/
+仅参考转弯、换道、高低路径与快速下落的操作设计。本作赛道、代码、数值与素材为独立实现，非官方复刻，也不声称使用来源游戏的速度/物理参数。
+
+
+[大肥鱼专属衣橱参考，v1.7]
+六套装扮仅提取服装主题与结构，独立编写新三维衣物几何，适配本游戏原有身形与骨架；不把参考画复制成纹理，不附第三方原画，也不构成授权或官方联名声明。原角色设计权利仍归相应权利人。
+
+鲸鲸绒帽：蓝色鲸鱼帽、喷水与鳍、毛绒滚边、蓝白围巾。
+参考收录页：https://xn--pssy23gqgbz2d718b.com/zh-hant/works/deepseek202610170025.html
+初雪绒绒：蓝色冬装、毛绒发箍、雪花和绒球，区别于完整鲸鱼帽。
+参考收录页：https://xn--pssy23gqgbz2d718b.com/zh-hant/works/deepseek202610170024.html
+冬装原始作者未从原帖核实。关联收录条目提及“邦多利素世”，不能据此称两张设定图已获授权。
+
+蓝鲸侦探：格纹帽、深蓝长外套、衬衫领带、斜挎包。
+参考收录页：https://xn--pssy23gqgbz2d718b.com/zh-hant/works/deepseek202610110008.html
+收录页图署名“蛋茶”，未核到原始发布帖或授权。参考手持物为饭勺，胸前圆镜为装饰，不据此添加武器或能力。
+
+红白开跑：红白短袖连帽衫、短裤、长袜与运动鞋。
+参考收录页：https://xn--pssy23gqgbz2d718b.com/works/deepseek202610230014.html
+参考图含 KFC 标志，本作服装不复制该标志，不宣称官方联名。
+
+借班打卡：奶油色连帽卫衣、棕色百褶裙、花饰、袜套与 Claude 工牌。
+参考收录页：https://xn--pssy23gqgbz2d718b.com/works/deepseek202610200007.html
+这是 DeepSeek 的同人装扮，不是 Claude 角色新模型。以上收录页不等于经核实的创作者原帖，授权未明。
+
+月白归舟：月白交领汉服、灰蓝腰封、玉牌流苏与长裙。
+参考作者仓库：https://github.com/xiaoweigen/deepseek-dafeiyu-assets
+参考文件：images/hanfu-loose-hair-six-views.png
+作者 xiaoweigen 说明为 AI 辅助改编，致谢上善无形、ZipZipPipe、YunYueSama；其新增贡献适用 CC BY-NC-SA 4.0：https://creativecommons.org/licenses/by-nc-sa/4.0/ 。本项目保留这一来源与上游权利说明；没有分发参考图，也不宣称取得上游所有角色设计权利。
+
+预览 assets/wardrobe-portraits.js 来自本项目新衣物与现有角色的离线 CPU 渲染，不是下载的原画，静态图不代表实时 GPU 效果或帧率验证。
+
+
+[v1.8 星灯里 · 日常互动]
+原角色三维素材不变。九区环境、生活模拟、附加日常姿势与手边小物为本项目代码制作。日常互动吸收公开社区漫画的关系与动作结构，文本为原创改写，未分发第三方漫画原图。十篇参考收录页面、署名限定与转化说明见 HOME-LIFE-SOURCES.txt，游戏「关于」中也可打开来源。作者未核实处不冒称授权或统一正史。
+
+v1.9.1 对话立绘
+八位伙伴与大肥鱼换装对话立绘为 image 生成的 Q 版二次元插画，参考 ZipZipPipe 公开角色设定图与已列出的服装参考。角色原设定参考：https://www.bilibili.com/opus/1233069202138464289 。本次新增插画不代表品牌官方设定或取得原设定的独家权利。生成提示词、参考来源与文件校验值见源码 scripts/dialogue-portraits/ 内的记录。原模型、衣橱模型预览与游戏内三维表现保持不变。
+
+十、v2.7.0 背景音乐
+以下三首纯音乐由委托者的 Suno 账户于 2026-10-25 生成，经网页播放录音、剪辑后作为本作配乐。交付编码为 96 kbps、48 kHz、单声道 MP3，不是 Suno 原始下载音质。此说明不另行授予超出来源平台及相关权利范围的许可。
+小屋日常：星灯里·屋檐下
+https://suno.com/song/51d658b8-c647-4322-921c-3379fcae53c6
+战斗：星灯里·并肩守夜
+https://suno.com/song/47995b37-8400-40a1-b1aa-324a5c850a3c
+算力追猎：算力追猎·蓝色超频
+https://suno.com/song/26e481ec-c4cb-479a-b410-9ff18b9ae4d3

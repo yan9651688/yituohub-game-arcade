@@ -1,0 +1,18 @@
+/* Six sword sprite folios. Keeps the v4 world and inventory layout intact. */
+.move-hero-tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin:0 0 21px}
+.move-hero-tab{color:#9bab97;padding:10px 5px 9px;min-width:0;border:1px solid #8da48932;background:#16342f;cursor:pointer;border-radius:2px;transition:background .18s,border-color .18s}
+.move-hero-tab>span{display:block;font-family:var(--serif);font-size:17px;letter-spacing:2px;color:#ced8b8}
+.move-hero-tab>small{font-size:9px;display:block;margin-top:4px;opacity:.65}
+.move-hero-tab.active{background:#28473c;border-color:#d6c39199;box-shadow:inset 0 -2px var(--sword-tint,#d2c096)}
+.move-hero-tab:hover,.move-hero-tab:focus-visible{background:#294c41;border-color:#d6c391}
+.move-sprite-sheet{margin:0 0 18px;overflow:hidden;border:1px solid #a6996b63;border-radius:3px;background:#152d2c}
+.move-sheet-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px;background:#1d3b32;border-bottom:1px solid #a6996b3a}
+.move-sheet-heading>span{font-family:var(--serif);font-size:16px;color:#ddcda1;letter-spacing:2px}
+.move-sheet-heading>small{font-size:10px;color:#aabea5;line-height:1.6}
+.move-stage-labels{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;padding:12px 8px 4px;color:#a9bba3;font-size:10px;letter-spacing:1px}
+.move-stage-labels b{color:#d1c18e;font-size:10px;letter-spacing:1px;font-weight:400;margin-right:5px}
+.move-sprite-sheet>img{display:block;width:100%;height:auto;background:radial-gradient(ellipse at 50% 65%,#25423b,#14292a 78%)}
+.move-sprite-sheet>figcaption{padding:13px 18px 15px;border-top:1px solid #a6996b3a;color:#98b19d;font-size:10px;line-height:1.85;background:#1b3830}
+.move-sprite-sheet>figcaption>strong{display:block;font-family:var(--serif);font-size:15px;font-weight:400;letter-spacing:1px;color:#d0c497;margin-bottom:3px}
+@media(max-width:760px){.move-hero-tabs{gap:4px}.move-hero-tab{padding:8px 3px}.move-hero-tab>span{font-size:14px;letter-spacing:1px}.move-hero-tab>small{font-size:8px}.move-sheet-heading{display:block;padding:12px 13px}.move-sheet-heading>small{display:block;margin-top:5px}.move-sheet-heading>span{font-size:14px}.move-stage-labels{font-size:9px;padding-top:10px}.move-sprite-sheet>figcaption{padding:10px 13px;font-size:9px}.move-sprite-sheet>figcaption>strong{font-size:12px}}
+@media(max-width:420px){.move-hero-tabs{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.move-hero-tab>small{display:none}.move-hero-tab>span{font-size:14px}.move-stage-labels{letter-spacing:0;font-size:8px}.move-stage-labels b{font-size:8px;margin-right:3px}.move-sheet-heading>small{font-size:9px}}

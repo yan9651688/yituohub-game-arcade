@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#142c2a">
+  <meta name="description" content="任选七侠，重走原著主线与各自的剑侠传记。同行游山河，茶酒话江湖，接取委托，亲手引剑合璧。">
+  <title>七剑江湖 · 虹猫蓝兔七侠传</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css?v=11">
+  <link rel="stylesheet" href="world.css?v=11">
+  <link rel="stylesheet" href="interface-v4.css?v=11">
+  <link rel="stylesheet" href="interface-v5.css?v=11">
+  <link rel="stylesheet" href="training.css?v=11">
+  <link rel="stylesheet" href="jianghu-life.css?v=16">
+  <link rel="stylesheet" href="world-v9.css?v=11">
+  <link rel="stylesheet" href="wuxia-base-v10.css?v=11">
+  <link rel="stylesheet" href="wuxia-hud-v10.css?v=11">
+  <link rel="stylesheet" href="wuxia-panels-v10.css?v=11">
+  <link rel="stylesheet" href="ui-art.css?v=11.1">
+  <link rel="stylesheet" href="villain-gallery.css?v=11.5">
+  <link rel="stylesheet" href="story-dialogue.css?v=14.2">
+  <link rel="stylesheet" href="skill-showcase.css?v=12">
+  <link rel="stylesheet" href="consumables.css?v=29">
+  <link rel="stylesheet" href="tower.css?v=28">
+  <link rel="stylesheet" href="bestiary.css?v=33">
+  <link rel="stylesheet" href="codex-character-v34.css?v=34">
+  <link rel="stylesheet" href="cursor.css?v=34">
+  <link rel="stylesheet" href="site-mobile.css?v=20261021">
+  <link rel="canonical" href="https://game.yituohub.com/play.html?game=seven-swords">
+</head>
+<body>
+  <div class="game-shell" id="gameShell">
+    <header class="topbar">
+      <a class="brand" href="#" data-action="map" aria-label="七剑江湖首页"><span class="seal">七<br>侠</span><span><strong>七剑江湖</strong><small>虹猫蓝兔七侠传</small></span></a>
+      <nav class="main-nav" aria-label="江湖导航">
+        <button class="nav-item" data-action="atlas" aria-label="打开九境舆图" title="九境舆图 · M"><span data-icon="map"></span><span>舆图</span></button>
+        <button class="nav-item" data-action="roster" aria-label="七侠传记" title="七侠传记"><span data-icon="sword"></span><span>传记</span></button>
+        <button class="nav-item" data-action="bag" aria-label="物品与佩剑" title="行囊与佩剑 · B"><span data-icon="bag"></span><span>行囊</span></button>
+        <button class="nav-item world-training-link" data-action="dojo" aria-label="进入七剑演武场" title="七剑演武场 · T"><span data-icon="sword"></span><span>演武</span></button>
+        <button class="nav-item" data-action="codex" title="大图鉴 · N"><span data-icon="book"></span><span>大图鉴</span></button>
+        <button class="nav-item" data-action="character" title="人物修行 · C"><span data-icon="sword"></span><span>人物</span></button>
+      </nav>
+      <div class="top-actions"><button class="icon-button sound-button" data-action="sound" title="开启背景音乐" aria-label="开启背景音乐"><span data-icon="volume"></span><i></i></button><button class="icon-button" data-action="help" title="游玩指引" aria-label="游玩指引"><span class="help-mark">?</span></button></div>
+    </header>
+    <div class="journey-bar"><span class="journey-chapter" id="chapter">序章 · 林海来信</span><span class="journey-goal" id="goal">选择一位剑侠，踏入这片江湖</span><span class="save-status" id="saveStatus">单人冒险 · 随行存档</span></div>
+    <main class="explore-layout" aria-label="行走江湖">
+      <section class="world-stage" id="worldStage" aria-label="可行走的江湖世界">
+        <canvas class="world-canvas" tabindex="0" aria-label="用 WASD 或方向键行走，点击地面寻路，F 交谈，J 挑战附近流寇，空格轻功，H 江湖歇脚，L 本区行图，M 九境舆图">请使用支持 Canvas 的浏览器游玩。</canvas>
+        <div id="worldHero" class="hud-hero" aria-label="角色与佩剑"></div>
+        <div id="worldParty" class="world-party" hidden aria-label="当前同行伙伴"></div>
+        <div class="world-title"><span>武陵山水 · 七剑同心</span><h1 id="worldRegion">西海峰林</h1><p id="worldWeather">风穿林海 · 鸟鸣深处</p></div>
+        <div class="world-quest-panel"><div id="worldQuest"></div><div class="world-quest-actions"><button data-world="track"><kbd>G</kbd> 接续主线</button><button data-world="local">附近遭遇 ›</button></div></div>
+        <div class="world-minimap"><button class="mini-map-open" data-world="local-map" aria-label="打开本区行图"><canvas id="worldMini" width="320" height="240" aria-hidden="true"></canvas><span class="mini-north">北</span><span class="mini-map-caption">本区行图 <kbd>L</kbd></span></button><button class="mini-atlas-button" data-world="atlas">九境舆图 <kbd>M</kbd> ↗</button><p id="worldExploreCount">九境 1/9 · 此地足迹 0/12</p></div>
+        <div class="world-center-notice" id="regionNotice" hidden></div>
+        <button class="world-interact" id="worldInteract" data-world="interact" hidden></button>
+        <div class="world-hints"><span id="worldMoveState">山河由你行走</span><p><kbd>WASD</kbd> 行走 <i>·</i> 左键寻路 <i>·</i> <kbd>空格</kbd> 轻功 <i>·</i> <kbd>Shift</kbd> 疾行</p></div>
+        <div class="world-camera-tools"><button data-world="zoom-out" aria-label="拉远视角">−</button><button data-world="recenter" aria-label="镜头归位">归位</button><button data-world="zoom-in" aria-label="拉近视角">＋</button></div>
+        <div id="worldHotbar" class="world-hotbar" role="group" aria-label="江湖快捷操作"></div>
+        <div class="world-inventory-dock"><button id="worldInventory" class="world-inventory" data-action="bag" aria-label="打开物品栏与专属佩剑"><span class="item-icon" data-icon="bag"></span><span>行囊<small>物品 · 佩剑</small></span><small>B</small></button><div id="worldSupplyLoadout" class="world-supply-loadout"></div></div>
+        <div class="world-touch-controls"><div class="world-joystick" role="group" aria-label="拖动摇杆行走"><span class="world-joystick-knob"></span></div><div class="world-touch-actions"><button data-world="attack" aria-label="练剑">剑</button><button data-world="jump" aria-label="轻功">轻功</button><button data-world="interact" aria-label="交谈或拾取">交谈</button></div></div>
+      </section>
+    </main>
+    <div class="atlas-layer" id="atlasLayer" hidden><div class="atlas-backdrop" data-action="close-atlas"></div><section class="atlas-dialog" role="dialog" aria-modal="true" aria-label="江湖舆图" tabindex="-1"><header class="atlas-heading"><div><span class="eyebrow">九境山河 · 寻侠问路</span><h2>江湖舆图</h2></div><p>主线一键续行 · 途中自由驻足 · 山水间偶遇故人</p><button class="icon-button" data-action="close-atlas" aria-label="合上舆图">×</button></header>
+    <main class="world-layout atlas-layout">
+      <section class="map-panel" aria-label="江湖大地图">
+        <div class="map-view" id="mapView"><div class="map-world" id="mapWorld"><div id="mapArt" class="map-art"></div><svg class="map-routes" id="mapRoutes" viewBox="0 0 1600 1000" aria-hidden="true"></svg><div id="mapNodes" class="map-nodes"></div><div id="playerMarker" class="player-marker" aria-hidden="true"></div></div></div>
+        <div class="map-caption"><span class="eyebrow">武陵山水 · 江湖舆图</span><h1>一剑，赴山河。</h1><p>山有重逢，路有侠义。</p></div>
+        <div class="map-top-note"><span class="wind-dot"></span>山风过境 · 晴</div>
+        <div class="map-compass" aria-hidden="true"><span>北</span><svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="25" fill="none" stroke="currentColor" opacity=".25"/><path d="M35 5 41 35 35 65 29 35Z" fill="currentColor" opacity=".65"/><path d="M5 35 35 29 65 35 35 41Z" fill="currentColor" opacity=".25"/><circle cx="35" cy="35" r="3" fill="#e8e6d8"/></svg></div>
+        <div class="map-legend"><span><i class="legend-current"></i>此刻所在</span><span><i class="legend-quest"></i>江湖事件</span><span><i class="legend-done"></i>已平风波</span></div>
+        <div class="map-controls"><button class="icon-button" data-action="zoom-out" aria-label="缩小地图">−</button><button class="map-reset" data-action="zoom-reset" aria-label="复位地图">全景</button><button class="icon-button" data-action="zoom-in" aria-label="放大地图">＋</button></div>
+        <div class="travel-message" id="travelMessage" hidden></div>
+      </section>
+      <aside class="location-panel" id="locationPanel" aria-label="地点与事件"></aside>
+    </main></section></div>
+    <footer class="playerbar" id="playerbar"><span>七剑未合，江湖待你。</span></footer>
+  </div>
+  <div class="modal-layer" id="modalLayer" hidden><div class="modal-backdrop" data-action="close-modal"></div><section id="modal" class="modal" role="dialog" aria-modal="true" tabindex="-1"></section></div>
+  <div id="battleLayer" class="battle-layer" hidden></div>
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <input id="saveImport" type="file" accept="application/json,.json" hidden>
+  <noscript><div class="noscript">请启用浏览器 JavaScript，开启七剑江湖。</div></noscript>
+  <script src="site-locale.js?v=20261021"></script>
+  <script src="bgm.js?v=13"></script><script src="data.js?v=11"></script><script src="canon-data.js?v=15"></script><script src="villain-dialogue.js?v=15"></script><script src="bestiary-data.js?v=33"></script><script src="journey-rules.js?v=34"></script><script src="loot-rules.js?v=23"></script><script src="art.js?v=11"></script><script src="sprites.js?v=11"></script><script src="villain-sprites.js?v=11.5"></script><script src="ui-art-data.js?v=11.5"></script><script src="site-preload.js?v=20261021"></script><script src="ui-art.js?v=14.1"></script><script src="dialogue-audit-data.js?v=15"></script><script src="dialogue-audit.js?v=15"></script><script src="item-art.js?v=11"></script><script src="consumable-art.js?v=24"></script><script src="jianghu-life.js?v=29"></script><script src="scene.js?v=11"></script><script src="world-tower-art.js?v=31"></script><script src="regions.js?v=29"></script><script src="region-data.js?v=11"></script><script src="atlas.js?v=28"></script><script src="fx-ice-cloud-v5.js?v=11"></script><script src="fx-flower-qin-v5.js?v=11"></script><script src="fx-thunder-azure-v5.js?v=11"></script><script src="sword-fx.js?v=18"></script><script src="training-scene.js?v=11"></script><script src="finale.js?v=11.5"></script><script src="health-orb.js?v=26"></script>
+  <script src="tower.js?v=34"></script><script src="combat.js?v=34"></script><script src="training-data.js?v=11"></script><script src="training.js?v=13"></script><script src="world-life-art.js?v=11"></script><script src="world.js?v=34"></script><script src="story-dialogue.js?v=16"></script><script src="skill-showcase.js?v=13"></script><script src="consumable-loadout.js?v=25"></script><script src="growth-art.js?v=29"></script><script src="feature-loader.js?v=34"></script><script src="app.js?v=34"></script><script src="wuxia-ui-v10.js?v=34"></script>
+</body>
+</html>
