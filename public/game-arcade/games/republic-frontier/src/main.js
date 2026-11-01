@@ -26,9 +26,11 @@ const esc = (value) =>
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const allMissions = [...CAMPAIGNS.allied, ...CAMPAIGNS.china];
 const SETTINGS_KEY = "republic-frontier-settings-v1",
-  PROGRESS_KEY = "republic-frontier-campaign-v1";
+  PROGRESS_KEY = "republic-frontier-campaign-v1",
+  COACH_KEY = "republic-frontier-coach-v1";
 let settings = { muted: false, modernControls: false, speed: 1 },
-  completed = {};
+  completed = {},
+  coachSeen = { campaign: false, skirmish: false };
 try {
   const s = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
   if (s)
@@ -41,7 +43,40 @@ try {
 try {
   completed = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}") || {};
 } catch {}
+try {
+  const c = JSON.parse(localStorage.getItem(COACH_KEY) || "null");
+  if (c)
+    coachSeen = {
+      campaign: !!c.campaign,
+      skirmish: !!c.skirmish,
+    };
+} catch {}
 const audio = new AudioBus(settings.muted);
+const coarsePointer = () =>
+  !!(
+    window.matchMedia?.("(pointer: coarse)").matches ||
+    (navigator.maxTouchPoints || 0) > 0
+  );
+function saveCoach() {
+  try {
+    localStorage.setItem(COACH_KEY, JSON.stringify(coachSeen));
+  } catch {}
+}
+function missionUnlocked(faction, index) {
+  if (index <= 0) return true;
+  const prev = CAMPAIGNS[faction]?.[index - 1];
+  return !!(prev && completed[prev.id]);
+}
+function formatSavedAt(ts) {
+  return new Date(ts).toLocaleTimeString("zh-CN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+function setSaveState(text) {
+  const el = $("save-state");
+  if (el) el.textContent = text;
+}
 let game = null,
   renderer = null,
   screen = "menu",
@@ -53,6 +88,9 @@ let selection = [],
   action = null,
   mouse = { x: 0, y: 0, world: { x: 0, y: 0 }, inside: false };
 let drag = null,
+  activePointers = new Map(),
+  longPressTimer = null,
+  coach = null,
   groups = {},
   category = "buildings",
   lastFrame = performance.now(),
@@ -217,6 +255,7 @@ function event(ev, data = {}) {
     select([payload.entityId]);
     productionSignature = "";
     pendingAuto = true;
+    advanceCoach("deploy");
   } else if (type === "missionStage") {
     pendingAuto = true;
     bannerUntil = performance.now() + 3200;
@@ -247,7 +286,7 @@ function event(ev, data = {}) {
   } else if (type === "error")
     toast(payload.reason || payload.message || "指令未能执行", "error");
 }
-function bindGame(instance, options = null) {
+function bindGame(instance, options = null, saveLabel = null) {
   game = instance;
   game.onEvent = event;
   optionsForRestart = options ||
@@ -290,13 +329,21 @@ function bindGame(instance, options = null) {
   category = "buildings";
   setCategory(category);
   drawHud(true);
+  if (saveLabel != null) setSaveState(saveLabel);
+  else if (options) setSaveState("尚未保存");
+  startCoach(game.state);
   if (game.state.mode === "campaign") {
     bannerUntil = performance.now() + 3500;
     $("mission-banner").textContent = titleFor(game.state);
     $("mission-banner").hidden = false;
     pendingAuto = true;
-  } else
-    toast("选中基地车，按 D 展开。建设发电厂和矿场，建立补给。", "normal", 6);
+  } else if (!coach) {
+    toast(
+      "选中基地车，点侧栏「展开」或按 D。建设发电厂和矿场，建立补给。",
+      "normal",
+      6,
+    );
+  }
 }
 async function ensureArtReady() {
   if (artProgress(renderer).ready) return;
@@ -374,7 +421,11 @@ async function restore(id) {
     if (!record) throw new Error("还没有可读取的战场存档");
     const restored = Game.restore(record.snapshot);
     await ensureArtReady();
-    bindGame(restored);
+    const label = record.savedAt
+      ? `已读取 ${formatSavedAt(record.savedAt)}`
+      : "存档已恢复";
+    setSaveState(label);
+    bindGame(restored, null, label);
     toast("战场与任务进度已恢复");
     return true;
   } catch (error) {
@@ -399,15 +450,24 @@ function showCampaign(faction = campaignFaction) {
       : "守住城市和撤离通道，打通山海之间的补给线。从有组织的撤退，到穿越海峡的反攻，让家园重新迎来黎明。";
   $("mission-list").replaceChildren();
   for (const [index, m] of CAMPAIGNS[faction].entries()) {
+    const unlocked = missionUnlocked(faction, index);
     const b = document.createElement("button");
-    b.className = "mission-card";
+    b.className = "mission-card" + (unlocked ? "" : " locked");
     b.dataset.mission = m.id;
+    b.disabled = !unlocked;
     b.style.setProperty(
       "--mission-art",
       `url('${new URL(`../assets/previews/${m.id}.webp`, import.meta.url).href}')`,
     );
-    b.innerHTML = `<span class="mission-no">${faction === "allied" ? "A" : "C"} / ${String(index + 1).padStart(2, "0")}</span>${completed[m.id] ? '<span class="completed">已完成 ✓</span>' : ""}<h4>${esc(m.title)}</h4><p>${esc(m.subtitle)}</p>`;
-    b.addEventListener("click", () => briefing(m));
+    const badge = completed[m.id]
+      ? '<span class="completed">已完成 ✓</span>'
+      : unlocked
+        ? index === 0
+          ? '<span class="available">可出击</span>'
+          : ""
+        : '<span class="locked-tag">未解锁</span>';
+    b.innerHTML = `<span class="mission-no">${faction === "allied" ? "A" : "C"} / ${String(index + 1).padStart(2, "0")}</span>${badge}<h4>${esc(m.title)}</h4><p>${esc(unlocked ? m.subtitle : "完成前一任务后解锁")}</p>`;
+    if (unlocked) b.addEventListener("click", () => briefing(m));
     $("mission-list").append(b);
   }
   setScreen("campaign-screen");
@@ -605,7 +665,7 @@ function productionClick(type) {
     action = null;
     $("placement-hint").hidden = false;
     $("placement-hint").textContent =
-      `${displayName(type, factionOf())} · 左键放置 / 右键取消`;
+      `${displayName(type, factionOf())} · 点击放置 · 侧栏「取消」或右键取消`;
     toast("在基地附近选择空地放置建筑");
   } else {
     const producer = selectedEntities().find(
@@ -639,6 +699,7 @@ function drawHud(force = false) {
   $("radar-offline").hidden = radar;
   renderer.drawMinimap($("minimap"), s);
   drawProduction(force);
+  updateCoachProgress();
   const selected = selectedEntities();
   const sig = JSON.stringify(
     selected.map((e) => [
@@ -674,14 +735,7 @@ function drawHud(force = false) {
     $("cancel-queue")?.addEventListener("click", () =>
       issue({ type: "cancelProduction", buildingId: queued.id }),
     );
-  } else
-    $("production-status").textContent = own.some(
-      (e) => e.type === "constructionYard",
-    )
-      ? low
-        ? "电力不足，请补充发电设施。"
-        : "建设基地、侦察敌情，维持矿车补给。"
-      : "选择基地车，按 D 展开基地。";
+  } else $("production-status").textContent = idleProductionHint(own, low);
   for (const b of document.querySelectorAll("[data-command]"))
     b.disabled = selected.length === 0;
   if (s.mode === "campaign") {
@@ -783,9 +837,164 @@ function updateMouse(event) {
     const valid = game.canBuild(placement.type, placement.x, placement.y);
     placement.valid = !!valid.ok;
     $("placement-hint").textContent =
-      `${displayName(placement.type, factionOf())} · ${valid.ok ? "左键放置 / 右键取消" : valid.reason || "不能在此建造"}`;
+      `${displayName(placement.type, factionOf())} · ${valid.ok ? "点击放置 · 侧栏「取消」或右键取消" : valid.reason || "不能在此建造"}`;
   }
 }
+
+function idleProductionHint(own, low) {
+  const missionId = game?.state.missionId;
+  const hasYard = own.some((e) => e.type === "constructionYard");
+  const hasMcv = own.some((e) => e.type === "mcv");
+  const hasSpy = own.some((e) => e.type === "spy");
+  if (
+    missionId === "a3" ||
+    (!hasYard && !hasMcv && hasSpy)
+  ) {
+    return "选中间谍，点击敌方电厂或档案设施潜入。避开军犬与哨戒。";
+  }
+  if (hasYard) {
+    return low
+      ? "电力不足，请补充发电设施。"
+      : "建设基地、侦察敌情，维持矿车补给。";
+  }
+  if (hasMcv) {
+    const mcvSelected = selectedEntities().some((e) => e.type === "mcv");
+    return mcvSelected
+      ? "点侧栏「展开」或按 D，将基地车展开为建造厂。"
+      : "选中基地车，再点侧栏「展开」或按 D。";
+  }
+  return "建立或夺回指挥设施，组织补给与作战。";
+}
+function startCoach(state) {
+  hideCoach(true);
+  const firstCampaign =
+    state.mode === "campaign" &&
+    (state.missionId === "a1" || state.missionId === "c1") &&
+    !coachSeen.campaign;
+  const firstSkirmish = state.mode === "skirmish" && !coachSeen.skirmish;
+  if (!firstCampaign && !firstSkirmish) {
+    coach = null;
+    return;
+  }
+  const kind = firstCampaign ? "campaign" : "skirmish";
+  const own = (state.entities || []).filter(
+    (e) => e.owner === 0 && e.hp > 0 && !e.dead,
+  );
+  const done = {
+    deploy: own.some(
+      (e) =>
+        e.type === "constructionYard" &&
+        (e.progress === undefined || e.progress >= 1),
+    ),
+    power: own.some(
+      (e) =>
+        e.type === "powerPlant" &&
+        (e.progress === undefined || e.progress >= 1),
+    ),
+    mine: own.some(
+      (e) =>
+        e.type === "refinery" &&
+        (e.progress === undefined || e.progress >= 1),
+    ),
+  };
+  if (done.deploy && done.power && done.mine) {
+    coachSeen[kind] = true;
+    saveCoach();
+    coach = null;
+    return;
+  }
+  const steps = [
+    {
+      id: "deploy",
+      title: "1 / 3 · 展开基地",
+      body: "选中基地车，点侧栏「展开」或按 D，展开为建造厂。",
+    },
+    {
+      id: "power",
+      title: "2 / 3 · 接通电力",
+      body: "在侧栏建筑页选择发电厂，放到建造厂附近空地。",
+    },
+    {
+      id: "mine",
+      title: "3 / 3 · 建立矿场",
+      body: "再建一座矿场，矿车会自动采集。之后可训练部队。",
+    },
+  ];
+  let step = 0;
+  if (done.deploy) step = 1;
+  if (done.power) step = 2;
+  coach = { kind, step, steps };
+  renderCoach();
+}
+function hideCoach(silent = false) {
+  const panel = $("coach-panel");
+  if (panel) panel.hidden = true;
+  if (!silent) coach = null;
+}
+function advanceCoach(doneId) {
+  if (!coach) return;
+  const current = coach.steps[coach.step];
+  if (!current || current.id !== doneId) return;
+  if (coach.step >= coach.steps.length - 1) {
+    coachSeen[coach.kind] = true;
+    saveCoach();
+    hideCoach();
+    toast("基础部署完成。继续建设兵营与侦察。", "normal", 4);
+    return;
+  }
+  coach.step += 1;
+  renderCoach();
+}
+function renderCoach() {
+  const panel = $("coach-panel");
+  if (!panel || !coach) return;
+  const step = coach.steps[coach.step];
+  panel.hidden = false;
+  panel.innerHTML = `<p class="overline">FIELD COACH</p><h3>${esc(step.title)}</h3><p>${esc(step.body)}</p><button type="button" id="coach-skip" class="plain">跳过指引</button>`;
+  $("coach-skip").onclick = () => {
+    coachSeen[coach.kind] = true;
+    saveCoach();
+    hideCoach();
+  };
+}
+function updateCoachProgress() {
+  if (!coach || !game) return;
+  const own = game.state.entities.filter((e) => e.owner === 0 && e.hp > 0 && !e.dead);
+  const yard = own.some(
+    (e) =>
+      e.type === "constructionYard" &&
+      (e.progress === undefined || e.progress >= 1),
+  );
+  const power = own.some(
+    (e) =>
+      e.type === "powerPlant" &&
+      (e.progress === undefined || e.progress >= 1),
+  );
+  const ore = own.some(
+    (e) =>
+      e.type === "refinery" &&
+      (e.progress === undefined || e.progress >= 1),
+  );
+  if (yard) advanceCoach("deploy");
+  if (power) advanceCoach("power");
+  if (ore) advanceCoach("mine");
+}
+function applyCoarseDefaults() {
+  const intro = $("control-intro");
+  if (!intro) return;
+  if (coarsePointer()) {
+    intro.innerHTML =
+      "触控：单指拖动平移视角 · 轻点下令 · 长按或侧栏「取消」取消操作<br />也可接键鼠：左键下令 · 右键取消 · Ctrl + 数字编队";
+    if (!settings._touchHinted) {
+      settings._touchHinted = true;
+      /* do not force modernControls; classic left-order works better with tap */
+    }
+  } else {
+    intro.innerHTML =
+      "经典左键下令 · 右键取消 · Ctrl + 数字编队<br />触控设备可用单指拖动平移，长按或侧栏「取消」代替右键";
+  }
+}
+
 function cancel() {
   placement = null;
   action = null;
@@ -898,34 +1107,88 @@ function orderAt(point) {
     issue({ type: "move", ids: selection, x: world.x, y: world.y });
   else select([]);
 }
+function clearLongPress() {
+  if (longPressTimer) {
+    clearTimeout(longPressTimer);
+    longPressTimer = null;
+  }
+}
 function onPointerDown(e) {
   if (!game || game.state.status !== "playing") return;
   audio.unlock();
   updateMouse(e);
   $("world").focus();
-  $("world").setPointerCapture(e.pointerId);
+  try {
+    $("world").setPointerCapture(e.pointerId);
+  } catch {}
+  const point = cursorPoint(e);
+  activePointers.set(e.pointerId, point);
+  const touchLike =
+    e.pointerType === "touch" || (e.pointerType === "pen" && coarsePointer());
   drag = {
     button: e.button,
-    start: cursorPoint(e),
-    last: cursorPoint(e),
+    start: point,
+    last: point,
     shift: e.shiftKey,
     moved: false,
     pointerId: e.pointerId,
+    pan:
+      e.button === 1 ||
+      (e.button === 0 && touchLike) ||
+      activePointers.size >= 2,
+    longPressed: false,
+    touchLike,
   };
+  if (activePointers.size >= 2) {
+    clearLongPress();
+    drag.pan = true;
+    $("selection-marquee").hidden = true;
+  }
   if (e.button === 2 && !settings.modernControls) {
     cancel();
+    clearLongPress();
+    activePointers.delete(e.pointerId);
     drag = null;
+    e.preventDefault();
+    return;
+  }
+  if (drag.pan && e.button === 0 && touchLike && activePointers.size === 1) {
+    clearLongPress();
+    longPressTimer = setTimeout(() => {
+      if (drag && !drag.moved && drag.pointerId === e.pointerId) {
+        drag.longPressed = true;
+        cancel();
+        toast("已取消当前操作");
+      }
+    }, 480);
   }
   e.preventDefault();
 }
 function onPointerMove(e) {
   if (!renderer) return;
   updateMouse(e);
+  const p = cursorPoint(e);
+  if (activePointers.has(e.pointerId)) activePointers.set(e.pointerId, p);
   if (!drag) return;
-  const p = cursorPoint(e),
-    distance = Math.hypot(p.x - drag.start.x, p.y - drag.start.y);
-  if (distance > 5) drag.moved = true;
-  if (drag.button === 1) {
+  const distance = Math.hypot(p.x - drag.start.x, p.y - drag.start.y);
+  if (distance > 8) {
+    drag.moved = true;
+    clearLongPress();
+  }
+  if (activePointers.size >= 2) {
+    drag.pan = true;
+    $("selection-marquee").hidden = true;
+    const pts = [...activePointers.values()];
+    const cx = pts.reduce((s, q) => s + q.x, 0) / pts.length;
+    const cy = pts.reduce((s, q) => s + q.y, 0) / pts.length;
+    if (drag.multiCenter) {
+      renderer.pan(cx - drag.multiCenter.x, cy - drag.multiCenter.y);
+    }
+    drag.multiCenter = { x: cx, y: cy };
+    drag.last = p;
+    return;
+  }
+  if (drag.pan || drag.button === 1) {
     renderer.pan(p.x - drag.last.x, p.y - drag.last.y);
     drag.last = p;
     return;
@@ -940,17 +1203,31 @@ function onPointerMove(e) {
   }
 }
 function onPointerUp(e) {
+  activePointers.delete(e.pointerId);
+  clearLongPress();
   if (!drag) return;
   const d = drag;
+  const p = cursorPoint(e);
+  if (activePointers.size > 0) {
+    drag = {
+      ...d,
+      pointerId: [...activePointers.keys()][0],
+      last: [...activePointers.values()][0],
+      pan: true,
+      multiCenter: null,
+    };
+    $("selection-marquee").hidden = true;
+    return;
+  }
   drag = null;
   $("selection-marquee").hidden = true;
-  const p = cursorPoint(e);
-  if (d.button === 1) return;
+  if (d.longPressed) return;
+  if (d.button === 1 || (d.pan && d.moved)) return;
   if (d.button === 2) {
     if (settings.modernControls) orderAt(p);
     return;
   }
-  if (d.moved && !placement && !action) {
+  if (d.moved && !d.pan && !placement && !action) {
     const minX = Math.min(d.start.x, p.x),
       maxX = Math.max(d.start.x, p.x),
       minY = Math.min(d.start.y, p.y),
@@ -979,7 +1256,7 @@ function onPointerUp(e) {
         );
         return s.x >= minX && s.x <= maxX && s.y >= minY && s.y <= maxY;
       })
-      .map((e) => e.id);
+      .map((ent) => ent.id);
     if (d.shift) ids = [...selection, ...ids];
     select(ids);
     return;
@@ -1005,7 +1282,7 @@ function commandAction(type) {
   if (type === "attackMove") {
     action = type;
     placement = null;
-    $("placement-hint").textContent = "攻击移动 · 左键选择目标位置 / 右键取消";
+    $("placement-hint").textContent = "攻击移动 · 点击目标位置 · 侧栏「取消」或右键取消";
     $("placement-hint").hidden = false;
   } else issue({ type, ids: selection });
 }
@@ -1154,6 +1431,8 @@ function bindUI() {
   canvas.addEventListener("pointermove", onPointerMove);
   canvas.addEventListener("pointerup", onPointerUp);
   canvas.addEventListener("pointercancel", () => {
+    clearLongPress();
+    activePointers.clear();
     drag = null;
     $("selection-marquee").hidden = true;
   });
@@ -1184,13 +1463,27 @@ function bindUI() {
       );
   });
   $("minimap").addEventListener("pointerdown", (e) => {
-    if (!game || !$("radar-offline").hidden) return;
+    if (!game) return;
     const r = $("minimap").getBoundingClientRect();
     renderer.centerOn(
       ((e.clientX - r.left) / r.width) * game.state.width,
       ((e.clientY - r.top) / r.height) * game.state.height,
     );
   });
+  $("minimap").addEventListener("pointermove", (e) => {
+    if (!game || (e.buttons & 1) === 0) return;
+    const r = $("minimap").getBoundingClientRect();
+    renderer.centerOn(
+      ((e.clientX - r.left) / r.width) * game.state.width,
+      ((e.clientY - r.top) / r.height) * game.state.height,
+    );
+  });
+  const cancelBtn = $("cancel-tool");
+  if (cancelBtn)
+    cancelBtn.onclick = () => {
+      cancel();
+      toast("已取消当前操作");
+    };
   addEventListener("keydown", (e) => {
     if (
       e.target instanceof HTMLSelectElement ||
@@ -1360,9 +1653,10 @@ function frame(now) {
         game.state,
         {
           selection,
-          selectionBox: drag?.moved
-            ? { x1: drag.start.x, y1: drag.start.y, x2: mouse.x, y2: mouse.y }
-            : null,
+          selectionBox:
+            drag?.moved && !drag.pan
+              ? { x1: drag.start.x, y1: drag.start.y, x2: mouse.x, y2: mouse.y }
+              : null,
           placement,
           mouseWorld: mouse.world,
           showHealth: false,
@@ -1389,6 +1683,7 @@ function frame(now) {
 try {
   renderer = new Renderer($("world"));
   bindUI();
+  applyCoarseDefaults();
   refreshContinue();
   $("boot").hidden = true;
   setScreen("menu");

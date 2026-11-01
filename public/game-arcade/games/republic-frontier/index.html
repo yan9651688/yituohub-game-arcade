@@ -9,8 +9,8 @@
     <meta name="theme-color" content="#171c1a" />
     <title>共和国之辉 · 黑潮危机</title>
     <link rel="icon" href="assets/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="src/ui.css?v=20261019-r2" />
-    <link rel="stylesheet" href="src/polish.css?v=20261019-r1" />
+    <link rel="stylesheet" href="src/ui.css?v=20261101-polish" />
+    <link rel="stylesheet" href="src/polish.css?v=20261101-polish" />
   </head>
   <body>
     <main id="app">
@@ -50,8 +50,8 @@
               ><b>↗</b>
             </button>
           </div>
-          <p class="control-intro">
-            经典左键下令 · 右键取消 · Ctrl + 数字编队<br />建议使用电脑键盘与鼠标游玩
+          <p id="control-intro" class="control-intro">
+            经典左键下令 · 右键取消 · Ctrl + 数字编队<br />触控设备可用单指拖动平移，长按或侧栏「取消」代替右键
           </p>
         </div>
         <footer class="menu-footer">
@@ -86,7 +86,7 @@
               </select>
             </div>
             <p class="small-note">
-              关键阶段自动保存。支线影响战术机会，失败可以从存档重新集结。
+              关卡按顺序解锁。关键阶段自动保存；支线影响战术机会，失败可从存档重新集结。
             </p>
           </aside>
           <div id="mission-list" class="mission-list"></div>
@@ -139,8 +139,7 @@
               展开行动 →
             </button>
             <p class="small-note">
-              先选中基地车，按 D
-              展开。建立发电厂、矿场与兵营，再组织你的第一支部队。
+              先选中基地车，点侧栏「展开」或按 D。建立发电厂、矿场与兵营，再组织你的第一支部队。
             </p>
           </aside>
         </div>
@@ -168,6 +167,7 @@
             <p id="radio-text"></p>
           </div>
           <div id="unit-detail" class="unit-detail" hidden></div>
+          <div id="coach-panel" class="coach-panel" hidden></div>
         </div>
         <aside id="sidebar" class="sidebar">
           <div class="sidebar-top">
@@ -194,6 +194,7 @@
             <button id="repair-tool" title="选择后点击己方建筑进行修理">
               修理</button
             ><button id="sell-tool" title="选择后点击己方建筑出售">出售</button
+            ><button id="cancel-tool" title="取消放置或当前指令">取消</button
             ><button id="save-game" title="保存完整战场">保存</button>
           </div>
           <div class="production-tabs" role="tablist" aria-label="生产分类">
@@ -205,7 +206,7 @@
           </div>
           <div id="production" class="production"></div>
           <div id="production-status" class="production-status">
-            选择基地车，按 D 展开基地。
+            选中基地车，点侧栏「展开」或按 D。
           </div>
           <div id="command-panel" class="command-panel">
             <button data-command="stop" title="停止 / S">停止</button
@@ -314,10 +315,10 @@
           <div class="help-grid">
             <p>
               <b>选择与命令</b
-              >左键选择己方单位，拖动框选。选中部队后，左键空地移动、敌人进攻。右键取消当前操作。
+              >左键选择己方单位，拖动框选。选中部队后，左键空地移动、敌人进攻。右键或侧栏「取消」取消当前操作。触控：单指拖动平移视角，轻点下令，长按取消。
             </p>
             <p>
-              <b>展开与生产</b>选中基地车按 D
+              <b>展开与生产</b>选中基地车，点侧栏「展开」或按 D
               展开。侧栏选择建筑后在基地附近放置；兵营、工厂建成后点击对应单位卡生产。
             </p>
             <p>
@@ -335,7 +336,7 @@
             </p>
             <p>
               <b>视角与存档</b
-              >方向键或靠近边缘滚屏，中键拖动，滚轮缩放。点击雷达定位。Esc
+              >方向键或靠近边缘滚屏，中键拖动，滚轮缩放。小地图始终可点击平移视角（雷达离线时仍可用，迷雾照常）。Esc
               暂停，关键任务阶段自动保存。
             </p>
           </div>
@@ -357,6 +358,6 @@
         <button onclick="location.reload()">重新加载</button>
       </div>
     </main>
-    <script type="module" src="src/main.js?v=20261018-r1"></script>
+    <script type="module" src="src/main.js?v=20261101-polish"></script>
   </body>
 </html>
